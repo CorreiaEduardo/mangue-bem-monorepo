@@ -19,9 +19,9 @@ Trata-se de um sistema web com vários perfis de usuários, cada um concedendo a
 - **Curadoria de Especialistas:** Análise e aprovação/reprovação de solicitação de inclusão de novas espécies, feito por especialistas.
 
 ## Tecnologias Utilizadas
-- **Frontend:** TBD
-- **Backend:** TBD
-- **Banco de Dados:** TBD
+- **Frontend:** React JS
+- **Backend:** Java Spring Boot
+- **Banco de Dados:** MySQL
 - **Controle de Versão:** Git & GitHub
 - **Gerenciamento de Projeto:** Trello
 
