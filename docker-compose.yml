@@ -1,0 +1,42 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mangue-bem
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    links:
+      - mysql
+    ports:
+      - 80:80
+    environment:
+      - PMA_ARBITRARY=1
+      - UPLOAD_LIMIT=300M
+  api:
+      build:
+        context: ./mangue-bem-api
+        dockerfile: Dockerfile
+      ports:
+        - "8080:8080"
+      depends_on:
+        mysql:
+          condition: service_started
+          restart: true
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mangue-bem
+        SPRING_DATASOURCE_USERNAME: root
+        SPRING_DATASOURCE_PASSWORD: root
+  app:
+      build:
+        context: ./mangue-bem-web
+        dockerfile: Dockerfile
+      ports:
+        - "3000:80"
+      depends_on:
+        api:
+          condition: service_started
+          restart: true
