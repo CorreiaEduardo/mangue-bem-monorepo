@@ -30,6 +30,7 @@ services:
         SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/mangue-bem
         SPRING_DATASOURCE_USERNAME: root
         SPRING_DATASOURCE_PASSWORD: root
+        API_SECURITY_JWT_SECRET: KVASIFLFl=pZUHz#6RVzlYf(ooer*!m
   app:
       build:
         context: ./mangue-bem-web

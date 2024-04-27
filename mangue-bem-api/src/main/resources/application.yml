@@ -8,3 +8,9 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
   application:
     name: mangue-bem-api
+
+api:
+  security:
+    jwt:
+      secret: ${API_SECURITY_JWT_SECRET}
+      issuer: bem-api
