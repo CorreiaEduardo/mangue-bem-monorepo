@@ -1,12 +1,8 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import appString from "../utils/appStrings";
 
 function Navbar() {
-  const navItems = {
-    home: "Home",
-    about: "About",
-    contact: "",
-  };
-
   return (
     <nav className="bg-gray-800 navbar">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -55,36 +51,23 @@ function Navbar() {
             <div className="flex flex-shrink-0 items-center">
               <img
                 className="h-12 w-auto"
-                src="D:\Arquivos\mangue-bem-monorepo\mangue-bem-web\public\assets\logo.png"
+                src="../assets/logo.png"
                 alt="mangue logo"
               />
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                <a
-                  href="#"
+                <Link
+                  to="/"
                   className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
-                  aria-current="page"
                 >
-                  {navItems.home}
-                </a>
+                  {appString.pt.home}
+                </Link>
                 <a
                   href="#"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                 >
-                  {navItems.about}
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                >
-                  Projects
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                >
-                  Calendar
+                  {appString.pt.about}
                 </a>
               </div>
             </div>
@@ -112,7 +95,8 @@ function Navbar() {
               </svg>
             </button>
             <div>
-              <button
+              <Link
+                to="/profile"
                 type="button"
                 className="relative  ml-4 flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 id="user-menu-button"
@@ -126,7 +110,7 @@ function Navbar() {
                   src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJjb2xvcjpjdXJyZW50Q29sb3IiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgY2xhc3M9ImgtZnVsbCB3LWZ1bGwiPjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB4PSIwIiB5PSIwIiByeD0iMzMiIGZpbGw9InRyYW5zcGFyZW50IiBzdHJva2U9InRyYW5zcGFyZW50IiBzdHJva2Utd2lkdGg9IjAiIHN0cm9rZS1vcGFjaXR5PSIxMDAlIiBwYWludC1vcmRlcj0ic3Ryb2tlIj48L3JlY3Q+PHN2ZyB3aWR0aD0iNTEycHgiIGhlaWdodD0iNTEycHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iY3VycmVudENvbG9yIiB4PSIwIiB5PSIwIiByb2xlPSJpbWciIHN0eWxlPSJkaXNwbGF5OmlubGluZS1ibG9jazt2ZXJ0aWNhbC1hbGlnbjptaWRkbGUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iY3VycmVudENvbG9yIj48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTEyIDRhOCA4IDAgMCAwLTYuOTYgMTEuOTQ3QTQuOTkgNC45OSAwIDAgMSA5IDE0aDZhNC45OSA0Ljk5IDAgMCAxIDMuOTYgMS45NDdBOCA4IDAgMCAwIDEyIDRabTcuOTQzIDE0LjA3NkE5Ljk1OSA5Ljk1OSAwIDAgMCAyMiAxMmMwLTUuNTIzLTQuNDc3LTEwLTEwLTEwUzIgNi40NzcgMiAxMmE5Ljk1OCA5Ljk1OCAwIDAgMCAyLjA1NyA2LjA3NmwtLjAwNS4wMThsLjM1NS40MTNBOS45OCA5Ljk4IDAgMCAwIDEyIDIyYTkuOTQ3IDkuOTQ3IDAgMCAwIDUuNjc1LTEuNzY1YTEwLjA1NSAxMC4wNTUgMCAwIDAgMS45MTgtMS43MjhsLjM1NS0uNDEzbC0uMDA1LS4wMThaTTEyIDZhMyAzIDAgMSAwIDAgNmEzIDMgMCAwIDAgMC02WiIgY2xpcC1ydWxlPSJldmVub2RkIj48L3BhdGg+PC9nPjwvc3ZnPjwvc3ZnPg=="
                   alt="profile-circle-fill"
                 ></img>
-              </button>
+              </Link>
             </div>
 
             {/* <div className="relative ml-3">
@@ -174,25 +158,13 @@ function Navbar() {
             className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
             aria-current="page"
           >
-            {navItems.home}
+            {appString.pt.home}
           </a>
           <a
             href="#"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
           >
-            {navItems.about}
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-          >
-            Projects
-          </a>
-          <a
-            href="#"
-            className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-          >
-            Calendar
+            {appString.pt.about}
           </a>
         </div>
       </div>

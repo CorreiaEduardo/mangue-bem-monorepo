@@ -1,16 +1,19 @@
 import React from "react";
 import "./App.css";
-import Navbar from "./components/Navbar";
-import MushroomList from "./components/MushroomList";
-import SearchBar from "./components/Search";
+import { Routes, Route } from "react-router-dom";
+import { appRoutes } from "./Routes";
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <SearchBar />
-      <MushroomList />
-    </div>
+    <Routes>
+      {appRoutes.map((route) => (
+        <Route
+          key={route.path}
+          path={route.path}
+          element={<route.component />}
+        />
+      ))}{" "}
+    </Routes>
   );
 }
 
