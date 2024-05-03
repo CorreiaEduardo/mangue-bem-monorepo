@@ -1,0 +1,13 @@
+.map {
+  margin: auto;
+  margin-left: 200px;
+  margin-top: 110px;
+  width: fit-content;
+  height: 60%;
+  padding: 10px;
+  display: block;
+}
+.map h3 {
+  margin-bottom: 10px;
+  text-align: center;
+}

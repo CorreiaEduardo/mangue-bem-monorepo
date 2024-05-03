@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import appString from "../utils/appStrings";
+import "../styles/navbar.css";
 
 function Navbar() {
   return (
-    <nav className="bg-gray-800 navbar">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between">
+    <nav className="flex h-20 items-center navbar">
+      <div className="px-2 w-full sm:px-6 lg:px-8">
+        <div className="relative flex w-full h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <button
               type="button"
@@ -47,11 +48,11 @@ function Navbar() {
               </svg>
             </button>
           </div>
-          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+          <div className="flex items-center sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
               <img
-                className="h-12 w-auto"
-                src="../assets/logo.png"
+                className="h-16 w-auto"
+                src="assets/logo.png"
                 alt="mangue logo"
               />
             </div>
@@ -153,13 +154,12 @@ function Navbar() {
 
       <div className="sm:hidden" id="mobile-menu">
         <div className="space-y-1 px-2 pb-3 pt-2">
-          <a
-            href="#"
-            className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
-            aria-current="page"
+          <Link
+            to="/"
+            className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
           >
             {appString.pt.home}
-          </a>
+          </Link>
           <a
             href="#"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"

@@ -19,7 +19,7 @@ export const getMushroomData = (): Mushroom[] => [
   },
   {
     id: 2,
-    image: `/mangue-bem-web/public/assets/logo.png`,
+    image: `/src/assets/logo.png`,
     scientificName: "",
     popularName: "",
     observationNumber: 0,
