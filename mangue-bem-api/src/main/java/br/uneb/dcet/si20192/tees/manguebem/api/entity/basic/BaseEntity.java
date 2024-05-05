@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 
 @Getter
@@ -33,4 +34,23 @@ public class BaseEntity {
 
     @Column(name = "deleted_by")
     protected String deletedBy;
+
+    public void merge(Object source) {
+        for (Field field : this.getClass().getDeclaredFields()) {
+            for (Field newField : source.getClass().getDeclaredFields()) {
+                if (field.getName().equals(newField.getName())) {
+                    try {
+                        field.setAccessible(true);
+                        newField.setAccessible(true);
+                        field.set(this, newField.get(source) == null
+                            ? field.get(this)
+                            : newField.get(source)
+                        );
+                    } catch (IllegalAccessException ignore) {
+                        // do nothing
+                    }
+                }
+            }
+        }
+    }
 }
