@@ -1,4 +1,4 @@
-package br.uneb.dcet.si20192.tees.manguebem.api.controller.dto;
+package br.uneb.dcet.si20192.tees.manguebem.api.dto;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;

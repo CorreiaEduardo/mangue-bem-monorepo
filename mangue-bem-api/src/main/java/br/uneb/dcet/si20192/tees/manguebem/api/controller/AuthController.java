@@ -1,10 +1,9 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.controller;
 
-import br.uneb.dcet.si20192.tees.manguebem.api.controller.dto.UserRegistrationDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.AuthenticationTokenDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.UserLoginDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.UserRegistrationDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.UserService;
-import br.uneb.dcet.si20192.tees.manguebem.api.controller.dto.AuthenticationTokenDTO;
-import br.uneb.dcet.si20192.tees.manguebem.api.controller.dto.UserLoginDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/auth")
 public class AuthController {
 
-    @Autowired
     private UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationTokenDTO> login(@RequestBody UserLoginDTO userLoginDTO) {

@@ -28,6 +28,9 @@ public class BaseEntity {
     @Column(name = "updated_at", nullable = false)
     protected LocalDateTime updatedAt;
 
-    @Column(nullable = false)
-    protected boolean deleted;
+    @Column(name = "deleted_at")
+    protected LocalDateTime deletedAt;
+
+    @Column(name = "deleted_by")
+    protected String deletedBy;
 }
