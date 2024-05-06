@@ -9,6 +9,9 @@ const appString = {
     search: "Buscar",
     forgotPassword: "Esqueceu a senha?",
     login: "Fazer Login",
+    location: "Localização",
+    scientifcName: "Nome científico",
+    order: "Ordenar",
   },
 };
 
