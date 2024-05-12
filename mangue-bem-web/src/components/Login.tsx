@@ -3,19 +3,19 @@ export default function Login() {
   return (
     <>
       <div className="flex min-h-full justify-center px-6 py-12 lg:px-8">
-        <div className="flex h-[30rem]  min-h-[26rem] w-[28%] flex-col rounded-3xl bg-emerald-50 py-5 shadow-xl shadow-gray-300">
-          <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <div className="flex h-[30rem]  min-h-[26rem] w-full flex-col items-center justify-center rounded-3xl bg-emerald-50 p-5 py-5 shadow-xl shadow-gray-300 sm:w-[28%] sm:p-0">
+          <div className="flex flex-col items-center sm:mx-auto sm:w-full sm:max-w-sm">
             <img
-              className="mx-auto h-20 overflow-hidden rounded-full border-4 border-transparent "
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt="Your Company"
+              className="h-40 w-40 overflow-hidden rounded-full border-4 border-transparent drop-shadow-[0px_3px_rgba(162,166,171,1)]"
+              src="assets/login_img.jpg"
+              alt="Login Image"
             />
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
               {appString.pt.login}
             </h2>
           </div>
 
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="mt-5 sm:mx-4 sm:w-full sm:max-w-sm">
             <form className="space-y-6" action="#" method="POST">
               <div>
                 <div className="relative mt-2">
@@ -73,7 +73,7 @@ export default function Login() {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-emerald-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition duration-300 ease-in hover:-translate-y-0.5 hover:bg-pink-700 hover:shadow-lg hover:shadow-emerald-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="my-3 flex w-full justify-center rounded-md bg-emerald-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition duration-300 ease-in hover:-translate-y-0.5 hover:bg-pink-700 hover:shadow-lg hover:shadow-emerald-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   {appString.pt.signIn}
                 </button>
