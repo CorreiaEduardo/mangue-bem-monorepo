@@ -1,5 +1,11 @@
+import { useState } from "react";
+import useLoginViewModel from "../ViewModel/useLoginViewModel";
 import appString from "../utils/appStrings";
 export default function Login() {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [{ user, error }, handleSubmit] = useLoginViewModel();
+
   return (
     <>
       <div className="flex min-h-full justify-center px-6 py-12 lg:px-8">
@@ -16,7 +22,15 @@ export default function Login() {
           </div>
 
           <div className="mt-5 sm:mx-4 sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
+            <form
+              className="space-y-6"
+              action="#"
+              method="POST"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                await handleSubmit({ ...user });
+              }}
+            >
               <div>
                 <div className="relative mt-2">
                   <input
@@ -25,7 +39,9 @@ export default function Login() {
                     type="email"
                     autoComplete="email"
                     required
+                    value={email}
                     placeholder="abc@abc.com"
+                    onChange={(e) => setEmail(e.target.value)}
                     className="peer h-10 w-full border-b-2 border-gray-500 bg-inherit text-gray-900 placeholder-transparent
                      focus:border-pink-600 focus:outline-none sm:text-sm sm:leading-6"
                   />
@@ -46,13 +62,15 @@ export default function Login() {
                     name="password"
                     type="password"
                     autoComplete="current-password"
+                    value={password}
                     required
+                    onChange={(e) => setPassword(e.target.value)}
                     className="peer h-10 w-full border-b-2 border-gray-500 bg-inherit text-gray-900 placeholder-transparent
                     focus:border-pink-600 focus:outline-none sm:text-sm sm:leading-6"
                   />
                   <label
                     htmlFor="password"
-                    className="absolute left-0 top-[0.99rem] justify-self-start text-sm text-gray-400 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base
+                    className="absolute left-0 top-[0.5rem] justify-self-start text-sm text-gray-600 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base
                     peer-placeholder-shown:text-gray-400 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-gray-600"
                   >
                     {appString.pt.password}
@@ -69,7 +87,11 @@ export default function Login() {
                   </div>
                 </div>
               </div>
-
+              {error && (
+                <p className="text-pink-500">
+                  Error: Invalid username or password
+                </p>
+              )}
               <div>
                 <button
                   type="submit"
