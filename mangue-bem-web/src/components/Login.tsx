@@ -1,10 +1,24 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import useLoginViewModel from "../ViewModel/useLoginViewModel";
 import appString from "../utils/appStrings";
-export default function Login() {
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [{ user, error }, handleSubmit] = useLoginViewModel();
+import { Navigate } from "react-router-dom";
+export default function Login({
+  setIsloggedIn,
+}: {
+  setIsloggedIn: Dispatch<SetStateAction<boolean>>;
+  isLoggedIn: boolean;
+}) {
+  const [user, setUser] = useState({ email: "", password: "" });
+  const [{ error, response }, handleSubmit] = useLoginViewModel();
+
+  const handleFormSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    await handleSubmit({ ...user });
+    if (response.length !== 0) {
+      setIsloggedIn(true);
+      <Navigate replace to={"/"} />;
+    }
+  };
 
   return (
     <>
@@ -26,10 +40,7 @@ export default function Login() {
               className="space-y-6"
               action="#"
               method="POST"
-              onSubmit={async (e) => {
-                e.preventDefault();
-                await handleSubmit({ ...user });
-              }}
+              onSubmit={handleFormSubmit}
             >
               <div>
                 <div className="relative mt-2">
@@ -39,9 +50,11 @@ export default function Login() {
                     type="email"
                     autoComplete="email"
                     required
-                    value={email}
+                    value={user.email}
                     placeholder="abc@abc.com"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) =>
+                      setUser({ ...user, email: e.target.value })
+                    }
                     className="peer h-10 w-full border-b-2 border-gray-500 bg-inherit text-gray-900 placeholder-transparent
                      focus:border-pink-600 focus:outline-none sm:text-sm sm:leading-6"
                   />
@@ -62,16 +75,19 @@ export default function Login() {
                     name="password"
                     type="password"
                     autoComplete="current-password"
-                    value={password}
+                    value={user.password}
                     required
-                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="***"
+                    onChange={(e) =>
+                      setUser({ ...user, password: e.target.value })
+                    }
                     className="peer h-10 w-full border-b-2 border-gray-500 bg-inherit text-gray-900 placeholder-transparent
-                    focus:border-pink-600 focus:outline-none sm:text-sm sm:leading-6"
+                     focus:border-pink-600 focus:outline-none sm:text-sm sm:leading-6"
                   />
                   <label
                     htmlFor="password"
-                    className="absolute left-0 top-[0.5rem] justify-self-start text-sm text-gray-600 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base
-                    peer-placeholder-shown:text-gray-400 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-gray-600"
+                    className="absolute -top-6 left-0 justify-self-start text-sm text-gray-600 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base
+                   peer-placeholder-shown:text-gray-400 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-gray-600"
                   >
                     {appString.pt.password}
                   </label>
@@ -88,8 +104,8 @@ export default function Login() {
                 </div>
               </div>
               {error && (
-                <p className="text-pink-500">
-                  Error: Invalid username or password
+                <p className="my-2 text-pink-500">
+                  {appString.pt.invalidCredentials}
                 </p>
               )}
               <div>

@@ -1,5 +1,4 @@
 import MushroomList from "./components/MushroomList";
-import SearchBar from "./components/Search";
 import Login from "./components/Login";
 import Map from "./components/Map";
 
@@ -11,6 +10,7 @@ export const appRoutes = [
   {
     path: "/profile",
     component: Login,
+    loginPage: true,
   },
   {
     path: "/map",

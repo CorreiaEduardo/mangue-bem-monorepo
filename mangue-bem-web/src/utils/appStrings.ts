@@ -12,6 +12,7 @@ const appString = {
     location: "Localização",
     scientifcName: "Nome científico",
     order: "Ordenar",
+    invalidCredentials: "Email ou senha inválidos",
   },
 };
 

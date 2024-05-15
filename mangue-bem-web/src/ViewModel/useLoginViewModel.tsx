@@ -3,26 +3,27 @@ import { User } from "../Model/User";
 import axios from "axios";
 
 const useLoginViewModel = (): [
-  { user: User; error: boolean },
-  ({ username, password }: User) => Promise<void>,
+  { error: boolean; response: string },
+  ({ email, password }: User) => Promise<void>,
 ] => {
   const [error, setError] = useState(false);
-  const [user, setUser] = useState({ username: "", password: "" });
-  const loginEndpoint = "http://localhost/v1/login";
+  const [response, setResponse] = useState("");
+  const loginEndpoint =
+    "https://cors-anywhere.herokuapp.com/http://localhost:8080/v1/auth/login";
 
-  async function handleSubmit({ username, password }: User) {
+  async function handleSubmit({ email, password }: User) {
     try {
       const response = await axios.post(loginEndpoint, {
-        username,
+        email,
         password,
       });
-
-      setUser(response.data);
+      setResponse(response.data);
     } catch (error) {
       setError(true);
+      console.log(error);
     }
   }
-  return [{ user, error }, handleSubmit];
+  return [{ error, response }, handleSubmit];
 };
 
 export default useLoginViewModel;
