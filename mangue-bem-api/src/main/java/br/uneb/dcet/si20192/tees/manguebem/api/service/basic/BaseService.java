@@ -1,18 +1,25 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.service.basic;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.basic.BaseDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.query.Filter;
+import br.uneb.dcet.si20192.tees.manguebem.api.util.QueryParamParser;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.basic.BaseEntity;
 import br.uneb.dcet.si20192.tees.manguebem.api.exception.NotFoundException;
+import br.uneb.dcet.si20192.tees.manguebem.api.util.SpecificationFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public abstract class BaseService<E extends BaseEntity, D extends BaseDTO> {
+
+    public abstract Class<E> getEntityClass();
 
     public D create(D dto) {
         final E entity = getRepository().save(convert(dto));
@@ -23,6 +30,15 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDTO> {
         return getRepository().findById(id)
                 .map(this::convert)
                 .orElseThrow(NotFoundException::new);
+    }
+
+    public Page<D> getAll(MultiValueMap<String, String> parameters, Pageable pageable) {
+        final List<Filter> filters = QueryParamParser.parseFilters(parameters, getEntityClass());
+        final Specification<E> specification = SpecificationFactory.of(filters);
+
+        return getRepository()
+                .findAll(specification, pageable)
+                .map(this::convert);
     }
 
     public Page<D> getAll(Pageable pageable) {
@@ -61,7 +77,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDTO> {
         getRepository().save(entity);
     }
 
-    protected abstract JpaRepository<E, Long> getRepository();
+    protected abstract JpaRepositoryImplementation<E, Long> getRepository();
 
     protected abstract D convert(E entity);
 

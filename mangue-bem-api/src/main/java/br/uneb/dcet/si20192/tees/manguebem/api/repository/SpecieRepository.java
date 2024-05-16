@@ -1,13 +1,13 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.repository;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Specie;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SpecieRepository extends JpaRepository<Specie, Long> {
+public interface SpecieRepository extends JpaRepositoryImplementation<Specie, Long> {
 
     @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM Specie s " +
             "WHERE s.taxonKingdom = :taxonKingdom " +

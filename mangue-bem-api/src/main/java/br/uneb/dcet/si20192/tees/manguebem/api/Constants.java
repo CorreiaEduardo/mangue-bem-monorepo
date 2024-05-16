@@ -1,4 +1,4 @@
-package br.uneb.dcet.si20192.tees.manguebem.api.util;
+package br.uneb.dcet.si20192.tees.manguebem.api;
 
 public interface Constants {
     public interface IMPORT_SHEET {

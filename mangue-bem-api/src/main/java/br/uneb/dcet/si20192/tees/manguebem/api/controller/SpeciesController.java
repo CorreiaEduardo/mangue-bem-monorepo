@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,9 +28,10 @@ public class SpeciesController {
 
     @GetMapping
     public ResponseEntity<Page<SpecieDTO>> getAll(@RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "20") int size) {
+                                                  @RequestParam(defaultValue = "20") int size,
+                                                  @RequestParam MultiValueMap<String, String> parameters) {
         final Pageable paging = PageRequest.of(page, size);
-        final Page<SpecieDTO> allSpecies = PageMapper.of(specieService.getAll(paging));
+        final Page<SpecieDTO> allSpecies = PageMapper.of(specieService.getAll(parameters, paging));
         return ResponseEntity.ok(allSpecies);
     }
 
