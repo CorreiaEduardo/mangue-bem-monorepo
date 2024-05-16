@@ -1,12 +1,14 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.controller;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.SpecieDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.basic.Page;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.SpecieService;
+import br.uneb.dcet.si20192.tees.manguebem.api.util.PageMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1/species")
@@ -24,8 +26,10 @@ public class SpeciesController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SpecieDTO>> getAll() {
-        final List<SpecieDTO> allSpecies = specieService.getAll();
+    public ResponseEntity<Page<SpecieDTO>> getAll(@RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "20") int size) {
+        final Pageable paging = PageRequest.of(page, size);
+        final Page<SpecieDTO> allSpecies = PageMapper.of(specieService.getAll(paging));
         return ResponseEntity.ok(allSpecies);
     }
 

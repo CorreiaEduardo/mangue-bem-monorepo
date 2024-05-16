@@ -3,6 +3,8 @@ package br.uneb.dcet.si20192.tees.manguebem.api.service.basic;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.basic.BaseDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.basic.BaseEntity;
 import br.uneb.dcet.si20192.tees.manguebem.api.exception.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -21,6 +23,12 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDTO> {
         return getRepository().findById(id)
                 .map(this::convert)
                 .orElseThrow(NotFoundException::new);
+    }
+
+    public Page<D> getAll(Pageable pageable) {
+        return getRepository()
+                .findAll(pageable)
+                .map(this::convert);
     }
 
     public List<D> getAll() {
