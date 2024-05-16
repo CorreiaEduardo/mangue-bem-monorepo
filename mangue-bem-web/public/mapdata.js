@@ -163,56 +163,5 @@ var simplemaps_countrymap_mapdata = {
       lng: "-47.916667",
       name: "Brasília",
     },
-  },
-  regions: {
-    0: {
-      states: ["BRA612", "BRA613", "BRA614"],
-      name: "Sul",
-      color: "#051094",
-      cascade: "yes",
-    },
-    1: {
-      states: [
-        "BRA623",
-        "BRA624",
-        "BRA621",
-        "BRA626",
-        "BRA628",
-        "BRA629",
-        "BRA1313",
-        "BRA622",
-        "BRA593",
-      ],
-      name: "Nordeste",
-      color: "#3944bc",
-      cascade: "yes",
-    },
-    2: {
-      states: ["BRA625", "BRA627", "BRA601", "BRA1311"],
-      name: "Sudeste",
-      color: "#1f456e",
-      cascade: "yes",
-    },
-    3: {
-      states: [
-        "BRA592",
-        "BRA594",
-        "BRA595",
-        "BRA596",
-        "BRA670",
-        "BRA681",
-        "BRA576",
-      ],
-      name: "Norte",
-      color: "#241571",
-      region_opacity: 0,
-      cascade: "yes",
-    },
-    4: {
-      states: ["BRA1294", "BRA599", "BRA602", "BRA600"],
-      name: "Centro-Oeste",
-      color: "#2832c2",
-      cascade: "yes",
-    },
-  },
+  }
 };

@@ -1,21 +1,11 @@
-import React from "react";
+// @ts-nocheck
+import React, { useEffect } from "react";
 import "../styles/Map.css";
-
-/*global simplemaps_countrymap_mapdata */
-// @ts-ignore
-
-export const return_estado_name_to_id = () => {
-  const estado_name_to_id = {};
-  for (let id in simplemaps_countrymap_mapdata.state_specific) {
-    //console.log(id);
-    //const name = simplemaps_countrymap_mapdata.state_specific[id].name;
-    estado_name_to_id[
-      simplemaps_countrymap_mapdata.state_specific[id].name.toString()
-    ] = id;
-    //const code = id.slice(0, 3);
-  }
-  return estado_name_to_id;
-};
+import {
+  adjustColorIntensity,
+  getSpeciesCounter,
+  getStateIdFromName,
+} from "../ViewModel/HeatMapViewModel";
 
 export const return_state_names = () => {
   const state_names = {};
@@ -28,6 +18,38 @@ export const return_state_names = () => {
 };
 
 function Map() {
+  /*global simplemaps_countrymap_mapdata */
+  /*global simplemaps_countrymap */
+  // simplemaps_countrymap.refresh()
+  //localFunction()
+  // simplemaps_countrymap_mapdata.state_specific[states['Bahia']].state_description = "BBMP";
+
+  useEffect(() => {
+    const handleScriptLoad = () => {
+      // Agora o script está carregado, podemos acessar a função
+      console.log("asdpasd");
+      if (
+        typeof simplemaps_countrymap !== "undefined" &&
+        simplemaps_countrymap.refresh
+      ) {
+        simplemaps_countrymap_mapdata.state_specific[
+          states["Bahia"]
+        ].state_description = "BORA BAHEA";
+        simplemaps_countrymap.refresh();
+      }
+    };
+    // Adicionando um listener para o evento load do script
+    document
+      .getElementById("countrymap-script")
+      ?.addEventListener("load", handleScriptLoad);
+
+    // Removendo o listener quando o componente é desmontado
+    return () => {
+      document
+        .getElementById("countrymap-script")
+        ?.removeEventListener("load", handleScriptLoad);
+    };
+  }, []);
   return (
     <div>
       <div className="map">
@@ -36,6 +58,27 @@ function Map() {
           dentro do
           <b> mapa</b>
         </h3>
+        <button
+          onClick={() => {
+            getSpeciesCounter().forEach((specie) => {
+              const stateColor = adjustColorIntensity(
+                "#00ad28",
+                specie.speciesCount
+              );
+              console.log(stateColor)
+              simplemaps_countrymap_mapdata.state_specific[
+                getStateIdFromName(specie.state)
+              ].description = `Nº de Espécies: ${specie.speciesCount}`;
+              simplemaps_countrymap_mapdata.state_specific[
+                getStateIdFromName(specie.state)
+              ].color = stateColor;
+            });
+            
+            simplemaps_countrymap.refresh();
+          }}
+        >
+          test
+        </button>
         <div id="map"></div>
       </div>
     </div>
