@@ -10,7 +10,7 @@ import br.uneb.dcet.si20192.tees.manguebem.api.exception.NotFoundException;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.BiomeService;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.ObservationService;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.SpecieService;
-import br.uneb.dcet.si20192.tees.manguebem.api.util.Constants;
+import br.uneb.dcet.si20192.tees.manguebem.api.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.dhatim.fastexcel.reader.ReadableWorkbook;
 import org.dhatim.fastexcel.reader.Row;

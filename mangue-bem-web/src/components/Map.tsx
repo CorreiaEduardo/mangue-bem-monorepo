@@ -7,23 +7,7 @@ import {
   getStateIdFromName,
 } from "../ViewModel/HeatMapViewModel";
 
-export const return_state_names = () => {
-  const state_names = {};
-  for (let id in simplemaps_countrymap_mapdata.state_specific) {
-    state_names.push(
-      simplemaps_countrymap_mapdata.state_specific[id].name.toString()
-    );
-  }
-  return state_names;
-};
-
 function Map() {
-  /*global simplemaps_countrymap_mapdata */
-  /*global simplemaps_countrymap */
-  // simplemaps_countrymap.refresh()
-  //localFunction()
-  // simplemaps_countrymap_mapdata.state_specific[states['Bahia']].state_description = "BBMP";
-
   useEffect(() => {
     const handleScriptLoad = () => {
       // Agora o script está carregado, podemos acessar a função
@@ -83,6 +67,5 @@ function Map() {
       </div>
     </div>
   );
-}
 
 export default Map;

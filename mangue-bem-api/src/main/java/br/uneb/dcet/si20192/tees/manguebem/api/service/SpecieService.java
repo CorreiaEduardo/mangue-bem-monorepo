@@ -20,6 +20,11 @@ public class SpecieService extends BaseService<Specie, SpecieDTO> {
     }
 
     @Override
+    public Class<Specie> getEntityClass() {
+        return Specie.class;
+    }
+
+    @Override
     protected SpecieRepository getRepository() {
         return this.specieRepository;
     }
