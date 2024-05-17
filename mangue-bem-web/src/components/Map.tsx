@@ -47,9 +47,9 @@ function Map() {
             getSpeciesCounter().forEach((specie) => {
               const stateColor = adjustColorIntensity(
                 "#00ad28",
-                specie.speciesCount
+                specie.speciesCount,
               );
-              console.log(stateColor)
+              console.log(stateColor);
               simplemaps_countrymap_mapdata.state_specific[
                 getStateIdFromName(specie.state)
               ].description = `Nº de Espécies: ${specie.speciesCount}`;
@@ -57,7 +57,7 @@ function Map() {
                 getStateIdFromName(specie.state)
               ].color = stateColor;
             });
-            
+
             simplemaps_countrymap.refresh();
           }}
         >
@@ -67,5 +67,5 @@ function Map() {
       </div>
     </div>
   );
-
+}
 export default Map;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useLoginViewModel from "../ViewModel/useLoginViewModel";
 import appString from "../utils/appStrings";
+import Modal from "./Modal";
 export default function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -8,9 +9,9 @@ export default function Login() {
 
   return (
     <>
-      <div className="flex min-h-full justify-center px-6 py-12 lg:px-8">
-        <div className="flex h-[30rem]  min-h-[26rem] w-full flex-col items-center justify-center rounded-3xl bg-emerald-50 p-5 py-5 shadow-xl shadow-gray-300 sm:w-[28%] sm:p-0">
-          <div className="flex flex-col items-center sm:mx-auto sm:w-full sm:max-w-sm">
+      <Modal>
+        <div className="flex h-[50rem]  min-h-[26rem] w-full flex-col items-center justify-center rounded-3xl bg-emerald-50 p-5 py-5 shadow-xl shadow-gray-300 sm:w-[28%] sm:p-0">
+          <div className="flex flex-col items-center sm:mx-auto sm:max-w-sm md:w-full">
             <img
               className="h-40 w-40 overflow-hidden rounded-full border-4 border-transparent drop-shadow-[0px_3px_rgba(162,166,171,1)]"
               src="assets/login_img.jpg"
@@ -103,7 +104,7 @@ export default function Login() {
             </form>
           </div>
         </div>
-      </div>
+      </Modal>
     </>
   );
 }

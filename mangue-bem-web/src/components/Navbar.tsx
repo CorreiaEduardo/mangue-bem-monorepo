@@ -33,7 +33,7 @@ function Navbar() {
               </div>
             </div>
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <div className="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <div>
               <Link
                 to="/profile"
@@ -43,7 +43,7 @@ function Navbar() {
                 aria-expanded="false"
                 aria-haspopup="true"
               >
-                <span className="absolute -inset-1.5"></span>
+                <span className="-inset-1.5"></span>
                 <span className="sr-only">Open user menu</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
