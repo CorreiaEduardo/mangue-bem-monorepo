@@ -2,10 +2,11 @@ package br.uneb.dcet.si20192.tees.manguebem.api.service.basic;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.basic.BaseDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.query.Filter;
-import br.uneb.dcet.si20192.tees.manguebem.api.util.QueryParamParser;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.basic.BaseEntity;
 import br.uneb.dcet.si20192.tees.manguebem.api.exception.NotFoundException;
+import br.uneb.dcet.si20192.tees.manguebem.api.util.QueryParamParser;
 import br.uneb.dcet.si20192.tees.manguebem.api.util.SpecificationFactory;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,6 +31,12 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDTO> {
         return getRepository().findById(id)
                 .map(this::convert)
                 .orElseThrow(NotFoundException::new);
+    }
+
+    public Page<D> getAll(Example<E> example, Pageable pageable) {
+        return getRepository()
+                .findAll(example, pageable)
+                .map(this::convert);
     }
 
     public Page<D> getAll(MultiValueMap<String, String> parameters, Pageable pageable) {
