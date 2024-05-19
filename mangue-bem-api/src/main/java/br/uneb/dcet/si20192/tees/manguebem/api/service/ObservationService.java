@@ -1,6 +1,8 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.service;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.ObservationDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.UFReportDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.UFReportItemDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Biome;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Observation;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Specie;
@@ -12,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -32,6 +36,14 @@ public class ObservationService {
     @Async
     public void createAsync(ObservationDTO observationDTO) {
         save(observationDTO);
+    }
+
+    public UFReportDTO calculateUFReport() {
+        final UFReportDTO dto = new UFReportDTO();
+        final List<UFReportItemDTO> items = observationRepository.countSpeciesByFederativeUnit();
+        dto.setItems(items);
+
+        return dto;
     }
 
     private ObservationDTO save(ObservationDTO dto) {

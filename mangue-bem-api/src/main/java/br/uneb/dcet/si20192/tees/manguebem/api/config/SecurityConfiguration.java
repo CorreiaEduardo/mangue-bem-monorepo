@@ -33,7 +33,8 @@ public class SecurityConfiguration {
 
     public static final Map<String, List<HttpMethod>> PUBLIC_ENDPOINTS = Map.ofEntries(
             entry("/v1/auth/**", Arrays.asList(HEAD, GET, POST)),
-            entry("/v1/species/**", Arrays.asList(HEAD, GET))
+            entry("/v1/species/**", Arrays.asList(HEAD, GET)),
+            entry("/v1/observations/**", Arrays.asList(HEAD, GET))
     );
 
     public static final String[] ADMIN_ENDPOINTS = {
