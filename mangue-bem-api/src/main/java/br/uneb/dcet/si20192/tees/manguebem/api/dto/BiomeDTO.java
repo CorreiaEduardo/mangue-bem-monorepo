@@ -9,7 +9,6 @@ import lombok.*;
 @Getter
 @Setter
 public final class BiomeDTO {
-    @JsonIgnore
     private Long id;
     private String name;
 }

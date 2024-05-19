@@ -10,7 +10,6 @@ import lombok.*;
 @Getter
 @Setter
 public final class SpecieDTO extends BaseDTO {
-    @JsonIgnore
     private Long id;
     private String taxonKingdom;
     private String taxonPhylum;

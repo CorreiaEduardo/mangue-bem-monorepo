@@ -2,14 +2,14 @@ package br.uneb.dcet.si20192.tees.manguebem.api.repository;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.UFReportItemDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Observation;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ObservationRepository extends JpaRepository<Observation, Long> {
+public interface ObservationRepository extends JpaRepositoryImplementation<Observation, Long> {
     @Query("SELECT new br.uneb.dcet.si20192.tees.manguebem.api.dto.UFReportItemDTO(o.brazilianFederativeUnit, COUNT(DISTINCT o.specie.id)) " +
             "FROM Observation o " +
             "GROUP BY o.brazilianFederativeUnit")

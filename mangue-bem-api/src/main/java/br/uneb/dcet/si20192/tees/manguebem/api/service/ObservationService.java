@@ -10,6 +10,7 @@ import br.uneb.dcet.si20192.tees.manguebem.api.exception.NotFoundException;
 import br.uneb.dcet.si20192.tees.manguebem.api.repository.BiomeRepository;
 import br.uneb.dcet.si20192.tees.manguebem.api.repository.ObservationRepository;
 import br.uneb.dcet.si20192.tees.manguebem.api.repository.SpecieRepository;
+import br.uneb.dcet.si20192.tees.manguebem.api.service.basic.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Async;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class ObservationService {
+public class ObservationService extends BaseService<Observation, ObservationDTO> {
 
     private final SpecieRepository specieRepository;
     private final BiomeRepository biomeRepository;
@@ -51,7 +52,18 @@ public class ObservationService {
         return convert(observation);
     }
 
-    private ObservationDTO convert(Observation observation) {
+    @Override
+    public Class<Observation> getEntityClass() {
+        return Observation.class;
+    }
+
+    @Override
+    protected ObservationRepository getRepository() {
+        return this.observationRepository;
+    }
+
+    @Override
+    protected ObservationDTO convert(Observation observation) {
         final ObservationDTO dto = modelMapper.map(observation, ObservationDTO.class);
 
         if (observation.getSpecie() != null) {
@@ -64,7 +76,8 @@ public class ObservationService {
         return dto;
     }
 
-    private Observation convert(ObservationDTO dto) {
+    @Override
+    protected Observation convert(ObservationDTO dto) {
         final Observation observation = modelMapper.map(dto, Observation.class);
 
         if (dto.getSpecieId() != null) {
