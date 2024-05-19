@@ -8,10 +8,12 @@ const appString = {
     password: "Senha",
     search: "Buscar",
     forgotPassword: "Esqueceu a senha?",
-    login: "Fazer Login",
+    login: "Seja Bem-vindo!",
     location: "Localização",
     scientifcName: "Nome científico",
     order: "Ordenar",
+    invalidCredentials: "Email ou senha inválidos",
+    register: "Cadastre-se",
   },
 };
 

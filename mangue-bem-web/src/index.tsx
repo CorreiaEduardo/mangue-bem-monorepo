@@ -7,15 +7,14 @@ import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Navbar />
       <App />
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
