@@ -1,6 +1,7 @@
 import MushroomList from "./components/MushroomList";
 import Login from "./components/pages/Login";
 import Map from "./components/Map";
+import Observation from "./components/pages/Observation";
 
 export const appRoutes = [
   {
@@ -16,4 +17,8 @@ export const appRoutes = [
     path: "/map",
     component: Map,
   },
+  {
+    path: "/observation/:id",
+    component: Observation
+  }
 ];
