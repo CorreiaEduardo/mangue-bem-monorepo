@@ -12,10 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/observations")
@@ -41,5 +38,11 @@ public class ObservationController {
 
         final Page<ObservationDTO> allSpecies = PageMapper.of(observationService.getAll(Example.of(example), paging));
         return ResponseEntity.ok(allSpecies);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ObservationDTO> getById(@PathVariable Long id) {
+        final ObservationDTO dto = observationService.getById(id);
+        return ResponseEntity.ok(dto);
     }
 }
