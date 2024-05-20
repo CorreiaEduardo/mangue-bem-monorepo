@@ -4,7 +4,6 @@ import appString from "../../utils/appStrings";
 import MushroomList from "../MushroomList";
 import StatsContainer from "../StatsContainer";
 import StatContainerItem from "../StatContainerItem";
-import { ReactComponent as ProfileIcon } from "./profile-icon.svg"; // Import your profile SVG icon
 import DefaultButton from "../DefaultButton";
 import { Link } from "react-router-dom";
 
