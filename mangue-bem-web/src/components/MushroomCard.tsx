@@ -18,14 +18,14 @@ const MushroomCard = ({
   iucn,
 }: Mushroom) => {
   return (
-    <div className="bg-white border rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform">
-      <img src={image} alt="" className="w-full h-32 object-cover" />
+    <div className="flex flex-col justify-center overflow-hidden rounded-lg border bg-white p-3 shadow-lg transition-transform hover:scale-105">
+      <img src={image} alt="" className="h-32 w-full rounded-lg object-cover" />
       <div className="p-4">
-        <h2 className="text-xl font-bold mb-2 text-start italic">
+        <h2 className="mb-2 text-start text-xl font-bold italic">
           {scientificName}
         </h2>
-        <p className="text-gray-700 text-start">{popularName}</p>
-        <p className="text-gray-400 grid grid-cols-2 gap-4 text-start m-2">
+        <p className="text-start text-gray-700">{popularName}</p>
+        <p className="m-2 grid grid-cols-2 gap-4 text-start text-gray-400">
           <span>{observationNumber}</span>
           <span>{iucn}</span>
         </p>

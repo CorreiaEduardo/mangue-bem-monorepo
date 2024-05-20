@@ -4,6 +4,7 @@ import useLoginViewModel from "../../ViewModel/useLoginViewModel";
 import { Navigate } from "react-router-dom";
 import appString from "../../utils/appStrings";
 import DefaultButton from "../DefaultButton";
+import TextInput from "../TextInput";
 
 interface FormValues {
   email: string;
@@ -49,7 +50,7 @@ const Login = ({
               onSubmit={handleFormSubmit}
             >
               <div className="relative mt-2 w-full">
-                <input
+                <TextInput
                   id="email"
                   name="email"
                   type="email"
@@ -57,21 +58,13 @@ const Login = ({
                   required
                   value={user.email}
                   placeholder="abc@abc.com"
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
-                  className="peer h-10 w-full border-b-2 border-gray-500 bg-inherit text-gray-900 placeholder-transparent
-                     focus:border-pink-600 focus:outline-none sm:text-sm sm:leading-6"
+                  onChange={(newValue) => setUser({ ...user, email: newValue })}
+                  label="Email"
                 />
-                <label
-                  htmlFor="email"
-                  className="absolute -top-6 left-0 justify-self-start text-sm text-gray-600 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base
-                   peer-placeholder-shown:text-gray-400 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-gray-600"
-                >
-                  {appString.pt.email}
-                </label>
               </div>
               <div className="w-full">
                 <div className="relative mt-2">
-                  <input
+                  <TextInput
                     id="password"
                     name="password"
                     type="password"
@@ -79,19 +72,12 @@ const Login = ({
                     value={user.password}
                     required
                     placeholder="***"
-                    onChange={(e) =>
-                      setUser({ ...user, password: e.target.value })
+                    onChange={(newValue) =>
+                      setUser({ ...user, password: newValue })
                     }
-                    className="peer h-10 w-full border-b-2 border-gray-500 bg-inherit text-gray-900 placeholder-transparent
-                     focus:border-pink-600 focus:outline-none sm:text-sm sm:leading-6"
+                    label="Password"
                   />
-                  <label
-                    htmlFor="password"
-                    className="absolute -top-6 left-0 justify-self-start text-sm text-gray-600 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base
-                   peer-placeholder-shown:text-gray-400 peer-focus:-top-3.5 peer-focus:text-sm peer-focus:text-gray-600"
-                  >
-                    {appString.pt.password}
-                  </label>
+
                   <div className="float-end my-4">
                     <div className="text-sm">
                       <a

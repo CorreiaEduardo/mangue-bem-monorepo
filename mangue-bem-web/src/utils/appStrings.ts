@@ -14,6 +14,7 @@ const appString = {
     order: "Ordenar",
     invalidCredentials: "Email ou senha inválidos",
     register: "Cadastre-se",
+    projectName: "BEM",
   },
 };
 

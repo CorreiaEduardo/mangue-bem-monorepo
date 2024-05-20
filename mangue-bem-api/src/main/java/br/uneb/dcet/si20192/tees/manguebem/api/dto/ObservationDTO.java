@@ -12,7 +12,6 @@ import lombok.*;
 @Getter
 @Setter
 public class ObservationDTO extends BaseDTO {
-    @JsonIgnore
     private Long id;
     @JsonIgnore
     private Long specieId;

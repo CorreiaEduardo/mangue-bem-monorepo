@@ -1,11 +1,11 @@
-import MushroomList from "./components/MushroomList";
 import Login from "./components/pages/Login";
 import Map from "./components/Map";
+import Home from "./components/pages/Home";
 
 export const appRoutes = [
   {
     path: "/",
-    component: MushroomList,
+    component: Home,
   },
   {
     path: "/profile",
