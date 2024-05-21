@@ -111,6 +111,7 @@ public class SpeciesSheetController {
                                         final ObservationDTO dto = ObservationDTO
                                                 .builder()
                                                 .specieId(specieId)
+                                                .type(ObservationType.LITERATURE)
                                                 .brazilianFederativeUnit(FederativeUnit.fromCode(it.trim()))
                                                 .biomeId(biomeId)
                                                 .build();
