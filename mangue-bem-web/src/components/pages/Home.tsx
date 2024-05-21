@@ -7,7 +7,11 @@ import StatContainerItem from "../StatContainerItem";
 import DefaultButton from "../DefaultButton";
 import { Link } from "react-router-dom";
 
-const Home = () => {
+interface homeProps {
+  isLoggedIn: boolean;
+}
+
+const Home = ({ isLoggedIn }: homeProps) => {
   const sampleData = [
     { id: 0, count: "1", description: "obs" },
     { id: 1, count: "1", description: "obs" },
@@ -27,7 +31,7 @@ const Home = () => {
           </div>
           <Link
             to={"/profile"}
-            className="absolute right-0 top-0 mr-5 flex flex-col items-center "
+            className={`absolute right-0 top-0 mr-5 flex flex-col items-center ${isLoggedIn && "hidden"}`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

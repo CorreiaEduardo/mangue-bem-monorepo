@@ -1,20 +1,10 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import Card from "../Card";
 import useLoginViewModel from "../../ViewModel/useLoginViewModel";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import appString from "../../utils/appStrings";
 import DefaultButton from "../DefaultButton";
 import TextInput from "../TextInput";
-
-interface FormValues {
-  email: string;
-  password: string;
-}
-
-const initialState: FormValues = {
-  email: "",
-  password: "",
-};
 
 const Login = ({
   setIsloggedIn,
@@ -23,14 +13,15 @@ const Login = ({
   isLoggedIn: boolean;
 }) => {
   const [user, setUser] = useState({ email: "", password: "" });
-  const [{ error, response }, handleSubmit] = useLoginViewModel();
+  const [{ error, response, stat }, handleSubmit] = useLoginViewModel();
+  const navigate = useNavigate();
 
   const handleFormSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     await handleSubmit({ ...user });
-    if (response.length !== 0) {
+    if (stat === 200) {
       setIsloggedIn(true);
-      <Navigate replace to={"/"} />;
+      navigate("/", { replace: true });
     }
   };
 
