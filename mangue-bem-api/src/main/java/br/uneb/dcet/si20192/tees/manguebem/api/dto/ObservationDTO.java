@@ -1,6 +1,7 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.dto;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.basic.BaseDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.ApprovalStatus;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.FederativeUnit;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.ObservationType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +18,8 @@ public class ObservationDTO extends BaseDTO {
     private Long specieId;
     private FederativeUnit brazilianFederativeUnit;
     private ObservationType type;
-    private Long lat;
-    private Long lng;
+    private Double lat;
+    private Double lng;
     @JsonIgnore
     private Long biomeId;
     private String literatureReference;
@@ -26,4 +27,5 @@ public class ObservationDTO extends BaseDTO {
     private String speciesLinkId;
     private SpecieDTO specie;
     private BiomeDTO biome;
+    private ApprovalStatus approvalStatus;
 }

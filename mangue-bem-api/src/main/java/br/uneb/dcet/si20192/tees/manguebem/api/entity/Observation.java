@@ -30,10 +30,10 @@ public class Observation extends CuratedEntity {
     private ObservationType type;
 
     @Column
-    private Long lat;
+    private Double lat;
 
     @Column
-    private Long lng;
+    private Double lng;
 
     @ManyToOne
     @JoinColumn(name = "biome_id")
