@@ -1,33 +1,43 @@
 import React from "react";
 
-type Mushroom = {
+interface Mushroom {
   id: number;
+  taxonKingdom: string;
+  taxonPhylum: string;
+  taxonClass: string;
+  taxonOrder: string;
+  taxonFamily: string;
+  taxonGenus: string;
+  taxonName: string;
+  commonName: string;
+  bemClassification: string;
+  description: string;
+  IUCN: string;
+  authors: string;
+  brazilianType: string;
+  brazilianTypeSynonym: string;
+  iNaturalistId: string;
   image: string;
-  scientificName: string;
-  popularName: string;
-  observationNumber: number;
-  iucn: string;
-};
+}
 
-const MushroomCard = ({
-  id,
-  image,
-  scientificName,
-  popularName,
-  observationNumber,
-  iucn,
-}: Mushroom) => {
+const MushroomCard = ({ id, image, taxonName, commonName, IUCN }: Mushroom) => {
   return (
-    <div className="flex flex-col justify-center overflow-hidden rounded-lg border bg-white p-3 shadow-lg transition-transform hover:scale-105">
-      <img src={image} alt="" className="h-32 w-full rounded-lg object-cover" />
+    <div className="flex h-96 w-80 flex-col items-center justify-center overflow-hidden rounded-lg border bg-white p-3 shadow-lg transition-transform hover:scale-105">
+      <img
+        src={image}
+        alt=""
+        className=" h-full w-full rounded-lg object-cover"
+      />
       <div className="p-4">
-        <h2 className="mb-2 text-start text-xl font-bold italic">
-          {scientificName}
+        <h2 className="col mb-2  text-start text-xl font-bold italic">
+          {taxonName}
         </h2>
-        <p className="text-start text-gray-700">{popularName}</p>
-        <p className="m-2 grid grid-cols-2 gap-4 text-start text-gray-400">
-          <span>{observationNumber}</span>
-          <span>{iucn}</span>
+        <p className="m-2 flex flex-col items-center justify-center gap-1 text-start  text-gray-400">
+          <span className="mb-3  text-start text-xl text-gray-700 ">
+            {commonName}
+          </span>
+          <span>{id}</span>
+          <span>{IUCN}</span>
         </p>
       </div>
     </div>

@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export const useGetApi = (initialUrl: string, initialData: any) => {
+type UseGetApiReturnType = [
+  { data: any; isLoading: boolean; isError: boolean },
+  React.Dispatch<React.SetStateAction<string>>,
+];
+
+const useGetApi = (
+  initialUrl: string,
+  initialData: any,
+): UseGetApiReturnType => {
   const [data, setData] = useState(initialData);
   const [url, setUrl] = useState(initialUrl);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,3 +36,5 @@ export const useGetApi = (initialUrl: string, initialData: any) => {
 
   return [{ data, isLoading, isError }, setUrl];
 };
+
+export default useGetApi;

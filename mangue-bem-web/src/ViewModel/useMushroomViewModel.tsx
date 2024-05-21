@@ -42,11 +42,14 @@
 //     iucn: "",
 //   },
 // ];
-import { useGetApi } from "./base/useApi";
+import useGetApi from "./base/useApi";
 
-import React from "react";
-
-const useGetMushroomData = () =>
-  useGetApi("http://localhost:8080/v1/species", { mushrooms: [] });
+const useGetMushroomData = () => {
+  const [{ data, isLoading, isError }, setUrl] = useGetApi(
+    "http://localhost:8080/v1/species",
+    {},
+  );
+  return data;
+};
 
 export default useGetMushroomData;
