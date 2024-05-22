@@ -2,17 +2,23 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useObservationViewModel from '../../ViewModel/useObservationViewModel';
 
-import { MapContainer } from 'react-leaflet';
-import { TileLayer } from 'react-leaflet';
-import { Marker } from 'react-leaflet';
-import { Popup } from 'react-leaflet';
-import { useMap } from 'react-leaflet';
-import { LatLngTuple } from 'leaflet';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionItemHeading,
+  AccordionItemButton,
+  AccordionItemPanel,
+} from 'react-accessible-accordion';
+import 'react-accessible-accordion/dist/fancy-example.css';
+
+import { ComposableMap, ZoomableGroup, Geographies, Geography, Marker } from 'react-simple-maps';
+import mapdata from '../../utils/topojson';
+import { geoCentroid } from 'd3-geo';
 
 const Observation = () => {
   const params = useParams();
   const [{ error, response }, get] = useObservationViewModel();
-  const position: LatLngTuple = [51.505, -0.09];
+
   useEffect(() => {
     get(params.id as unknown as number);
   }, [params])
@@ -22,61 +28,31 @@ const Observation = () => {
       <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/bg.jpeg')" }}></div>
       <div className="absolute inset-0 flex justify-center items-center p-5">
         <div className="bg-white bg-opacity-50 rounded h-full w-full p-5 flex flex-col gap-2">
-          <div>
-            <span className='text-white'><span className='font-bold'>{response?.specie?.commonName}</span> (<span className='italic underline'>{response?.specie?.taxonGenus} {response?.specie?.taxonName}</span>)</span>
-          </div>
           <div className='flex gap-6'>
-            <div className='w-3/5 bg-gray-400 rounded p-1'>
-              <div className='bg-gray-200 h-full p-5 rounded'>
+            <div className='w-1/3 bg-gray-400 h-fit rounded p-1'>
+              <div className='bg-gray-200 p-3 rounded'>
                 <div>
-                  <img className='rounded' src={response?.taxa?.default_photo.medium_url} alt="Imagem da espécie" style={{ width: '800px', height: '35vw', objectFit: 'cover' }} />
+                  <img className='rounded' src={response?.taxa?.default_photo.medium_url} alt="Imagem da espécie" style={{ width: '100%', height: '20vw', objectFit: 'cover' }} />
                 </div>
               </div>
             </div>
-            <div className='w-2/5 bg-gray-400 rounded p-1'>
-              <div className='bg-gray-200 h-full p-5 rounded'>
-                <div className='h-full flex flex-col'>
-                  <span className='text-green-700'>{response?.observation?.user?.login}</span>
-                  <div className='flex justify-between'>
-                    <div className='flex flex-col'>
-                      <span>Observado</span>
-                      <span>{new Date(response?.observation?.time_observed_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                    </div>
-                    <div className='flex flex-col'>
-                      <span>Enviado</span>
-                      <span>{new Date(response?.observation?.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                    </div>
-                  </div>
-                  <div className='h-full' style={{width: '80%'}}>
-                    <MapContainer center={position} zoom={6} scrollWheelZoom={true}>
-                      <TileLayer
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      />
-                      <Marker position={position} />
-                    </MapContainer>
-                  </div>
-                </div>
+            <div className='w-1/3 flex flex-col gap-5'>
+              <div className='flex justify-center'>
+                <span className='text-white text-lg'><span className='font-bold'>{response?.specie?.commonName}</span> (<span className='italic underline'>{response?.specie?.taxonGenus} {response?.specie?.taxonName}</span>)</span>
               </div>
-            </div>
-          </div>
-          <div className='flex gap-6'>
-            <div className='w-3/5 bg-gray-400 rounded p-1'>
-              <div className='bg-gray-200 h-full p-5 rounded'>
+              <div className='bg-gray-200 p-5 rounded'>
                 <div className='flex flex-col'>
-                  <span className='font-bold'>Informações</span>
+                  {/* <span className='font-bold'>Informações</span> */}
                   <span>
                     {response?.specie?.description}
                   </span>
                 </div>
               </div>
-            </div>
-            <div className='w-2/5 bg-gray-400 rounded p-1'>
-              <div className='bg-gray-200 h-full p-5 rounded'>
+              <div className='bg-gray-200 p-5 rounded'>
                 <div className='flex flex-col'>
-                  <span className='font-bold'>Taxon</span>
+                  <span className='font-bold'>Classificações</span>
                   <span>
-                    {response?.specie?.description}
+                    {/* TODO: icons */}
                   </span>
                   <small>
                     id_especie: {response?.specie?.id}
@@ -87,6 +63,102 @@ const Observation = () => {
                 </div>
               </div>
             </div>
+            <div className='w-1/3 bg-gray-400 h-fit rounded p-1'>
+              <div className='bg-gray-200 h-fit p-5 rounded'>
+                <div className='h-full flex flex-col'>
+                  <div className='flex justify-center'>Geolocalização</div>
+                  <div>
+                    <ComposableMap
+                      projection='geoMercator'
+                      style={{ backgroundColor: '#e5e7eb', borderRadius: '10px' }}
+                      fill='white'
+                      stroke='black'
+                      stroke-width={0.1}
+                    >
+                      <ZoomableGroup center={[-54, -15.1]} zoom={9}>
+                        <Geographies geography={mapdata.data}>
+                          {(geographies: { geographies: any[]; }) => {
+                            return (
+                              <>
+                                {geographies.geographies.map((geo) => {
+                                  return (
+                                    <>
+                                      <Geography
+                                        className={"geo-" + geo.id}
+                                        key={geo.rsmKey}
+                                        geography={geo}
+                                      />
+                                    </>
+                                  );
+                                })}
+
+                                {geographies.geographies.map((geo) => {
+                                  const provinceCenter = geoCentroid(geo);
+                                  return (
+                                    <Marker key={geo.rsmKey} coordinates={provinceCenter}>
+                                      {response?.observation?.summary.some((item: { uf: any; }) => item.uf === geo.id) &&
+                                      <circle r={2} fill="#F00" stroke="#fff" strokeWidth={2} />}
+                                      <text
+                                        style={{
+                                          fill: 'black',
+                                          strokeWidth: 0,
+                                          fontSize: '3px'
+                                        }}
+                                        textAnchor='middle'
+                                      >
+                                        {geo.id}
+                                      </text>
+                                    </Marker>
+                                  );
+                                })}
+                              </>
+                            );
+                          }}
+                        </Geographies>
+                      </ZoomableGroup>
+                    </ComposableMap>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='flex flex-col gap-6'>
+            <Accordion allowZeroExpanded>
+              <AccordionItem key="literatura">
+                <AccordionItemHeading>
+                  <AccordionItemButton>
+                    Literatura
+                  </AccordionItemButton>
+                </AccordionItemHeading>
+                <AccordionItemPanel>
+                  1
+                </AccordionItemPanel>
+              </AccordionItem>
+            </Accordion>
+            <Accordion allowZeroExpanded>
+              <AccordionItem key="literatura">
+                <AccordionItemHeading>
+                  <AccordionItemButton>
+                    SpeciesLink
+                  </AccordionItemButton>
+                </AccordionItemHeading>
+                <AccordionItemPanel>
+                  1
+                </AccordionItemPanel>
+              </AccordionItem>
+            </Accordion>
+            <Accordion allowZeroExpanded>
+              <AccordionItem key="literatura">
+                <AccordionItemHeading>
+                  <AccordionItemButton>
+                    INaturalist
+                  </AccordionItemButton>
+                </AccordionItemHeading>
+                <AccordionItemPanel>
+                  1
+                </AccordionItemPanel>
+              </AccordionItem>
+            </Accordion>
           </div>
         </div>
       </div>

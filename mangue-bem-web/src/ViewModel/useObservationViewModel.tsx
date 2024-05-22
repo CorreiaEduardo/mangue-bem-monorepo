@@ -9,7 +9,8 @@ const useObservationViewModel = (): [
   const [response, setResponse] = useState<any>();
   const baseUrl = "http://localhost:8080/v1/observations/";
   const iNaturalistTaxaUrl = "https://api.inaturalist.org/v1/observations/";
-  
+  const ufReportUrl = "http://localhost:8080/v1/observations/uf-report?specieId=";
+
   async function get(id: number) {
     try {
       const response = await axios.get(baseUrl + id);
@@ -17,6 +18,11 @@ const useObservationViewModel = (): [
         const iNaturalistTaxaResponse = await axios.get(iNaturalistTaxaUrl + response.data.inaturalistId);
         response.data.taxa = iNaturalistTaxaResponse.data?.results[0]?.taxon;
         response.data.observation = iNaturalistTaxaResponse.data?.results[0];
+      }
+
+      if (!!response.data?.specie?.id) {
+        const ufReportResponse = await axios.get(ufReportUrl + response.data?.specie?.id);
+        response.data.observation.summary = ufReportResponse.data?.items;
       }
 
       setResponse(response.data);
