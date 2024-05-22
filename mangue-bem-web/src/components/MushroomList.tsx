@@ -29,8 +29,6 @@ const MushroomList = ({
     ],
   };
 
-  console.log("test " + data);
-
   return (
     <div className=" mx-16 my-10 rounded-2xl bg-gray-200/50 p-6">
       <div className="flex flex-row-reverse"></div>

@@ -2,7 +2,7 @@ const appString = {
   pt: {
     home: "Home",
     about: "Sobre",
-    signIn: "Entrar",
+    signIn: "Login",
     signOut: "Sair",
     email: "Email",
     password: "Senha",
