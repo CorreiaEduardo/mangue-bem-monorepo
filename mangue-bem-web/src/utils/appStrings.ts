@@ -2,6 +2,7 @@ const appString = {
   pt: {
     home: "Home",
     about: "Sobre",
+    searchSpecies: "Busca de Espécies",
     signIn: "Login",
     signOut: "Sair",
     email: "Email",

@@ -6,7 +6,7 @@ import Home from "./components/pages/Home";
 export const appRoutes = [
   {
     path: "/",
-    component: Home,
+    component: MushroomHeatMap,
   },
   {
     path: "/profile",
@@ -14,8 +14,8 @@ export const appRoutes = [
     loginPage: true,
   },
   {
-    path: "/map",
-    component: MushroomHeatMap,
+    path: "/search",
+    component: Home,
   },
   {
     path: "/observation/:id",

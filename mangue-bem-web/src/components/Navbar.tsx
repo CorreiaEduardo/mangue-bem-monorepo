@@ -25,10 +25,10 @@ function Navbar() {
                   {appString.pt.home}
                 </Link>
                 <a
-                  href="#"
+                  href="/search"
                   className="rounded-md px-3 py-2 text-sm font-medium text-slate-950 hover:bg-emerald-700 hover:text-white"
                 >
-                  {appString.pt.about}
+                  {appString.pt.searchSpecies}
                 </a>
               </div>
             </div>

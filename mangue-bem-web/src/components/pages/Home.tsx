@@ -29,7 +29,7 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   return (
     <div>
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute h-full w-full bg-cover bg-center"
         style={{ backgroundImage: "url('/bg.jpeg')" }}
       >
         <div className="relative">

@@ -65,3 +65,78 @@ export const getSpeciesCounter = (): SpeciesCounter[] => [
         state: 'Rondônia'
     },
 ];
+
+export const Bems = [
+    {
+      type: "BEM1",
+      description:
+        "Espécies comestíveis que claramente ocorrem e são consumidas no Brasil ou que representam um novo recurso alimentar para o país.",
+      color: "#FF5733"
+    },
+    {
+      type: "BEM2",
+      description:
+        "Espécies comestíveis (após alguns preparos ou cuidados prévios) que claramente ocorrem e são consumidas no Brasil ou que representam um novo recurso alimentar para o país.",
+    color: "#33FF57"
+    },
+    {
+      type: "BEM3",
+      description:
+        "Espécie comestível consumida no Brasil, mas que necessita de mais estudos para confirmar sua identidade e ocorrência no país.",
+        color: "#3357FF"
+    },
+    {
+      type: "BEM4",
+      description:
+        "Espécies comestíveis (após alguns preparos ou cuidados preciosos) consumidas no Brasil, mas que requerem mais estudos para confirmar sua identificação e ocorrência no país.",
+        color: "#FF33A1"
+    },
+    {
+      type: "BEM5",
+      description:
+        "Espécies comestíveis não claramente consumidas no Brasil, mas que representam um novo recurso alimentar para o país. Mais estudos para confirmar sua identidade e ocorrência no Brasil.",
+        color: "#FFBD33"
+    },
+    {
+      type: "BEM6",
+      description:
+        "Espécies comestíveis (após alguns preparos ou cuidados prévios) não claramente consumidas no Brasil, mas que representam um novo recurso alimentar para o país após novos estudos para confirmar sua identificação e ocorrência no Brasil.",
+        color: "#FFBD33"
+    },
+    {
+      type: "BEM7",
+      description:
+        "Espécie que ocorre claramente no Brasil, mas com evidências pouco claras ou ausentes de que foi consumida.",
+    color: "#33FFF7"
+    },
+    {
+      type: "BEM8",
+      description:
+        "Espécie com evidências pouco claras ou ausentes para consumo e que requer mais estudos para confirmar sua identidade e ocorrência no Brasil.",
+    color: "#9D33FF"
+    },
+    {
+      type: "BEM9",
+      description:
+        "Espécie que ocorre claramente no Brasil, mas com comestibilidade não confirmada, incluindo poucos registros venenosos.",
+    color: "#FF7E33"
+    },
+    {
+      type: "BEM10",
+      description:
+        "Espécie que ocorre claramente no Brasil, mas com comestibilidade não confirmada, incluindo poucos registros venenosos.",
+    color: "#33FF9A"
+    },
+    {
+      type: "P1",
+      description:
+        "Espécie venenosa que ocorre claramente no Brasil e causa reação adversa e prejudicial quando consumida.",
+    color: "#B8FF33"
+    },
+    {
+      type: "P2",
+      description:
+        "Espécie venenosa que causa reações adversas e prejudiciais quando consumida e requer mais estudos para confirmar sua identidade e ocorrência no Brasil.",
+    color: "#3388FF"
+    },
+  ];
