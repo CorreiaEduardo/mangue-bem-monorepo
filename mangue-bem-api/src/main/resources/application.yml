@@ -14,3 +14,9 @@ api:
     jwt:
       secret: ${API_SECURITY_JWT_SECRET}
       issuer: bem-api
+
+integration:
+  specieslink:
+    apikey: ${INTEGRATION_SPECIESLINK_APIKEY}
+  iucnredlist:
+    token: ${INTEGRATION_IUCNREDLIST_TOKEN}

@@ -1,5 +1,6 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.controller;
 
+import br.uneb.dcet.si20192.tees.manguebem.api.Constants;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.BiomeDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.ObservationDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.SpecieDTO;
@@ -10,11 +11,13 @@ import br.uneb.dcet.si20192.tees.manguebem.api.exception.NotFoundException;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.BiomeService;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.ObservationService;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.SpecieService;
-import br.uneb.dcet.si20192.tees.manguebem.api.Constants;
+import br.uneb.dcet.si20192.tees.manguebem.integration.iucnredlist.dto.IUCNSpecieSearchResult;
+import br.uneb.dcet.si20192.tees.manguebem.integration.iucnredlist.service.IUCNRedlistService;
 import lombok.extern.slf4j.Slf4j;
 import org.dhatim.fastexcel.reader.ReadableWorkbook;
 import org.dhatim.fastexcel.reader.Row;
 import org.dhatim.fastexcel.reader.Sheet;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,11 +39,19 @@ public class SpeciesSheetController {
     private final SpecieService specieService;
     private final ObservationService observationService;
     private final BiomeService biomeService;
+    private final IUCNRedlistService iucnRedlistService;
+    private final Boolean skipIUCNCalculation;
 
-    public SpeciesSheetController(SpecieService specieService, ObservationService observationService, BiomeService biomeService) {
+    public SpeciesSheetController(SpecieService specieService,
+                                  ObservationService observationService,
+                                  BiomeService biomeService,
+                                  IUCNRedlistService iucnRedlistService,
+                                  @Value("${api.parameters.integration.iucnredlist.skip:true}") Boolean skipIUCNCalculation) {
         this.specieService = specieService;
         this.observationService = observationService;
         this.biomeService = biomeService;
+        this.iucnRedlistService = iucnRedlistService;
+        this.skipIUCNCalculation = skipIUCNCalculation;
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,6 +62,17 @@ public class SpeciesSheetController {
                 final Sheet species = speciesSheet.get();
                 try (Stream<Row> rows = species.openStream()) {
                     rows.skip(Constants.IMPORT_SHEET.SPECIES.SHEET_HEADER_ROW_LENGTH).forEach(r -> {
+                        log.info("Processing row number {}", r.getRowNum());
+                        final String taxonGenus = r.getCellText(Constants.IMPORT_SHEET.SPECIES.TAXON_GENUS_CELLINDEX);
+                        final String taxonName = r.getCellText(Constants.IMPORT_SHEET.SPECIES.TAXON_NAME_CELLINDEX);
+
+                        String iucn = null;
+                        if (!skipIUCNCalculation) {
+                            final IUCNSpecieSearchResult iucnResult = iucnRedlistService.searchSpecie(taxonGenus, taxonName);
+                            log.info("IUCN result found was {}", iucnResult == null ? "null" : iucnResult.getCategory());
+                            iucn = iucnResult != null ? iucnResult.getCategory() : null;
+                        }
+
                         final SpecieDTO dto = SpecieDTO
                                 .builder()
                                 .taxonKingdom(r.getCellText(Constants.IMPORT_SHEET.SPECIES.TAXON_KINGDOM_CELLINDEX))
@@ -58,14 +80,15 @@ public class SpeciesSheetController {
                                 .taxonClass(r.getCellText(Constants.IMPORT_SHEET.SPECIES.TAXON_CLASS_CELLINDEX))
                                 .taxonOrder(r.getCellText(Constants.IMPORT_SHEET.SPECIES.TAXON_ORDER_CELLINDEX))
                                 .taxonFamily(r.getCellText(Constants.IMPORT_SHEET.SPECIES.TAXON_FAMILY_CELLINDEX))
-                                .taxonGenus(r.getCellText(Constants.IMPORT_SHEET.SPECIES.TAXON_GENUS_CELLINDEX))
-                                .taxonName(r.getCellText(Constants.IMPORT_SHEET.SPECIES.TAXON_NAME_CELLINDEX))
+                                .taxonGenus(taxonGenus)
+                                .taxonName(taxonName)
                                 .authors(r.getCellText(Constants.IMPORT_SHEET.SPECIES.AUTHORS_CELLINDEX))
                                 .brazilianType(r.getCellText(Constants.IMPORT_SHEET.SPECIES.BRAZILIAN_TYPE_CELLINDEX))
                                 .brazilianTypeSynonym(r.getCellText(Constants.IMPORT_SHEET.SPECIES.BRAZILIAN_TYPE_SYNONYM_CELLINDEX))
                                 .iNaturalistId(r.getCellText(Constants.IMPORT_SHEET.SPECIES.INATURALISTID_CELLINDEX))
                                 .commonName(r.getCellText(Constants.IMPORT_SHEET.SPECIES.COMMON_NAME_CELLINDEX))
                                 .bemClassification(r.getCellText(Constants.IMPORT_SHEET.SPECIES.BEM_CLASSIFICATION_CELLINDEX))
+                                .IUCN(iucn)
                                 .build();
 
                         if (!specieService.exists(dto)) {
