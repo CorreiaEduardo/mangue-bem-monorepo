@@ -1,5 +1,5 @@
 import Login from "./components/pages/Login";
-import Map from "./components/Map";
+import MushroomHeatMap from "./components/pages/MushroomHeatMap";
 import Observation from "./components/pages/Observation";
 import Home from "./components/pages/Home";
 
@@ -15,7 +15,7 @@ export const appRoutes = [
   },
   {
     path: "/map",
-    component: Map,
+    component: MushroomHeatMap,
   },
   {
     path: "/observation/:id",
