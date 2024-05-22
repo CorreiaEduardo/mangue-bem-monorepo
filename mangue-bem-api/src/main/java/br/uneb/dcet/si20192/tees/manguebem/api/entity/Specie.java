@@ -62,4 +62,6 @@ public class Specie extends CuratedEntity {
     @Column(name = "inaturalist_id")
     private String iNaturalistId;
 
+    @Column(name = "specieslink_id")
+    private String speciesLinkId;
 }

@@ -1,7 +1,6 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.dto;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.basic.BaseDTO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @AllArgsConstructor
@@ -26,4 +25,5 @@ public final class SpecieDTO extends BaseDTO {
     private String brazilianType;
     private String brazilianTypeSynonym;
     private String iNaturalistId;
+    private String speciesLinkId;
 }

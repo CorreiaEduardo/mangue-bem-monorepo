@@ -48,6 +48,16 @@ public enum FederativeUnit {
         return UNKNOWN;
     }
 
+    public static FederativeUnit fromName(String name) {
+        for (final FederativeUnit uf : FederativeUnit.values()) {
+            if (uf.name.trim().equalsIgnoreCase(name.trim())) {
+                return uf;
+            }
+        }
+
+        return UNKNOWN;
+    }
+
     public String getName() {
         return name;
     }

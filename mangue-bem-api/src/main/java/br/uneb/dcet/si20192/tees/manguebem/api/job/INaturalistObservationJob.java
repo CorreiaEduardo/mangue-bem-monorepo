@@ -76,6 +76,7 @@ public class INaturalistObservationJob {
                                     .builder()
                                     .specieId(entity.getId())
                                     .type(ObservationType.INATURALIST)
+                                    .approvalStatus(ApprovalStatus.PENDING)
                                     .lat(lat)
                                     .lng(lng)
                                     .iNaturalistId(String.valueOf(observation.getId()));
@@ -85,11 +86,7 @@ public class INaturalistObservationJob {
                                     && geocode.getAddress().getCountryCode().equals("br")
                                     && geocode.getAddress().getSubdivision() != null) {
                                 dtoBuilder
-                                        .approvalStatus(ApprovalStatus.APPROVED)
                                         .brazilianFederativeUnit(FederativeUnit.fromCode(geocode.getAddress().getSubdivision()));
-                            } else {
-                                dtoBuilder
-                                        .approvalStatus(ApprovalStatus.PENDING);
                             }
                             observationService.createAsync(dtoBuilder.build());
                         }
