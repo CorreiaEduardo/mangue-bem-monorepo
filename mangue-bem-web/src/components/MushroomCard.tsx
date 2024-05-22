@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface Mushroom {
   id: number;
@@ -20,9 +21,19 @@ interface Mushroom {
   image: string;
 }
 
-const MushroomCard = ({ id, image, taxonName, commonName, IUCN }: Mushroom) => {
+const MushroomCard = ({
+  id,
+  image,
+  taxonName,
+  commonName,
+  IUCN,
+  iNaturalistId,
+}: Mushroom) => {
   return (
-    <div className="flex h-96 w-80 flex-col items-center justify-center overflow-hidden rounded-lg border bg-white p-3 shadow-lg transition-transform hover:scale-105">
+    <Link
+      to={`/observations/${iNaturalistId}`}
+      className="flex h-96 w-80 flex-col items-center justify-center overflow-hidden rounded-lg border bg-white p-3 shadow-lg transition-transform hover:scale-105"
+    >
       <img
         src={image}
         alt=""
@@ -40,7 +51,7 @@ const MushroomCard = ({ id, image, taxonName, commonName, IUCN }: Mushroom) => {
           <span>{IUCN}</span>
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 

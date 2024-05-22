@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import SearchBar from "../Search";
 import appString from "../../utils/appStrings";
 import MushroomList from "../MushroomList";
 import DefaultButton from "../DefaultButton";
 import { Link } from "react-router-dom";
+import useGetMushroomData from "../../ViewModel/useMushroomViewModel";
 
-interface homeProps {
-  isLoggedIn: boolean;
-}
+const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+  const [mushroomList, setMushroomList] = useState(useGetMushroomData());
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-const Home = ({ isLoggedIn }: homeProps) => {
+  const searchFilter = () => {
+    const inputValue = searchTerm.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    if (inputLength === 0) {
+      return mushroomList.content;
+    } else {
+      const filteredList = mushroomList.content.filter((item: any) =>
+        item.name.toLowerCase().includes(inputValue),
+      );
+      setMushroomList(filteredList);
+      return filteredList;
+    }
+  };
+
   return (
     <div>
       <div
@@ -21,7 +36,11 @@ const Home = ({ isLoggedIn }: homeProps) => {
             <div className="col-start-1 ml-16">
               <div className="flex items-center justify-between">
                 <DefaultButton text="Buscar" width="w-40 " animation={false} />
-                <SearchBar searchLabel={appString.pt.scientifcName} />
+                <SearchBar
+                  searchLabel={appString.pt.scientifcName}
+                  searchTerm={searchTerm}
+                  onChange={setSearchTerm}
+                />
                 <DefaultButton text="Filtro" width="w-40 " animation={false} />
               </div>
             </div>
@@ -44,7 +63,7 @@ const Home = ({ isLoggedIn }: homeProps) => {
             </Link>
           </div>
         </div>
-        <MushroomList />
+        <MushroomList data={mushroomList} />
       </div>
     </div>
   );
