@@ -7,13 +7,14 @@ const useObservationViewModel = (): [
 ] => {
   const [error, setError] = useState(false);
   const [response, setResponse] = useState<any>();
-  const baseUrl = "http://localhost:8080/v1/observations/";
+  const baseUrl = "http://localhost:8080/v1/observations";
   const iNaturalistTaxaUrl = "https://api.inaturalist.org/v1/observations/";
   const ufReportUrl = "http://localhost:8080/v1/observations/uf-report?specieId=";
 
   async function get(id: number) {
     try {
-      const response = await axios.get(baseUrl + id);
+      const response = await axios.get(baseUrl + "/" + id);
+      response.data.observation = {};
       if (!!response.data?.specie?.inaturalistId) {
         const iNaturalistTaxaResponse = await axios.get(iNaturalistTaxaUrl + response.data.inaturalistId);
         response.data.taxa = iNaturalistTaxaResponse.data?.results[0]?.taxon;
@@ -23,6 +24,15 @@ const useObservationViewModel = (): [
       if (!!response.data?.specie?.id) {
         const ufReportResponse = await axios.get(ufReportUrl + response.data?.specie?.id);
         response.data.observation.summary = ufReportResponse.data?.items;
+
+        const literatureObservationsResponse = await axios.get(baseUrl, { params: { "specie.id": "EQ:" + response.data?.specie?.id, type: 'EQ:LITERATURE' } });
+        response.data.observation.literature = literatureObservationsResponse.data?.content;
+
+        const inaturalistObservationsResponse = await axios.get(baseUrl, { params: { "specie.id": "EQ:" + response.data?.specie?.id, type: 'EQ:INATURALIST' } });
+        response.data.observation.inaturalist = inaturalistObservationsResponse.data?.content;
+
+        const specieslinkObservationsResponse = await axios.get(baseUrl, { params: { "specie.id": "EQ:" + response.data?.specie?.id, type: 'EQ:SPECIES_LINK' } });
+        response.data.observation.specieslink = specieslinkObservationsResponse.data?.content;
       }
 
       setResponse(response.data);
