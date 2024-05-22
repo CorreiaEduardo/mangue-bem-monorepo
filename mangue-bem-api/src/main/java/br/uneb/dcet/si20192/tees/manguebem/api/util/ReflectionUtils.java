@@ -66,9 +66,23 @@ public class ReflectionUtils {
     }
 
     private static void setNestedFieldValue(Object obj, String fieldName, String value) throws Exception {
-        Field field = obj.getClass().getDeclaredField(fieldName);
+        Field field = retrieveField(obj.getClass(), fieldName);
         field.setAccessible(true);
         field.set(obj, convertValue(field.getType(), value));
+    }
+
+    private static Field retrieveField(Class clazz, String fieldName) throws Exception {
+        Field field = null;
+        try {
+            return clazz.getDeclaredField(fieldName);
+        } catch (NoSuchFieldException e) {
+            Class superclass = clazz.getSuperclass();
+            if (superclass != null) {
+                return retrieveField(superclass, fieldName);
+            }
+
+            throw new NoSuchFieldException();
+        }
     }
 
     private static void setSimpleFieldValue(Object obj, String fieldName, String value) throws Exception {
