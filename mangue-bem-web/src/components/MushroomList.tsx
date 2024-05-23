@@ -1,6 +1,4 @@
-import React from "react";
 import MushroomCard from "./MushroomCard";
-import useGetMushroomData from "../ViewModel/useMushroomViewModel";
 
 const MushroomList = ({
   data,
@@ -16,19 +14,6 @@ const MushroomList = ({
     };
   };
 }) => {
-  //const mushroomData = useGetMushroomData();
-  const mushroomData = {
-    content: [
-      {
-        id: 1,
-        image: "/bg.jpeg",
-        taxonName: "Mushroom",
-        commonName: "0",
-        IUCN: "0",
-      },
-    ],
-  };
-
   return (
     <div className=" mx-16 my-10 rounded-2xl bg-gray-200/50 p-6">
       <div className="flex flex-row-reverse"></div>

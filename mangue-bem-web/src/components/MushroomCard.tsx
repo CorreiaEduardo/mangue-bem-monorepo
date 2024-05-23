@@ -13,42 +13,45 @@ interface Mushroom {
   commonName: string;
   bemClassification: string;
   description: string;
-  IUCN: string;
+  iucn: string;
   authors: string;
   brazilianType: string;
   brazilianTypeSynonym: string;
-  iNaturalistId: string;
-  image: string;
+  inaturalistId: string;
+  taxaPhoto: string;
 }
 
 const MushroomCard = ({
   id,
-  image,
+  taxaPhoto,
+  taxonGenus,
   taxonName,
   commonName,
-  IUCN,
-  iNaturalistId,
+  iucn,
+  inaturalistId,
+  brazilianType,
+  brazilianTypeSynonym,
 }: Mushroom) => {
   return (
     <Link
-      to={`/observations/${iNaturalistId}`}
+      to={`/observation/${inaturalistId}`}
       className="flex h-96 w-80 flex-col items-center justify-center overflow-hidden rounded-lg border bg-white p-3 shadow-lg transition-transform hover:scale-105"
     >
       <img
-        src={image}
+        src={taxaPhoto}
         alt=""
         className=" h-full w-full rounded-lg object-cover"
       />
-      <div className="p-4">
+      <div className="flex flex-col items-center justify-center p-4">
         <h2 className="col mb-2  text-start text-xl font-bold italic">
-          {taxonName}
+          {taxonGenus + " " + taxonName}
         </h2>
         <p className="m-2 flex flex-col items-center justify-center gap-1 text-start  text-gray-400">
           <span className="mb-3  text-start text-xl text-gray-700 ">
             {commonName}
           </span>
-          <span>{id}</span>
-          <span>{IUCN}</span>
+          <span>{iucn}</span>
+          <span>{brazilianType && brazilianTypeSynonym}</span>
         </p>
       </div>
     </Link>

@@ -6,7 +6,7 @@ type UseGetApiReturnType = [
   React.Dispatch<React.SetStateAction<string>>,
 ];
 
-const useGetApi = (
+export const useGetApi = (
   initialUrl: string,
   initialData: any,
 ): UseGetApiReturnType => {
@@ -36,5 +36,3 @@ const useGetApi = (
 
   return [{ data, isLoading, isError }, setUrl];
 };
-
-export default useGetApi;
