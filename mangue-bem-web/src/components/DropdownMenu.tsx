@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 
-const DropdownMenu = ({ width = "w-40" }: { width: string }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const DropdownMenu = ({ width = "w-40", selectedOptions, setSelectedOptions, isOpen, setIsOpen }: { width: string, selectedOptions: any, setSelectedOptions: any, isOpen: boolean, setIsOpen: (isOpen: boolean) => void }) => {
+  //const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -65,55 +64,24 @@ const DropdownMenu = ({ width = "w-40" }: { width: string }) => {
     { code: 'p2', name: 'p2' }
   ];
 
-  const [selectedOptions, setSelectedOptions] = useState({
-    uf: "",
-    bioma: "",
-    classificacao: ""
-  });
-
-  const navigate = useNavigate();
-
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams();
-    
-    if (selectedOptions.uf) {
-      urlParams.set("uf", selectedOptions.uf);
-    } else {
-      urlParams.delete("uf");
-    }
-    
-    if (selectedOptions.bioma) {
-      urlParams.set("bioma", selectedOptions.bioma);
-    } else {
-      urlParams.delete("bioma");
-    }
-    
-    if (selectedOptions.classificacao) {
-      urlParams.set("classificacao", selectedOptions.classificacao);
-    } else {
-      urlParams.delete("classificacao");
-    }
-    
-    navigate({ search: urlParams.toString() });
-  }, [selectedOptions, navigate]);
-
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, category: string) => {
     const value = e.target.value;
-    setSelectedOptions(prevState => ({
+    setSelectedOptions((prevState: any) => ({
       ...prevState,
       [category]: value
     }));
   };
 
+  const appliedFiltersCount = Object.values(selectedOptions).filter(value => value).length;
 
   return (
     <div className="relative">
       <button
-        className={`my-3 ${width} rounded-md bg-emerald-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition duration-300 ease-in  hover:bg-pink-700 hover:shadow-lg  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+        className={`my-3 ${width} flex flex-row gap-1 rounded-md bg-emerald-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition duration-300 ease-in  hover:bg-pink-700 hover:shadow-lg  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
         onClick={toggleDropdown}
       >
-        Filtros
+        <span>Filtros</span>
+        {appliedFiltersCount > 0 ? <span>({appliedFiltersCount})</span> : ''}
       </button>
       {isOpen && (
         <div
