@@ -131,7 +131,11 @@ const Observation = () => {
                   </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
-                  1
+                  {response?.observation?.literature.map((item: any) => {
+                    return (
+                      <div>{item.brazilianFederativeUnit}</div>
+                    );
+                  })}
                 </AccordionItemPanel>
               </AccordionItem>
             </Accordion>
@@ -143,7 +147,11 @@ const Observation = () => {
                   </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
-                  1
+                  {response?.observation?.specieslink.map((item: any) => {
+                    return (
+                      <div>{item.brazilianFederativeUnit}</div>
+                    );
+                  })}
                 </AccordionItemPanel>
               </AccordionItem>
             </Accordion>
@@ -155,7 +163,11 @@ const Observation = () => {
                   </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
-                  1
+                  {response?.observation?.inaturalist.map((item: any) => {
+                    return (
+                      <div>{item.brazilianFederativeUnit}</div>
+                    );
+                  })}
                 </AccordionItemPanel>
               </AccordionItem>
             </Accordion>

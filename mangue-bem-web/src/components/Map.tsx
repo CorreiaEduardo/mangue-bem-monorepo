@@ -3,11 +3,12 @@ import React, { useEffect } from "react";
 import "../styles/Map.css";
 import {
   adjustColorIntensity,
+  generateRandomData,
   getSpeciesCounter,
   getStateIdFromName,
 } from "../ViewModel/HeatMapViewModel";
 
-function Map() {
+function Map({selectedBem}: props) {
   useEffect(() => {
     const handleScriptLoad = () => {
       // Agora o script está carregado, podemos acessar a função
@@ -34,36 +35,33 @@ function Map() {
         ?.removeEventListener("load", handleScriptLoad);
     };
   }, []);
-  return (
-    <div>
-      <div className="map">
-        <h3>
-          Selecione um <b>estado</b> na <b>lista</b> ao lado, ou clique nele
-          dentro do
-          <b> mapa</b>
-        </h3>
-        <button
-          onClick={() => {
-            getSpeciesCounter().forEach((specie) => {
-              const stateColor = adjustColorIntensity(
-                "#00ad28",
-                specie.speciesCount,
-              );
-              console.log(stateColor);
-              simplemaps_countrymap_mapdata.state_specific[
-                getStateIdFromName(specie.state)
-              ].description = `Nº de Espécies: ${specie.speciesCount}`;
-              simplemaps_countrymap_mapdata.state_specific[
-                getStateIdFromName(specie.state)
-              ].color = stateColor;
-            });
 
-            simplemaps_countrymap.refresh();
-          }}
-        >
-          test
-        </button>
-        <div id="map"></div>
+  useEffect(() => {
+    const attributeData = async () => {
+      if(selectedBem === 0) await new Promise(resolve => setTimeout(resolve, 1000));
+      const randomSpeciesData = generateRandomData(selectedBem)
+      randomSpeciesData.forEach((specie) => {
+        simplemaps_countrymap_mapdata.state_specific[
+          getStateIdFromName(specie.state)
+        ].description = `Nº de Espécies: ${specie.speciesCount}`;
+        simplemaps_countrymap_mapdata.state_specific[
+          getStateIdFromName(specie.state)
+        ].color = specie.color;
+      })
+      simplemaps_countrymap.refresh();
+    }
+    attributeData()
+  },[selectedBem])
+
+  return (
+    <div className="mt-2 rounded-md">
+      <div className="map flex flex-col items-center">
+        <h3>
+          Selecione um <b className="text-green-700">BEM</b> para verificar a
+          quantidade de amostras que existem em cada{" "}
+          <b className="text-green-700">estado</b>
+        </h3>
+        <div id="map" style={{marginRight: "-100px"}}></div>
       </div>
     </div>
   );
