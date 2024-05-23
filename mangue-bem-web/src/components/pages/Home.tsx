@@ -5,12 +5,45 @@ import MushroomList from "../MushroomList";
 import DefaultButton from "../DefaultButton";
 import useGetMushroomData from "../../ViewModel/useMushroomViewModel";
 import DropdownMenu from "../DropdownMenu";
+import { useNavigate } from "react-router-dom";
 
 const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const [mushroomData, get] = useGetMushroomData();
   get();
 
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const [selectedOptions, setSelectedOptions] = useState({
+    uf: "",
+    bioma: "",
+    classificacao: ""
+  });
+
+  const navigate = useNavigate();
+
+  const updateUrl = () => {
+    const urlParams = new URLSearchParams();
+
+    if (selectedOptions.uf) {
+      urlParams.set("uf", selectedOptions.uf);
+    } else {
+      urlParams.delete("uf");
+    }
+
+    if (selectedOptions.bioma) {
+      urlParams.set("bioma", selectedOptions.bioma);
+    } else {
+      urlParams.delete("bioma");
+    }
+
+    if (selectedOptions.classificacao) {
+      urlParams.set("classificacao", selectedOptions.classificacao);
+    } else {
+      urlParams.delete("classificacao");
+    }
+
+    navigate({ search: urlParams.toString() });
+  };
 
   // const searchFilter = () => {
   //   const inputValue = searchTerm.trim().toLowerCase();
@@ -36,14 +69,18 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         <div className="relative">
           <div className="my-5 grid grid-cols-4 gap-3">
             <div className="col-span-2 col-start-2 ml-16">
-              <div className="flex items-center justify-between gap-2">
-                <DefaultButton text="Buscar" width="w-40 " animation={false} />
+              <div className="flex items-center justify-between gap-3">
+                 {/*<DefaultButton text="Buscar" width="w-40 " animation={false} />
                 <SearchBar
                   searchLabel={appString.pt.scientifcName}
                   searchTerm={searchTerm}
                   onChange={setSearchTerm}
                 />
-                <DropdownMenu width="40" />
+                <DropdownMenu 
+                  width="40"
+                  selectedOptions={selectedOptions}
+                  setSelectedOptions={setSelectedOptions}
+                /> */}
               </div>
             </div>
           </div>
