@@ -5,7 +5,7 @@ import "../styles/navbar.css";
 
 function Navbar() {
   return (
-    <nav className="navbar flex h-20 items-center">
+    <nav className="navbar sticky w-screen flex h-20 items-center">
       <div className="w-full px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 w-full items-center justify-between">
           <div className="flex items-center sm:justify-start">
@@ -18,12 +18,12 @@ function Navbar() {
             </div>
             <div className="sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                <Link
-                  to="/"
+                <a
+                  href="/"
                   className="rounded-md bg-emerald-700 px-3 py-2 text-sm font-medium text-white"
                 >
                   {appString.pt.home}
-                </Link>
+                </a>
                 <a
                   href="/search"
                   className="rounded-md px-3 py-2 text-sm font-medium text-slate-950 hover:bg-emerald-700 hover:text-white"
@@ -35,8 +35,8 @@ function Navbar() {
           </div>
           <div className="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <div>
-              <Link
-                to="/profile"
+              <a
+                href="/profile"
                 type="button"
                 className="relative  ml-4 flex rounded-full bg-emerald-500 text-sm text-pink-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 id="user-menu-button"
@@ -59,7 +59,7 @@ function Navbar() {
                     d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                   />
                 </svg>
-              </Link>
+              </a>
             </div>
 
             {/* <div className="relative ml-3">

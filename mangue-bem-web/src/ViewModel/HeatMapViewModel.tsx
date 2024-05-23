@@ -39,32 +39,19 @@ export const adjustColorIntensity = (hexColor: string, value: number):string => 
     return "#"+RR+GG+BB;
 }
 
-export const getSpeciesCounter = (): SpeciesCounter[] => [
-    {
-        speciesCount: parseInt(Math.random() * 50),
-        state: 'Bahia'
-    },
-    {
-        speciesCount: parseInt(Math.random() * 50),
-        state: 'Rio Grande do Norte'
-    },
-    {
-        speciesCount: parseInt(Math.random() * 50),
-        state: 'São Paulo'
-    },
-    {
-        speciesCount: parseInt(Math.random() * 50),
-        state: 'Goiás'
-    },
-    {
-        speciesCount: parseInt(Math.random() * 50),
-        state: 'Amazonas'
-    },
-    {
-        speciesCount: parseInt(Math.random() * 50),
-        state: 'Rondônia'
-    },
-];
+export const getSpeciesCounter = (): SpeciesCounter[] => {
+  const states: string[] = [
+      'Acre', 'Alagoas', 'Amapá', 'Amazonas', 'Bahia', 'Ceará', 'Distrito Federal', 'Espírito Santo',
+      'Goiás', 'Maranhão', 'Mato Grosso', 'Mato Grosso do Sul', 'Minas Gerais', 'Pará', 'Paraíba',
+      'Paraná', 'Pernambuco', 'Piauí', 'Rio de Janeiro', 'Rio Grande do Norte', 'Rio Grande do Sul',
+      'Rondônia', 'Roraima', 'Santa Catarina', 'São Paulo', 'Sergipe', 'Tocantins'
+  ];
+
+  return states.map(state => ({
+      speciesCount: Math.floor(Math.random() * 50),
+      state
+  }));
+};
 
 export const Bems = [
     {
@@ -101,7 +88,7 @@ export const Bems = [
       type: "BEM6",
       description:
         "Espécies comestíveis (após alguns preparos ou cuidados prévios) não claramente consumidas no Brasil, mas que representam um novo recurso alimentar para o país após novos estudos para confirmar sua identificação e ocorrência no Brasil.",
-        color: "#FFBD33"
+        color: "#008417"
     },
     {
       type: "BEM7",
@@ -140,3 +127,16 @@ export const Bems = [
     color: "#3388FF"
     },
   ];
+
+export const generateRandomData = (bemIndex): SpeciesCounter[] => {
+  const statesCounter = getSpeciesCounter()
+  for(const stateData of statesCounter) {
+    const stateColor = adjustColorIntensity(
+      Bems[bemIndex].color,
+      stateData.speciesCount,
+    );
+    stateData.bemId = bemIndex;
+    stateData.color = stateColor;
+  }
+  return statesCounter
+}

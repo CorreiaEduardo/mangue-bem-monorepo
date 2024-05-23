@@ -1,4 +1,6 @@
 export interface SpeciesCounter {
     speciesCount: number,
-    state: string
+    state: string,
+    color?: string,
+    bemId?: string
 }
