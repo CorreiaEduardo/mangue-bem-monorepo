@@ -35,7 +35,7 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         <div className="relative">
           <div className="my-5 grid grid-cols-4 gap-3">
             <div className="col-span-2 col-start-2 ml-16">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <DefaultButton text="Buscar" width="w-40 " animation={false} />
                 <SearchBar
                   searchLabel={appString.pt.scientifcName}
