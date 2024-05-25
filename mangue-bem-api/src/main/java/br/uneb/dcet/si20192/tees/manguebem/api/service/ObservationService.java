@@ -39,15 +39,9 @@ public class ObservationService extends BaseService<Observation, ObservationDTO>
         save(observationDTO);
     }
 
-    public UFReportDTO calculateUFReport(String specieId) {
+    public UFReportDTO calculateUFReport(String specieId, String bemClassification) {
         final UFReportDTO dto = new UFReportDTO();
-        List<UFReportItemDTO> items;
-        if (specieId != null) {
-            items = observationRepository.countSpeciesByFederativeUnitAndSpecie(specieId);
-        } else {
-            items = observationRepository.countSpeciesByFederativeUnit();
-        }
-
+        List<UFReportItemDTO> items = observationRepository.countSpeciesByFederativeUnit(specieId, bemClassification);
         dto.setItems(items);
 
         return dto;
