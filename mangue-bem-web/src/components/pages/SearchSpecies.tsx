@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import SearchBar from "../Search";
 import appString from "../../utils/appStrings";
 import MushroomList from "../MushroomList";
@@ -6,32 +6,39 @@ import DefaultButton from "../DefaultButton";
 import useGetMushroomData from "../../ViewModel/useMushroomViewModel";
 import DropdownMenu from "../DropdownMenu";
 import { useNavigate } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
 
 const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
-  const [mushroomData, get] = useGetMushroomData();
-  //get();
+  const [mushroomList, fetchNextPage, isFetchingNextPage] =
+    useGetMushroomData();
 
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([]);
   const [selectedOptions, setSelectedOptions] = useState({
     uf: "",
     bioma: "",
-    classificacao: ""
+    classificacao: "",
   });
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  useEffect(() => {
-    if (searchTerm.length > 2) {
-      const options = mushroomData.content?.filter((item: any) =>
-        item.name?.toLowerCase().includes(searchTerm.toLowerCase()) // TODO: não é name
-      ).slice(0, 3) ?? [];
+  //TODO: typescript type
 
-      setAutocompleteOptions(options);
-    } else {
-      setAutocompleteOptions([]);
-    }
-  }, [searchTerm, mushroomData.content]);
+  // useEffect(() => {
+  //   if (searchTerm.length > 2) {
+  //     const options =
+  //       mushroomList
+  //         ?.filter(
+  //           (item: any) =>
+  //             item.name?.toLowerCase().includes(searchTerm.toLowerCase()), // TODO: não é name
+  //         )
+  //         .slice(0, 3) ?? [];
+
+  //     setAutocompleteOptions(options);
+  //   } else {
+  //     setAutocompleteOptions([]);
+  //   }
+  // }, [searchTerm, mushroomList]);
 
   const navigate = useNavigate();
 
@@ -58,12 +65,12 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
 
     navigate({ search: urlParams.toString() });
 
-    get({
-      uf: selectedOptions.uf,
-      bioma: selectedOptions.bioma,
-      classificacao: selectedOptions.classificacao,
-      searchTerm: searchTerm,
-    });
+    // get({
+    //   uf: selectedOptions.uf,
+    //   bioma: selectedOptions.bioma,
+    //   classificacao: selectedOptions.classificacao,
+    //   searchTerm: searchTerm,
+    // });
   };
 
   // const searchFilter = () => {
@@ -91,7 +98,12 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           <div className="my-5 grid grid-cols-4 gap-3">
             <div className="col-span-2 col-start-2 ml-16">
               <div className="flex items-center justify-between gap-3">
-                <DefaultButton text="Buscar" width="w-40 " animation={false} onClick={updateUrlAndFetchData} />
+                <DefaultButton
+                  text="Buscar"
+                  width="w-40 "
+                  animation={false}
+                  onClick={updateUrlAndFetchData}
+                />
                 <div>
                   <SearchBar
                     searchLabel={appString.pt.scientifcName}
@@ -102,16 +114,19 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                     }}
                   />
                   {autocompleteOptions.length > 0 && (
-                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+                    <div className="absolute z-10 mt-1 w-full rounded-md border border-gray-300 bg-white shadow-lg">
                       {autocompleteOptions.map((option, index) => (
-                        <div key={index} className="px-4 py-2 hover:bg-gray-200">
+                        <div
+                          key={index}
+                          className="px-4 py-2 hover:bg-gray-200"
+                        >
                           {option}
                         </div>
                       ))}
                     </div>
                   )}
                 </div>
-                <DropdownMenu 
+                <DropdownMenu
                   width="40"
                   selectedOptions={selectedOptions}
                   setSelectedOptions={setSelectedOptions}
@@ -122,7 +137,11 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
             </div>
           </div>
         </div>
-        <MushroomList data={mushroomData} />
+        <MushroomList
+          mushroomPages={mushroomList}
+          getMushroom={fetchNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
       </div>
     </div>
   );
