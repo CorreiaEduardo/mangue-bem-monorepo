@@ -40,8 +40,7 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDTO> {
     }
 
     public Page<D> getAll(MultiValueMap<String, String> parameters, Pageable pageable) {
-        final List<Filter> filters = QueryParamParser.parseFilters(parameters, getEntityClass());
-        final Specification<E> specification = SpecificationFactory.of(filters);
+        final Specification<E> specification = parseSpecification(parameters);
 
         return getRepository()
                 .findAll(specification, pageable)
@@ -82,6 +81,11 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDTO> {
         entity.setDeletedBy(username);
 
         getRepository().save(entity);
+    }
+
+    protected Specification<E> parseSpecification(MultiValueMap<String, String> parameters) {
+        final List<Filter> filters = QueryParamParser.parseFilters(parameters, getEntityClass());
+        return SpecificationFactory.of(filters);
     }
 
     protected abstract JpaRepositoryImplementation<E, Long> getRepository();
