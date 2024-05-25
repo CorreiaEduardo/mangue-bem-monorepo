@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Map.css";
 import {
   adjustColorIntensity,
@@ -9,6 +9,8 @@ import {
 } from "../ViewModel/HeatMapViewModel";
 
 function Map({selectedBem}: props) {
+  const [speciesCounter, setSpeciesCounter] = useState([])
+
   useEffect(() => {
     const handleScriptLoad = () => {
       // Agora o script está carregado, podemos acessar a função
@@ -39,19 +41,27 @@ function Map({selectedBem}: props) {
   useEffect(() => {
     const attributeData = async () => {
       if(selectedBem === 0) await new Promise(resolve => setTimeout(resolve, 1000));
-      const randomSpeciesData = generateRandomData(selectedBem)
-      randomSpeciesData.forEach((specie) => {
-        simplemaps_countrymap_mapdata.state_specific[
-          getStateIdFromName(specie.state)
-        ].description = `Nº de Espécies: ${specie.speciesCount}`;
-        simplemaps_countrymap_mapdata.state_specific[
-          getStateIdFromName(specie.state)
-        ].color = specie.color;
-      })
-      simplemaps_countrymap.refresh();
+      getSpeciesCounter(setSpeciesCounter, selectedBem)
     }
     attributeData()
   },[selectedBem])
+
+  useEffect(() => {
+    if(speciesCounter.length > 0) {
+      speciesCounter.forEach((specie) => {
+        if(specie.state) {
+          console.log(specie)
+          simplemaps_countrymap_mapdata.state_specific[
+            getStateIdFromName(specie.state)
+          ].description = `Nº de Espécies: ${specie.speciesCount}`;
+          simplemaps_countrymap_mapdata.state_specific[
+            getStateIdFromName(specie.state)
+          ].color = specie.color;
+        }
+      })
+      simplemaps_countrymap.refresh();
+    }
+  },[speciesCounter]) 
 
   return (
     <div className="mt-2 rounded-md">

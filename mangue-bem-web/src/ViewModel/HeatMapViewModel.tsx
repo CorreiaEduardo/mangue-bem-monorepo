@@ -1,5 +1,41 @@
 // @ts-nocheck
 import { SpeciesCounter } from "../Model/SpeciesCounter";
+
+interface ufReport {
+  uf: string;
+  speciesCount: number;
+}
+
+const statesMap = {
+  AC: 'Acre',
+  AL: 'Alagoas',
+  AP: 'Amapá',
+  AM: 'Amazonas',
+  BA: 'Bahia',
+  CE: 'Ceará',
+  DF: 'Distrito Federal',
+  ES: 'Espírito Santo',
+  GO: 'Goiás',
+  MA: 'Maranhão',
+  MT: 'Mato Grosso',
+  MS: 'Mato Grosso do Sul',
+  MG: 'Minas Gerais',
+  PA: 'Pará',
+  PB: 'Paraíba',
+  PR: 'Paraná',
+  PE: 'Pernambuco',
+  PI: 'Piauí',
+  RJ: 'Rio de Janeiro',
+  RN: 'Rio Grande do Norte',
+  RS: 'Rio Grande do Sul',
+  RO: 'Rondônia',
+  RR: 'Roraima',
+  SC: 'Santa Catarina',
+  SP: 'São Paulo',
+  SE: 'Sergipe',
+  TO: 'Tocantins'
+};
+
 export const getStateIdFromName = (stateName):string => {
   for (const id in simplemaps_countrymap_mapdata.state_specific) {
     if (
@@ -39,18 +75,32 @@ export const adjustColorIntensity = (hexColor: string, value: number):string => 
     return "#"+RR+GG+BB;
 }
 
-export const getSpeciesCounter = (): SpeciesCounter[] => {
-  const states: string[] = [
-      'Acre', 'Alagoas', 'Amapá', 'Amazonas', 'Bahia', 'Ceará', 'Distrito Federal', 'Espírito Santo',
-      'Goiás', 'Maranhão', 'Mato Grosso', 'Mato Grosso do Sul', 'Minas Gerais', 'Pará', 'Paraíba',
-      'Paraná', 'Pernambuco', 'Piauí', 'Rio de Janeiro', 'Rio Grande do Norte', 'Rio Grande do Sul',
-      'Rondônia', 'Roraima', 'Santa Catarina', 'São Paulo', 'Sergipe', 'Tocantins'
-  ];
-
+export const getSpeciesCounter = (setSpeciesCounter, bemId) => {
+  fetch('http://localhost:8080/v1/observations/uf-report').then((data) => {
+    data.json().then((jsonData) => {
+      console.log(jsonData)
+      const speciesCounter:SpeciesCounter[] = []
+      for(const item of jsonData.items) {
+        const stateColor = adjustColorIntensity(
+          Bems[bemId].color,
+          item.speciesCount,
+        );
+        speciesCounter.push({
+          speciesCount: item.speciesCount,
+          state: statesMap[item.uf],
+          bemId,
+          stateColor
+        })
+      }
+      setSpeciesCounter(speciesCounter)
+    })
+  })
+  /*
   return states.map(state => ({
       speciesCount: Math.floor(Math.random() * 50),
       state
   }));
+  */
 };
 
 export const Bems = [
