@@ -1,85 +1,85 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import SearchBar from "../Search";
 import appString from "../../utils/appStrings";
 import MushroomList from "../MushroomList";
 import DefaultButton from "../DefaultButton";
-import useGetMushroomData from "../../ViewModel/useMushroomViewModel";
+import {useGetMushroomAutoComplete, useGetMushroomData} from "../../ViewModel/useMushroomViewModel";
 import DropdownMenu from "../DropdownMenu";
 import { useNavigate } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
 
 const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
-  const [mushroomData, get] = useGetMushroomData();
-  //get();
+  const urlParams = new URLSearchParams();
+
+  const [mushroomList, fetchNextPage, isFetchingNextPage] =
+    useGetMushroomData();
+
+  const [mushroomAutoComplete, fetchmushroomAutoComplete] = useGetMushroomAutoComplete();
+
+  const [autocompleteResults, setAutocompleteResults] = useState<{ id: number, taxonName: string }[]>([]);;
 
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [autocompleteOptions, setAutocompleteOptions] = useState<string[]>([]);
+
   const [selectedOptions, setSelectedOptions] = useState({
     uf: "",
     bioma: "",
-    classificacao: ""
+    classificacao: "",
   });
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  //TODO: typescript type
+
   useEffect(() => {
     if (searchTerm.length > 2) {
-      const options = mushroomData.content?.filter((item: any) =>
-        item.name?.toLowerCase().includes(searchTerm.toLowerCase()) // TODO: não é name
-      ).slice(0, 3) ?? [];
-
-      setAutocompleteOptions(options);
+      fetchmushroomAutoComplete().then(() => {
+        setAutocompleteResults(mushroomAutoComplete[0].content.slice(0, 3));
+      });
     } else {
-      setAutocompleteOptions([]);
+      setAutocompleteResults([]);
     }
-  }, [searchTerm, mushroomData.content]);
+  }, [searchTerm, fetchmushroomAutoComplete]);
 
   const navigate = useNavigate();
 
-  const updateUrlAndFetchData = () => {
-    const urlParams = new URLSearchParams();
+  useEffect(() => {
+    const updateUrlWhithFilters = () => {
+      if (selectedOptions.uf) {
+        urlParams.set("brazilianFederativeUnit",'EQ:' + selectedOptions.uf);
+      } else {
+        urlParams.delete("brazilianFederativeUnit");
+      }
 
-    if (selectedOptions.uf) {
-      urlParams.set("uf", selectedOptions.uf);
-    } else {
-      urlParams.delete("uf");
-    }
+      if (selectedOptions.bioma) {
+        urlParams.set("biome.name", 'EQ:' + selectedOptions.bioma);
+      } else {
+        urlParams.delete("biome.name");
+      }
 
-    if (selectedOptions.bioma) {
-      urlParams.set("bioma", selectedOptions.bioma);
-    } else {
-      urlParams.delete("bioma");
-    }
+      if (selectedOptions.classificacao) {
+        urlParams.set("specie.bemClassification", 'EQ:' + selectedOptions.classificacao);
+      } else {
+        urlParams.delete("specie.bemClassification");
+      }
 
-    if (selectedOptions.classificacao) {
-      urlParams.set("classificacao", selectedOptions.classificacao);
-    } else {
-      urlParams.delete("classificacao");
-    }
+      if (searchTerm.length > 0) {
+        urlParams.set("term", 'LK:' + searchTerm);
+      } else {
+        urlParams.delete("term");
+      }
 
-    navigate({ search: urlParams.toString() });
+      navigate({ search: urlParams.toString() });
+    };
 
-    get({
-      uf: selectedOptions.uf,
-      bioma: selectedOptions.bioma,
-      classificacao: selectedOptions.classificacao,
-      searchTerm: searchTerm,
-    });
-  };
+    updateUrlWhithFilters(); // Executa a função inicialmente
 
-  // const searchFilter = () => {
-  //   const inputValue = searchTerm.trim().toLowerCase();
-  //   const inputLength = inputValue.length;
+    // Esta função será chamada sempre que selectedOptions, searchTerm mudar
+    const unsubscribe = () => {
+      updateUrlWhithFilters();
+    };
 
-  //   if (inputLength === 0) {
-  //     return mushroomList;
-  //   } else {
-  //     const filteredList = mushroomList.content?.commonName?.filter(
-  //       (item: any) => item.name.toLowerCase().includes(inputValue),
-  //     );
-  //     setMushroomList(filteredList);
-  //     return filteredList;
-  //   }
-  // };
+    return () => unsubscribe(); // Limpeza do useEffect
+  }, [selectedOptions, searchTerm]);
 
   return (
     <div>
@@ -91,7 +91,12 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           <div className="my-5 grid grid-cols-4 gap-3">
             <div className="col-span-2 col-start-2 ml-16">
               <div className="flex items-center justify-between gap-3">
-                <DefaultButton text="Buscar" width="w-40 " animation={false} onClick={updateUrlAndFetchData} />
+                <DefaultButton
+                  text="Buscar"
+                  width="w-40 "
+                  animation={false}
+                  onClick={fetchNextPage}
+                />
                 <div>
                   <SearchBar
                     searchLabel={appString.pt.scientifcName}
@@ -101,17 +106,20 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                       setIsDropdownOpen(false);
                     }}
                   />
-                  {autocompleteOptions.length > 0 && (
-                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
-                      {autocompleteOptions.map((option, index) => (
-                        <div key={index} className="px-4 py-2 hover:bg-gray-200">
-                          {option}
+                  {autocompleteResults.length > 0 && (
+                    <div className="absolute z-10 mt-1 rounded-md border border-gray-300 bg-white shadow-lg">
+                      {autocompleteResults.map(mushroom => (
+                        <div
+                          key={mushroom.id}
+                          className="px-4 py-2 hover:bg-gray-200"
+                        >
+                          {mushroom.taxonName}
                         </div>
                       ))}
                     </div>
                   )}
                 </div>
-                <DropdownMenu 
+                <DropdownMenu
                   width="40"
                   selectedOptions={selectedOptions}
                   setSelectedOptions={setSelectedOptions}
@@ -122,7 +130,11 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
             </div>
           </div>
         </div>
-        <MushroomList data={mushroomData} />
+        <MushroomList
+          mushroomPages={mushroomList}
+          getMushroom={fetchNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
       </div>
     </div>
   );
