@@ -22,3 +22,10 @@ export const appRoutes = [
     component: Observation,
   },
 ];
+
+export function getPathForComponent(
+  component: React.ComponentType<any>,
+): string | undefined {
+  const route = appRoutes.find((route) => route.component === component);
+  return route?.path;
+}

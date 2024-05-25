@@ -18,10 +18,8 @@ const MushroomList = ({
     threshold: 0.9,
   });
   useEffect(() => {
-    if (inView) console.log(getMushroom());
+    if (inView) getMushroom();
   }, [inView]);
-
-  console.log(inView);
 
   return (
     <div className="mx-16 my-10 rounded-2xl bg-gray-200/50 p-6">
