@@ -45,9 +45,9 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   useEffect(() => {
     const updateUrlWhithFilters = () => {
       if (selectedOptions.uf) {
-        urlParams.set("brazilianFederativeUnit",'EQ:' + selectedOptions.uf);
+        urlParams.set("observations.brazilianFederativeUnit",'EQ:' + selectedOptions.uf);
       } else {
-        urlParams.delete("brazilianFederativeUnit");
+        urlParams.delete("observations.brazilianFederativeUnit");
       }
 
       if (selectedOptions.bioma) {
@@ -63,9 +63,9 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       }
 
       if (searchTerm.length > 0) {
-        urlParams.set("term", 'LK:' + searchTerm);
+        urlParams.set("taxonFamily", 'LK:' + searchTerm);
       } else {
-        urlParams.delete("term");
+        urlParams.delete("taxonFamily");
       }
 
       navigate({ search: urlParams.toString() });
