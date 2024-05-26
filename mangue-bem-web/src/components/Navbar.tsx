@@ -12,6 +12,8 @@ function Navbar() {
   const searchPath = getPathForComponent(Home);
   const homePath = getPathForComponent(MushroomHeatMap);
 
+  console.log(location)
+
   return (
     <nav className="navbar sticky flex h-20 w-screen items-center">
       <div className="w-full px-2 sm:px-6 lg:px-8">
@@ -26,33 +28,33 @@ function Navbar() {
             </div>
             <div className="sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                <Link
-                  to={homePath as To}
+                <a
+                  href={homePath}
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
                     location.pathname === homePath
                       ? "bg-emerald-900 text-white"
-                      : "bg-emerald-700 text-slate-200 hover:bg-pink-500 hover:text-white"
+                      : "text-emerald-700 hover:bg-pink-500 hover:text-white"
                   }`}
                 >
                   {appString.pt.home}
-                </Link>
-                <Link
-                  to={searchPath as To}
+                </a>
+                <a
+                  href={searchPath}
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
                     location.pathname === searchPath
                       ? "bg-emerald-900 text-white"
-                      : "bg-emerald-700 text-slate-200 hover:bg-pink-500 hover:text-white"
+                      : "text-emerald-700 hover:bg-pink-500 hover:text-white"
                   }`}
                 >
                   {appString.pt.searchSpecies}
-                </Link>
+                </a>
               </div>
             </div>
           </div>
           <div className="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <div>
-              <Link
-                to={loginPath as To}
+              <a
+                href={loginPath}
                 className="relative  ml-4 flex rounded-full bg-emerald-500 text-sm text-pink-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 id="user-menu-button"
                 aria-expanded="false"
@@ -74,7 +76,7 @@ function Navbar() {
                     d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
                   />
                 </svg>
-              </Link>
+              </a>
             </div>
 
             {/* <div className="relative ml-3">

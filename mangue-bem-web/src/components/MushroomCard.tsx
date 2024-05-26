@@ -33,8 +33,8 @@ const MushroomCard = ({
   brazilianTypeSynonym,
 }: Mushroom) => {
   return (
-    <Link
-      to={`/species/${id}`}
+    <a
+      href={`/species/${id}`}
       className="flex h-96 w-80 flex-col items-center justify-center overflow-hidden rounded-lg border bg-white p-3 shadow-lg transition-transform hover:scale-105"
     >
       <img
@@ -54,7 +54,7 @@ const MushroomCard = ({
           <span>{brazilianType && brazilianTypeSynonym}</span>
         </p>
       </div>
-    </Link>
+    </a>
   );
 };
 
