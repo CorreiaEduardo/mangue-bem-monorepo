@@ -1,13 +1,13 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.entity;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.basic.CuratedEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -64,4 +64,7 @@ public class Specie extends CuratedEntity {
 
     @Column(name = "specieslink_id")
     private String speciesLinkId;
+
+    @OneToMany(mappedBy = "specie", fetch = FetchType.EAGER)
+    private List<Observation> observations;
 }

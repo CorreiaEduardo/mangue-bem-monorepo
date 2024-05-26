@@ -13,12 +13,8 @@ import java.util.List;
 public interface ObservationRepository extends JpaRepositoryImplementation<Observation, Long> {
     @Query("SELECT new br.uneb.dcet.si20192.tees.manguebem.api.dto.UFReportItemDTO(o.brazilianFederativeUnit, COUNT(DISTINCT o.specie.id)) " +
             "FROM Observation o " +
+            "WHERE (:specieId IS NULL OR o.specie.id = :specieId) " +
+            "AND (:bemClassification IS NULL OR o.specie.bemClassification = :bemClassification) " +
             "GROUP BY o.brazilianFederativeUnit")
-    List<UFReportItemDTO> countSpeciesByFederativeUnit();
-
-    @Query("SELECT new br.uneb.dcet.si20192.tees.manguebem.api.dto.UFReportItemDTO(o.brazilianFederativeUnit, COUNT(DISTINCT o.specie.id)) " +
-            "FROM Observation o " +
-            "WHERE o.specie.id = :specieId " +
-            "GROUP BY o.brazilianFederativeUnit")
-    List<UFReportItemDTO> countSpeciesByFederativeUnitAndSpecie(@Param("specieId") String specieId);
+    List<UFReportItemDTO> countSpeciesByFederativeUnit(@Param("specieId") String specieId, @Param("bemClassification") String bemClassification);
 }

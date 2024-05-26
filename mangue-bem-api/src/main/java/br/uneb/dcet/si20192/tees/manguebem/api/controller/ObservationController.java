@@ -24,8 +24,9 @@ public class ObservationController {
     }
 
     @GetMapping("/uf-report")
-    public ResponseEntity<UFReportDTO> getUFReport(@RequestParam(required = false) String specieId) {
-        final UFReportDTO dto = observationService.calculateUFReport(specieId);
+    public ResponseEntity<UFReportDTO> getUFReport(@RequestParam(required = false) String specieId,
+                                                   @RequestParam(required = false) String bemClassification) {
+        final UFReportDTO dto = observationService.calculateUFReport(specieId, bemClassification);
         return ResponseEntity.ok(dto);
     }
 

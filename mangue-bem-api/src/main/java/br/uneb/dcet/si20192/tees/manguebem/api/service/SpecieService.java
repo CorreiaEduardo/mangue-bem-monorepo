@@ -1,12 +1,17 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.service;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.SpecieDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.Observation;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Specie;
 import br.uneb.dcet.si20192.tees.manguebem.api.repository.SpecieRepository;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.basic.BaseService;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 @Service
 public class SpecieService extends BaseService<Specie, SpecieDTO> {
@@ -44,6 +49,28 @@ public class SpecieService extends BaseService<Specie, SpecieDTO> {
                 dto.getTaxonGenus(),
                 dto.getTaxonName()
         );
+    }
+
+    @Override
+    protected Specification<Specie> parseSpecification(MultiValueMap<String, String> parameters) {
+        final Specification<Specie> specification = super.parseSpecification(parameters);
+
+        if (parameters.containsKey("observations.brazilianFederativeUnit")) {
+            final String brazilianFederativeUnitFilter = parameters.getFirst("observations.brazilianFederativeUnit");
+            final String brazilianFederativeUnit = parameters.getFirst("observations.brazilianFederativeUnit")
+                    .substring(brazilianFederativeUnitFilter.indexOf(":") + 1, brazilianFederativeUnitFilter.length());
+
+            return specification == null ? hasObservationWithState(brazilianFederativeUnit) : specification.and(hasObservationWithState(brazilianFederativeUnit));
+        }
+
+        return specification;
+    }
+
+    public static Specification<Specie> hasObservationWithState(String brazilianFederativeUnit) {
+        return (root, query, criteriaBuilder) -> {
+            Join<Specie, Observation> observations = root.join("observations", JoinType.INNER);
+            return criteriaBuilder.equal(observations.get("brazilianFederativeUnit"), brazilianFederativeUnit);
+        };
     }
 
     @Override
