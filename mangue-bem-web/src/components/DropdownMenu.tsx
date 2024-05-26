@@ -40,12 +40,20 @@ const DropdownMenu = ({ width = "w-40", selectedOptions, setSelectedOptions, isO
   
   const biomaOptions = [
     { code: '', name: 'Qualquer bioma' },
-    { code: 'Amazônia', name: 'Amazônia' },
-    { code: 'Cerrado', name: 'Cerrado' },
-    { code: 'Mata Atlântica', name: 'Mata Atlântica' },
-    { code: 'Caatinga', name: 'Caatinga' },
+    { code: 'Atlantic Rainforest', name: 'Atlantic Rainforest' },
+    { code: 'Amazon Rainforest', name: 'Amazon Rainforest' },
+    { code: 'Pinus Plantation', name: 'Pinus Plantation' },
+    { code: 'Eucalyptus Plantation', name: 'Eucalyptus Plantation' },
+    { code: 'Exotic Trees', name: 'Exotic Trees' },
+    { code: 'Pecan Plantation', name: 'Pecan Plantation' },
     { code: 'Pampa', name: 'Pampa' },
-    { code: 'Pantanal', name: 'Pantanal' }
+    { code: 'Corn Plantation', name: 'Corn Plantation' },
+    { code: 'Pampa, Sand Dunes', name: 'Pampa, Sand Dunes' },
+    { code: 'Cerrado', name: 'Cerrado' },
+    { code: 'On Cattle Dung', name: 'On Cattle Dung' },
+    { code: 'Cerrado, Caatinga', name: 'Cerrado, Caatinga' },
+    { code: 'Caatinga', name: 'Caatinga' },
+    { code: 'Cerrado, Pampa', name: 'Cerrado, Pampa' }
   ];
   
   const classificacaoOptions = [

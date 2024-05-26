@@ -1,6 +1,7 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.service;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.SpecieDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.Biome;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Observation;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Specie;
 import br.uneb.dcet.si20192.tees.manguebem.api.repository.SpecieRepository;
@@ -53,14 +54,22 @@ public class SpecieService extends BaseService<Specie, SpecieDTO> {
 
     @Override
     protected Specification<Specie> parseSpecification(MultiValueMap<String, String> parameters) {
-        final Specification<Specie> specification = super.parseSpecification(parameters);
+        Specification<Specie> specification = super.parseSpecification(parameters);
 
         if (parameters.containsKey("observations.brazilianFederativeUnit")) {
             final String brazilianFederativeUnitFilter = parameters.getFirst("observations.brazilianFederativeUnit");
             final String brazilianFederativeUnit = parameters.getFirst("observations.brazilianFederativeUnit")
                     .substring(brazilianFederativeUnitFilter.indexOf(":") + 1, brazilianFederativeUnitFilter.length());
 
-            return specification == null ? hasObservationWithState(brazilianFederativeUnit) : specification.and(hasObservationWithState(brazilianFederativeUnit));
+            specification = specification == null ? hasObservationWithState(brazilianFederativeUnit) : specification.and(hasObservationWithState(brazilianFederativeUnit));
+        }
+
+        if (parameters.containsKey("observations.biome.name")) {
+            final String biomeNameFilter = parameters.getFirst("observations.biome.name");
+            final String biomeName = parameters.getFirst("observations.biome.name")
+                    .substring(biomeNameFilter.indexOf(":") + 1, biomeNameFilter.length());
+
+            specification = specification == null ? hasObservationWithBiome(biomeName) : specification.and(hasObservationWithBiome(biomeName));
         }
 
         return specification;
@@ -70,6 +79,14 @@ public class SpecieService extends BaseService<Specie, SpecieDTO> {
         return (root, query, criteriaBuilder) -> {
             Join<Specie, Observation> observations = root.join("observations", JoinType.INNER);
             return criteriaBuilder.equal(observations.get("brazilianFederativeUnit"), brazilianFederativeUnit);
+        };
+    }
+
+    public static Specification<Specie> hasObservationWithBiome(String biomeName) {
+        return (root, query, criteriaBuilder) -> {
+            Join<Specie, Observation> observations = root.join("observations", JoinType.INNER);
+            Join<Observation, Biome> biomes = observations.join("biome", JoinType.INNER);
+            return criteriaBuilder.equal(biomes.get("name"), biomeName);
         };
     }
 

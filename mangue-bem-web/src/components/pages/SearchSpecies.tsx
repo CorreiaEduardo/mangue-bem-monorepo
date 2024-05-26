@@ -51,21 +51,21 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       }
 
       if (selectedOptions.bioma) {
-        urlParams.set("biome.name", 'EQ:' + selectedOptions.bioma);
+        urlParams.set("observations.biome.name", 'EQ:' + selectedOptions.bioma);
       } else {
-        urlParams.delete("biome.name");
+        urlParams.delete("observations.biome.name");
       }
 
       if (selectedOptions.classificacao) {
-        urlParams.set("specie.bemClassification", 'EQ:' + selectedOptions.classificacao);
+        urlParams.set("bemClassification", 'EQ:' + selectedOptions.classificacao);
       } else {
-        urlParams.delete("specie.bemClassification");
+        urlParams.delete("bemClassification");
       }
 
       if (searchTerm.length > 0) {
-        urlParams.set("taxonFamily", 'LK:' + searchTerm);
+        urlParams.set("taxonName", 'LK:' + searchTerm);
       } else {
-        urlParams.delete("taxonFamily");
+        urlParams.delete("taxonName");
       }
 
       navigate({ search: urlParams.toString() });

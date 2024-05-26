@@ -35,7 +35,7 @@ public class Observation extends CuratedEntity {
     @Column
     private Double lng;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "biome_id")
     private Biome biome;
 
