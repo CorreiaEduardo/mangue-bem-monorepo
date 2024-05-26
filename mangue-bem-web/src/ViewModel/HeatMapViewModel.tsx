@@ -48,7 +48,7 @@ export const getStateIdFromName = (stateName):string => {
 };
 
 export const adjustColorIntensity = (hexColor: string, value: number):string => {
-    const limitedValue = Math.max(0, Math.min(value, 50));
+    const limitedValue = Math.max(0, Math.min(value, 100));
     const percentageOfValue = (limitedValue / 100) * 100;
     if(limitedValue === 0) return '#88a4bc'
 
@@ -77,8 +77,7 @@ export const adjustColorIntensity = (hexColor: string, value: number):string => 
 
 export const getSpeciesCounter = (setSpeciesCounter, bemId) => {
   fetch('http://localhost:8080/v1/observations/uf-report').then((data) => {
-    data.json().then((jsonData) => {
-      console.log(jsonData)
+    data.json().then((jsonData :{items:ufReport[]}) => {
       const speciesCounter:SpeciesCounter[] = []
       for(const item of jsonData.items) {
         const stateColor = adjustColorIntensity(
