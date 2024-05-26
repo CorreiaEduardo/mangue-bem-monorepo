@@ -18,7 +18,7 @@ export const appRoutes = [
     component: Home,
   },
   {
-    path: "/observation/:id",
+    path: "/species/:id",
     component: Observation,
   },
 ];

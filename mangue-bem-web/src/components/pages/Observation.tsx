@@ -38,13 +38,13 @@ const Observation = () => {
             </div>
             <div className='w-1/3 flex flex-col gap-5'>
               <div className='flex justify-center'>
-                <span className='text-white text-lg'><span className='font-bold'>{response?.specie?.commonName}</span> (<span className='italic underline'>{response?.specie?.taxonGenus} {response?.specie?.taxonName}</span>)</span>
+                <span className='text-white text-lg'><span className='font-bold'>{response?.commonName}</span> (<span className='italic underline'>{response?.taxonGenus} {response?.taxonName}</span>)</span>
               </div>
               <div className='bg-gray-200 p-5 rounded'>
                 <div className='flex flex-col'>
                   {/* <span className='font-bold'>Informações</span> */}
                   <span>
-                    {response?.specie?.description}
+                    {response?.description}
                   </span>
                 </div>
               </div>
@@ -55,10 +55,7 @@ const Observation = () => {
                     {/* TODO: icons */}
                   </span>
                   <small>
-                    id_especie: {response?.specie?.id}
-                  </small>
-                  <small>
-                    id_observação: {response?.id}
+                    id_especie: {response?.id}
                   </small>
                 </div>
               </div>

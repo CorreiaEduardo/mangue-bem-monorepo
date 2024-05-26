@@ -7,8 +7,8 @@ const useObservationViewModel = (): [
 ] => {
   const [error, setError] = useState(false);
   const [response, setResponse] = useState<any>();
-  const baseUrl = "http://localhost:8080/v1/observations";
-  const iNaturalistTaxaUrl = "https://api.inaturalist.org/v1/observations/";
+  const baseUrl = "http://localhost:8080/v1/species";
+  const iNaturalistTaxaUrl = "https://api.inaturalist.org/v1/observations?taxon_id=";
   const ufReportUrl =
     "http://localhost:8080/v1/observations/uf-report?specieId=";
 
@@ -16,23 +16,23 @@ const useObservationViewModel = (): [
     try {
       const response = await axios.get(baseUrl + "/" + id);
       response.data.observation = {};
-      if (!!response.data?.specie?.inaturalistId) {
+      if (!!response.data?.inaturalistId) {
         const iNaturalistTaxaResponse = await axios.get(
-          iNaturalistTaxaUrl + response.data.specie.inaturalistId,
+          iNaturalistTaxaUrl + response.data.inaturalistId,
         );
         response.data.taxa = iNaturalistTaxaResponse.data?.results[0]?.taxon;
         response.data.observation = iNaturalistTaxaResponse.data?.results[0];
       }
 
-      if (!!response.data?.specie?.id) {
+      if (!!response.data?.id) {
         const ufReportResponse = await axios.get(
-          ufReportUrl + response.data?.specie?.id,
+          ufReportUrl + response.data?.id,
         );
         response.data.observation.summary = ufReportResponse.data?.items;
 
         const literatureObservationsResponse = await axios.get(baseUrl, {
           params: {
-            "specie.id": "EQ:" + response.data?.specie?.id,
+            "specie.id": "EQ:" + response.data?.id,
             type: "EQ:LITERATURE",
           },
         });
@@ -41,7 +41,7 @@ const useObservationViewModel = (): [
 
         const inaturalistObservationsResponse = await axios.get(baseUrl, {
           params: {
-            "specie.id": "EQ:" + response.data?.specie?.id,
+            "specie.id": "EQ:" + response.data?.id,
             type: "EQ:INATURALIST",
           },
         });
@@ -50,7 +50,7 @@ const useObservationViewModel = (): [
 
         const specieslinkObservationsResponse = await axios.get(baseUrl, {
           params: {
-            "specie.id": "EQ:" + response.data?.specie?.id,
+            "specie.id": "EQ:" + response.data?.id,
             type: "EQ:SPECIES_LINK",
           },
         });

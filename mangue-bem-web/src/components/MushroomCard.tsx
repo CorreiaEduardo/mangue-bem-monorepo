@@ -34,7 +34,7 @@ const MushroomCard = ({
 }: Mushroom) => {
   return (
     <Link
-      to={`/observation/${inaturalistId}`}
+      to={`/species/${id}`}
       className="flex h-96 w-80 flex-col items-center justify-center overflow-hidden rounded-lg border bg-white p-3 shadow-lg transition-transform hover:scale-105"
     >
       <img
