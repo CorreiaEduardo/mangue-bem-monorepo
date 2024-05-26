@@ -91,7 +91,7 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   return (
     <div>
       <div
-        className="absolute h-screen w-full bg-cover bg-center"
+        className="relative left-0 top-0 h-screen w-full bg-cover bg-center overflow-y-scroll"
         style={{ backgroundImage: "url('/bg.jpeg')" }}
       >
         <div className="relative">

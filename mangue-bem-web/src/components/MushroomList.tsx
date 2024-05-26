@@ -22,9 +22,9 @@ const MushroomList = ({
   }, [inView]);
 
   return (
-    <div className="mx-16 my-10 rounded-2xl bg-gray-200/50 p-6">
+    <div className="mx-16 my-10 rounded-2xl bg-gray-200/50 p-6 ">
       <div className="flex flex-row-reverse"></div>
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <ul className="grid grid-cols-1 content-center justify-items-center gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {mushroomPages?.map((page: any) =>
           page?.content?.map((mushroom: any) => (
             <li key={mushroom.id}>
