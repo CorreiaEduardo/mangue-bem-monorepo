@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -35,8 +36,10 @@ public class ObservationService extends BaseService<Observation, ObservationDTO>
     }
 
     @Async
-    public void createAsync(ObservationDTO observationDTO) {
+    public CompletableFuture<Void> createAsync(ObservationDTO observationDTO) {
         save(observationDTO);
+
+        return CompletableFuture.completedFuture(null);
     }
 
     public UFReportDTO calculateUFReport(String specieId, String bemClassification) {

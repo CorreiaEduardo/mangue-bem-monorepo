@@ -26,7 +26,7 @@ public class BiomeService {
         return convert(biome);
     }
 
-    private BiomeDTO convert(Biome biome) {
+    protected BiomeDTO convert(Biome biome) {
         return modelMapper.map(biome, BiomeDTO.class);
     }
 }
