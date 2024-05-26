@@ -76,7 +76,7 @@ export const adjustColorIntensity = (hexColor: string, value: number):string => 
 }
 
 export const getSpeciesCounter = (setSpeciesCounter, bemId) => {
-  fetch('http://localhost:8080/v1/observations/uf-report').then((data) => {
+  fetch('http://localhost:8080/v1/observations/uf-report?bemClassification=BEM'+(bemId + 1)).then((data) => {
     data.json().then((jsonData :{items:ufReport[]}) => {
       const speciesCounter:SpeciesCounter[] = []
       for(const item of jsonData.items) {
@@ -94,12 +94,6 @@ export const getSpeciesCounter = (setSpeciesCounter, bemId) => {
       setSpeciesCounter(speciesCounter)
     })
   })
-  /*
-  return states.map(state => ({
-      speciesCount: Math.floor(Math.random() * 50),
-      state
-  }));
-  */
 };
 
 export const Bems = [
