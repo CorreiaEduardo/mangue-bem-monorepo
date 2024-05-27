@@ -38,15 +38,17 @@ const statesMap = {
 
 const fillMapArray = (speciesCounter) => {
   for (const state in statesMap) {
-    if (speciesCounter.some((specie) => specie.state === state)) {
+    console.log(statesMap[state])
+    if (!speciesCounter.some((specie) => specie.state === statesMap[state])) {
       speciesCounter.push({
         speciesCount: 0,
-        state,
+        state: statesMap[state],
         bemId: 0,
         stateColor: "#88a4bc",
       });
     }
   }
+  return speciesCounter
 };
 
 export const getStateIdFromName = (stateName): string => {
@@ -110,8 +112,8 @@ export const getSpeciesCounter = (setSpeciesCounter, bemId) => {
           stateColor,
         });
       }
-      fillMapArray(speciesCounter)
-      setSpeciesCounter(speciesCounter);
+      // fillMapArray(speciesCounter)
+      setSpeciesCounter(fillMapArray(speciesCounter));
     });
   });
 };
