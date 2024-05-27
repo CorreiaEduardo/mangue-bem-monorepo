@@ -18,15 +18,15 @@ const getMushrooms = async (pageParam: number): Promise<Page | undefined> => {
   const baseUrl = "http://localhost:8080/v1/species";
 
   const getAllParamsFromUrl = (url: string): Record<string, string> => {
-    const queryString = url.split('?')[1];
+    const queryString = url.split("?")[1];
     if (!queryString) return {};
 
-    const paramsArray = queryString.split('&');
+    const paramsArray = queryString.split("&");
     const params: Record<string, string> = {};
 
-    paramsArray.forEach(param => {
-      const [key, value] = param.split('=');
-      if (key !== 'page') {
+    paramsArray.forEach((param) => {
+      const [key, value] = param.split("=");
+      if (key !== "page") {
         params[key] = decodeURIComponent(value);
       }
     });
@@ -35,14 +35,12 @@ const getMushrooms = async (pageParam: number): Promise<Page | undefined> => {
   };
 
   const allParams = getAllParamsFromUrl(window.location.search);
-  console.log({ page: pageParam, ...allParams });
 
   try {
     const speciesReponse = await axios.get(baseUrl, {
       params: { page: pageParam, ...allParams },
     });
-    const mushroomData = speciesReponse.data;
-
+    let mushroomData = speciesReponse.data;
     let mushroomIds = "";
 
     mushroomIds = encodeURIComponent(
@@ -61,10 +59,26 @@ const getMushrooms = async (pageParam: number): Promise<Page | undefined> => {
       (a: any, b: any) => a.inaturalistId - b.inaturalistId,
     );
 
+    const emptyNaturalistIdMushrooms = mushroomData.content.filter(
+      (mushroom: any) => mushroom.inaturalistId == "",
+    );
+
+    mushroomData.content = mushroomData.content.filter(
+      (mushroom: any) => mushroom.inaturalistId != "",
+    );
+
     for (let i = 0; i < inaturalistResponse.data.results.length; i++) {
       mushroomData.content[i].taxaPhoto =
         inaturalistResponse.data.results[i].default_photo?.medium_url;
     }
+    mushroomData.content = [
+      ...mushroomData.content,
+      ...emptyNaturalistIdMushrooms,
+    ];
+
+    mushroomData.content = mushroomData.content.sort((a: any, b: any) =>
+      a.taxonGenus.localeCompare(b.taxonGenus),
+    );
     return mushroomData;
   } catch (error) {
     console.error(error);
@@ -75,7 +89,8 @@ const getMushrooms = async (pageParam: number): Promise<Page | undefined> => {
 const useGetMushroomAutoComplete = (): [any, () => any] => {
   const { data, status, fetchNextPage } = useInfiniteQuery({
     queryKey: ["mushrooms"],
-    queryFn: ({ pageParam = 0 }: { pageParam?: number }) => getMushrooms(pageParam),
+    queryFn: ({ pageParam = 0 }: { pageParam?: number }) =>
+      getMushrooms(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       return null;
