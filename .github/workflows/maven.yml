@@ -3,11 +3,10 @@ name: mangue-bem
 on:
   push:
     branches:
-      - 'master'
-      - 'feature/ci'
+      - 'main'
   pull_request:
     branches:
-      - 'master'
+      - 'main'
 
 jobs:
   build:
