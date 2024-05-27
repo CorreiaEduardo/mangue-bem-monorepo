@@ -1,0 +1,15 @@
+ALTER TABLE species
+    ADD COLUMN taxon_kingdom VARCHAR(100),
+    ADD COLUMN taxon_phylum VARCHAR(100),
+    ADD COLUMN taxon_class VARCHAR(100),
+    ADD COLUMN taxon_order VARCHAR(100),
+    ADD COLUMN taxon_family VARCHAR(100),
+    ADD COLUMN taxon_genus VARCHAR(100),
+    ADD COLUMN taxon_name VARCHAR(100),
+    ADD COLUMN bem_classification VARCHAR(10),
+    ADD COLUMN iucn VARCHAR(255),
+    ADD COLUMN authors VARCHAR(255),
+    ADD COLUMN brazilian_type VARCHAR(5),
+    ADD COLUMN brazilian_type_synonym VARCHAR(5),
+    ADD COLUMN inaturalist_id VARCHAR(50),
+    RENAME COLUMN popular_name TO common_name;

@@ -22,6 +22,8 @@ WORKDIR /opt
 
 # Copy jar from previous stage
 COPY --from=builder /home/app/target/*.jar app.jar
+COPY --from=builder /home/app/src/main/resources/db/migration /home/flyway/sql
+ENV FLYWAY_LOCATIONS=filesystem:user/home/flyway/sql/
 
 ## Start
 EXPOSE 8080
