@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Card from "../Card";
 import useLoginViewModel from "../../ViewModel/useLoginViewModel";
 import { useNavigate } from "react-router-dom";
@@ -16,14 +16,18 @@ const Login = ({
   const [{ error, response, stat }, handleSubmit] = useLoginViewModel();
   const navigate = useNavigate();
 
-  const handleFormSubmit = async (e: { preventDefault: () => void }) => {
+  const handleFormSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    await handleSubmit({ ...user });
+    handleSubmit({ ...user });
+  };
+
+  useEffect(() => {
     if (stat === 200) {
+      console.log("if");
       setIsloggedIn(true);
       navigate("/", { replace: true });
     }
-  };
+  }, [stat]);
 
   return (
     //TODO mobile version
