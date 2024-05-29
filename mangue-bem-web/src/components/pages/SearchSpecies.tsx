@@ -3,10 +3,12 @@ import SearchBar from "../Search";
 import appString from "../../utils/appStrings";
 import MushroomList from "../MushroomList";
 import DefaultButton from "../DefaultButton";
-import {useGetMushroomAutoComplete, useGetMushroomData} from "../../ViewModel/useMushroomViewModel";
+import {
+  useGetMushroomAutoComplete,
+  useGetMushroomData,
+} from "../../ViewModel/useMushroomViewModel";
 import DropdownMenu from "../DropdownMenu";
-import { useNavigate } from "react-router-dom";
-import { useInView } from "react-intersection-observer";
+import { useSearchParams } from "react-router-dom";
 
 const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const urlParams = new URLSearchParams();
@@ -14,9 +16,12 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const [mushroomList, fetchNextPage, isFetchingNextPage] =
     useGetMushroomData();
 
-  const [mushroomAutoComplete, fetchmushroomAutoComplete] = useGetMushroomAutoComplete();
+  const [mushroomAutoComplete, fetchmushroomAutoComplete] =
+    useGetMushroomAutoComplete();
 
-  const [autocompleteResults, setAutocompleteResults] = useState<{ id: number, taxonName: string }[]>([]);;
+  const [autocompleteResults, setAutocompleteResults] = useState<
+    { id: number; taxonName: string }[]
+  >([]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -28,63 +33,50 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  let [searchParams, setSearchParams] = useSearchParams();
   //TODO: typescript type
 
-  useEffect(() => {
-    if (searchTerm.length > 2) {
-      fetchmushroomAutoComplete().then(() => {
-        setAutocompleteResults(mushroomAutoComplete[0].content.slice(0, 3));
-      });
-    } else {
-      setAutocompleteResults([]);
-    }
-  }, [searchTerm, fetchmushroomAutoComplete]);
+  // useEffect(() => {
+  //   if (searchTerm.length > 2) {
+  //     fetchmushroomAutoComplete().then(() => {
+  //       setAutocompleteResults(mushroomAutoComplete[0].content.slice(0, 3));
+  //     });
+  //   } else {
+  //     setAutocompleteResults([]);
+  //   }
+  // }, [searchTerm, fetchmushroomAutoComplete]);
 
-  const navigate = useNavigate();
+  if (selectedOptions.uf) {
+    urlParams.set(
+      "observations.brazilianFederativeUnit",
+      "EQ:" + selectedOptions.uf,
+    );
+  } else {
+    urlParams.delete("observations.brazilianFederativeUnit");
+  }
 
-  useEffect(() => {
-    const updateUrlWhithFilters = () => {
-      if (selectedOptions.uf) {
-        urlParams.set("observations.brazilianFederativeUnit",'EQ:' + selectedOptions.uf);
-      } else {
-        urlParams.delete("observations.brazilianFederativeUnit");
-      }
+  if (selectedOptions.bioma) {
+    urlParams.set("observations.biome.name", "EQ:" + selectedOptions.bioma);
+  } else {
+    urlParams.delete("observations.biome.name");
+  }
 
-      if (selectedOptions.bioma) {
-        urlParams.set("observations.biome.name", 'EQ:' + selectedOptions.bioma);
-      } else {
-        urlParams.delete("observations.biome.name");
-      }
+  if (selectedOptions.classificacao) {
+    urlParams.set("bemClassification", "EQ:" + selectedOptions.classificacao);
+  } else {
+    urlParams.delete("bemClassification");
+  }
 
-      if (selectedOptions.classificacao) {
-        urlParams.set("bemClassification", 'EQ:' + selectedOptions.classificacao);
-      } else {
-        urlParams.delete("bemClassification");
-      }
-
-      if (searchTerm.length > 0) {
-        urlParams.set("taxonName", 'LK:' + searchTerm);
-      } else {
-        urlParams.delete("taxonName");
-      }
-
-      navigate({ search: urlParams.toString() });
-    };
-
-    updateUrlWhithFilters(); // Executa a função inicialmente
-
-    // Esta função será chamada sempre que selectedOptions, searchTerm mudar
-    const unsubscribe = () => {
-      updateUrlWhithFilters();
-    };
-
-    return () => unsubscribe(); // Limpeza do useEffect
-  }, [selectedOptions, searchTerm]);
+  if (searchTerm.length > 0) {
+    urlParams.set("taxonName", "LK:" + searchTerm);
+  } else {
+    urlParams.delete("taxonName");
+  }
 
   return (
     <div>
       <div
-        className="relative left-0 top-0 h-screen w-full bg-cover bg-center overflow-y-scroll"
+        className="relative left-0 top-0 h-screen w-full overflow-y-scroll bg-cover bg-center"
         style={{ backgroundImage: "url('/bg.jpeg')" }}
       >
         <div className="relative">
@@ -95,7 +87,11 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                   text="Buscar"
                   width="w-40 "
                   animation={false}
-                  onClick={fetchNextPage}
+                  onClick={() => {
+                    if (urlParams.toString() != "") {
+                      setSearchParams(urlParams.toString());
+                    }
+                  }}
                 />
                 <div>
                   <SearchBar
@@ -106,9 +102,9 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                       setIsDropdownOpen(false);
                     }}
                   />
-                  {autocompleteResults.length > 0 && (
+                  {/* {autocompleteResults.length > 0 && (
                     <div className="absolute z-10 mt-1 rounded-md border border-gray-300 bg-white shadow-lg">
-                      {autocompleteResults.map(mushroom => (
+                      {autocompleteResults.map((mushroom) => (
                         <div
                           key={mushroom.id}
                           className="px-4 py-2 hover:bg-gray-200"
@@ -117,7 +113,7 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                         </div>
                       ))}
                     </div>
-                  )}
+                  )} */}
                 </div>
                 <DropdownMenu
                   width="40"

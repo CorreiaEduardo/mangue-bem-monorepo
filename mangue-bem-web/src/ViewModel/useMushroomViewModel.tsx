@@ -13,32 +13,16 @@ interface Page {
   };
 }
 
-const getMushrooms = async (pageParam: number): Promise<Page | undefined> => {
+const getMushrooms = async (
+  pageParam: number,
+  queryParams?: Record<string, string>,
+): Promise<Page | undefined> => {
   const iNaturalistTaxaUrl = "https://api.inaturalist.org/v1/taxa/";
   const baseUrl = "http://localhost:8080/v1/species";
 
-  const getAllParamsFromUrl = (url: string): Record<string, string> => {
-    const queryString = url.split("?")[1];
-    if (!queryString) return {};
-
-    const paramsArray = queryString.split("&");
-    const params: Record<string, string> = {};
-
-    paramsArray.forEach((param) => {
-      const [key, value] = param.split("=");
-      if (key !== "page") {
-        params[key] = decodeURIComponent(value);
-      }
-    });
-
-    return params;
-  };
-
-  const allParams = getAllParamsFromUrl(window.location.search);
-
   try {
     const speciesReponse = await axios.get(baseUrl, {
-      params: { page: pageParam, ...allParams },
+      params: { page: pageParam, ...queryParams },
     });
     let mushroomData = speciesReponse.data;
     let mushroomIds = "";
@@ -86,9 +70,27 @@ const getMushrooms = async (pageParam: number): Promise<Page | undefined> => {
   }
 };
 
+const getAllParamsFromUrl = (url: string): Record<string, string> => {
+  const queryString = url.split("?")[1];
+  if (!queryString) return {};
+
+  const paramsArray = queryString.split("&");
+  const params: Record<string, string> = {};
+
+  paramsArray.forEach((param) => {
+    const [key, value] = param.split("=");
+    if (key !== "page") {
+      params[key] = decodeURIComponent(value);
+    }
+  });
+
+  return params;
+};
+
 const useGetMushroomAutoComplete = (): [any, () => any] => {
+  const allParams = getAllParamsFromUrl(window.location.search);
   const { data, status, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["mushrooms"],
+    queryKey: ["mushrooms", allParams],
     queryFn: ({ pageParam = 0 }: { pageParam?: number }) =>
       getMushrooms(pageParam),
     initialPageParam: 0,
@@ -106,9 +108,11 @@ const useGetMushroomData = (): [
   () => void,
   boolean,
 ] => {
+  const allParams = getAllParamsFromUrl(window.location.search);
+
   const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["mushrooms"],
-    queryFn: ({ pageParam = 0 }) => getMushrooms(pageParam),
+    queryKey: ["mushrooms", allParams],
+    queryFn: ({ pageParam = 0 }) => getMushrooms(pageParam, allParams),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       return lastPage?.pagination?.hasNext

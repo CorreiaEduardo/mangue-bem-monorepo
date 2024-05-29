@@ -12,7 +12,7 @@ function Navbar() {
   const searchPath = getPathForComponent(Home);
   const homePath = getPathForComponent(MushroomHeatMap);
 
-  console.log(location)
+  console.log(location);
 
   return (
     <nav className="navbar sticky flex h-20 w-screen items-center">
@@ -33,7 +33,7 @@ function Navbar() {
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
                     location.pathname === homePath
                       ? "bg-emerald-900 text-white"
-                      : "text-emerald-700 hover:bg-pink-500 hover:text-white"
+                      : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
                   }`}
                 >
                   {appString.pt.home}
@@ -43,7 +43,7 @@ function Navbar() {
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
                     location.pathname === searchPath
                       ? "bg-emerald-900 text-white"
-                      : "text-emerald-700 hover:bg-pink-500 hover:text-white"
+                      : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
                   }`}
                 >
                   {appString.pt.searchSpecies}
