@@ -11,7 +11,7 @@ const appString = {
     forgotPassword: "Esqueceu a senha?",
     login: "Seja Bem-vindo!",
     location: "Localização",
-    scientifcName: "Nome científico",
+    taxonName: "Nome científico",
     order: "Ordenar",
     invalidCredentials: "Email ou senha inválidos",
     register: "Cadastre-se",

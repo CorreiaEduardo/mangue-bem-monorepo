@@ -13,15 +13,10 @@ import { useSearchParams } from "react-router-dom";
 const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const urlParams = new URLSearchParams();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [mushroomList, fetchNextPage, isFetchingNextPage] =
     useGetMushroomData();
-
-  const [mushroomAutoComplete, fetchmushroomAutoComplete] =
-    useGetMushroomAutoComplete();
-
-  const [autocompleteResults, setAutocompleteResults] = useState<
-    { id: number; taxonName: string }[]
-  >([]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -32,19 +27,6 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   });
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  let [searchParams, setSearchParams] = useSearchParams();
-  //TODO: typescript type
-
-  // useEffect(() => {
-  //   if (searchTerm.length > 2) {
-  //     fetchmushroomAutoComplete().then(() => {
-  //       setAutocompleteResults(mushroomAutoComplete[0].content.slice(0, 3));
-  //     });
-  //   } else {
-  //     setAutocompleteResults([]);
-  //   }
-  // }, [searchTerm, fetchmushroomAutoComplete]);
 
   if (selectedOptions.uf) {
     urlParams.set(
@@ -73,6 +55,10 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     urlParams.delete("taxonName");
   }
 
+  const mushroomAutoComplete = useGetMushroomAutoComplete(
+    "?" + urlParams.toString(),
+  );
+
   return (
     <div>
       <div
@@ -88,32 +74,37 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                   width="w-40 "
                   animation={false}
                   onClick={() => {
-                    if (urlParams.toString() != "") {
-                      setSearchParams(urlParams.toString());
-                    }
+                    setSearchParams(urlParams.toString());
                   }}
                 />
                 <div>
                   <SearchBar
-                    searchLabel={appString.pt.scientifcName}
+                    searchLabel={appString.pt.taxonName}
                     searchTerm={searchTerm}
                     onChange={(term) => {
                       setSearchTerm(term);
                       setIsDropdownOpen(false);
                     }}
                   />
-                  {/* {autocompleteResults.length > 0 && (
-                    <div className="absolute z-10 mt-1 rounded-md border border-gray-300 bg-white shadow-lg">
-                      {autocompleteResults.map((mushroom) => (
-                        <div
-                          key={mushroom.id}
-                          className="px-4 py-2 hover:bg-gray-200"
-                        >
-                          {mushroom.taxonName}
+
+                  {
+                    //autocomplete Dropdown
+                    searchTerm.length > 2 &&
+                      mushroomAutoComplete.data?.content?.length && (
+                        <div className="absolute z-10 mt-1 w-64 rounded-md border border-gray-300 bg-white shadow-lg">
+                          {mushroomAutoComplete.data?.content
+                            .slice(0, 3)
+                            .map((mushroom) => (
+                              <div
+                                key={mushroom.id}
+                                className="px-4 py-2 hover:bg-emerald-500"
+                              >
+                                {mushroom.taxonName}
+                              </div>
+                            ))}
                         </div>
-                      ))}
-                    </div>
-                  )} */}
+                      )
+                  }
                 </div>
                 <DropdownMenu
                   width="40"

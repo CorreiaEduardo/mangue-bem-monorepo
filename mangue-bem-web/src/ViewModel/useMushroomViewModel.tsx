@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Mushroom } from "../Model/MushroomData";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 interface Page {
   content: Mushroom[];
@@ -72,6 +72,7 @@ const getMushrooms = async (
 
 const getAllParamsFromUrl = (url: string): Record<string, string> => {
   const queryString = url.split("?")[1];
+
   if (!queryString) return {};
 
   const paramsArray = queryString.split("&");
@@ -87,20 +88,14 @@ const getAllParamsFromUrl = (url: string): Record<string, string> => {
   return params;
 };
 
-const useGetMushroomAutoComplete = (): [any, () => any] => {
-  const allParams = getAllParamsFromUrl(window.location.search);
-  const { data, status, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["mushrooms", allParams],
-    queryFn: ({ pageParam = 0 }: { pageParam?: number }) =>
-      getMushrooms(pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => {
-      return null;
-    },
-  });
-  const mushroomList = data?.pages;
+const useGetMushroomAutoComplete = (queryString: string) => {
+  const queryParams = getAllParamsFromUrl(queryString);
 
-  return [mushroomList, fetchNextPage];
+  const autocompleteMushrooms = useQuery<Page | undefined>({
+    queryKey: ["autocompleteMushrooms", queryParams],
+    queryFn: () => getMushrooms(0, queryParams),
+  });
+  return autocompleteMushrooms;
 };
 
 const useGetMushroomData = (): [
