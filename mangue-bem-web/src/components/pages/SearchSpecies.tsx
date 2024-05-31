@@ -9,6 +9,7 @@ import {
 } from "../../ViewModel/useMushroomViewModel";
 import DropdownMenu from "../DropdownMenu";
 import { useSearchParams } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner";
 
 const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const urlParams = new URLSearchParams();
@@ -122,6 +123,7 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
           getMushroom={fetchNextPage}
           isFetchingNextPage={isFetchingNextPage}
         />
+        {isFetchingNextPage && <LoadingSpinner />}
       </div>
     </div>
   );

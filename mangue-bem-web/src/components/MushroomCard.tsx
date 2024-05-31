@@ -35,13 +35,9 @@ const MushroomCard = ({
   return (
     <a
       href={`/species/${id}`}
-      className="flex h-96 w-80 flex-col items-center justify-center overflow-hidden rounded-lg border bg-white p-3 shadow-lg transition-transform hover:scale-105"
+      className="flex h-96 w-72 flex-col items-center justify-center overflow-hidden rounded-lg bg-white shadow-lg transition-transform hover:scale-105"
     >
-      <img
-        src={taxaPhoto}
-        alt=""
-        className=" h-full w-full rounded-lg object-cover"
-      />
+      <img src={taxaPhoto} alt="" className=" h-full w-full object-cover" />
       <div className="flex flex-col items-center justify-center p-4">
         <h2 className="col mb-2  text-start text-xl font-bold italic">
           {taxonGenus + " " + taxonName}
