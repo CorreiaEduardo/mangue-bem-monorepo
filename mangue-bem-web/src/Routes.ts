@@ -2,6 +2,7 @@ import Login from "./components/pages/Login";
 import MushroomHeatMap from "./components/pages/MushroomHeatMap";
 import Observation from "./components/pages/Observation";
 import Home from "./components/pages/SearchSpecies";
+import UserRegister from "./components/pages/UserRegister";
 
 export const appRoutes = [
   {
@@ -20,6 +21,10 @@ export const appRoutes = [
   {
     path: "/species/:id",
     component: Observation,
+  },
+  {
+    path: "/register",
+    component: UserRegister,
   },
 ];
 

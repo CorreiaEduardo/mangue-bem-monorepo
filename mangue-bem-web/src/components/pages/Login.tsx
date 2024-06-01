@@ -12,7 +12,7 @@ const Login = ({
   setIsloggedIn: Dispatch<SetStateAction<boolean>>;
   isLoggedIn: boolean;
 }) => {
-  const [user, setUser] = useState({ email: "", password: "" });
+  const [user, setUser] = useState({ name: "", email: "", password: "" });
   const [{ error, response, stat }, handleSubmit] = useLoginViewModel();
   const navigate = useNavigate();
 
@@ -23,7 +23,6 @@ const Login = ({
 
   useEffect(() => {
     if (stat === 200) {
-      console.log("if");
       setIsloggedIn(true);
       navigate("/", { replace: true });
     }
@@ -35,7 +34,7 @@ const Login = ({
       <div className="flex w-full items-center justify-center  bg-emerald-700 p-5 md:w-1/2">
         <Card>
           <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            {appString.pt.login}
+            {appString.pt.loginWelcome}
           </h2>
           <div className="mt-5  sm:mx-4 sm:w-full sm:max-w-sm">
             <form
@@ -90,10 +89,17 @@ const Login = ({
                   {appString.pt.invalidCredentials}
                 </p>
               )}
-              <DefaultButton type="submit" text={appString.pt.login} />
+              <DefaultButton
+                type="submit"
+                text={appString.pt.registerWelcome}
+              />
 
               <hr className="my-3 w-full border-gray-500" />
-              <DefaultButton text={appString.pt.register} width="w-1/2" />
+              <DefaultButton
+                text={appString.pt.register}
+                width="w-1/2"
+                onClick={() => navigate("/register", { replace: true })}
+              />
             </form>
           </div>
         </Card>

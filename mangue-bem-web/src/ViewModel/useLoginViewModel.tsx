@@ -4,7 +4,7 @@ import axios from "axios";
 
 const useLoginViewModel = (): [
   { error: boolean; response: string; stat: number },
-  ({ email, password }: User) => void,
+  ({ name, email, password }: User) => void,
 ] => {
   const [error, setError] = useState(false);
   const [response, setResponse] = useState("");
