@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface Mushroom {
   id: number;
@@ -33,24 +34,30 @@ const MushroomCard = ({
   brazilianTypeSynonym,
 }: Mushroom) => {
   return (
-    <a
-      href={`/species/${id}`}
-      className="flex h-96 w-72 flex-col items-center justify-center overflow-hidden rounded-lg bg-white shadow-lg transition-transform hover:scale-105"
-    >
-      <img src={taxaPhoto} alt="" className=" h-full w-full object-cover" />
-      <div className="flex flex-col items-center justify-center p-4">
-        <h2 className="col mb-2  text-start text-xl font-bold italic">
-          {taxonGenus + " " + taxonName}
-        </h2>
-        <p className="m-2 flex flex-col items-center justify-center gap-1 text-start  text-gray-400">
-          <span className="mb-3  text-start text-xl text-gray-700 ">
-            {commonName}
-          </span>
-          <span>{iucn}</span>
-          <span>{brazilianType && brazilianTypeSynonym}</span>
-        </p>
-      </div>
-    </a>
+    <Link to={`/species/${id}`}>
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.5 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="flex h-96 w-72 flex-col items-center justify-center overflow-hidden rounded-lg bg-white shadow-lg transition-transform"
+      >
+        <img src={taxaPhoto} alt="" className="h-full w-full object-cover" />
+        <div className="flex flex-col items-center justify-center p-4">
+          <h2 className="col mb-2 text-start text-xl font-bold italic">
+            {taxonGenus + " " + taxonName}
+          </h2>
+          <p className="m-2 flex flex-col items-center justify-center gap-1 text-start text-gray-400">
+            <span className="mb-3 text-start text-xl text-gray-700">
+              {commonName}
+            </span>
+            <span>{iucn}</span>
+            <span>{brazilianType && brazilianTypeSynonym}</span>
+          </p>
+        </div>
+      </motion.div>
+    </Link>
   );
 };
 

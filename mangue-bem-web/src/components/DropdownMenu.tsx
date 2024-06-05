@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React, { useState } from "react";
 
 const DropdownMenu = ({
@@ -101,19 +102,29 @@ const DropdownMenu = ({
 
   return (
     <div className="relative">
-      <button
+      <motion.button
         className={`my-3 ${width} flex flex-row gap-1 rounded-md bg-emerald-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition duration-300 ease-in  hover:bg-pink-700 hover:shadow-lg  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
         onClick={toggleDropdown}
+        whileHover={{ scale: 1.05 }}
       >
         <span>Filtros</span>
         {appliedFiltersCount > 0 ? <span>({appliedFiltersCount})</span> : ""}
-      </button>
+      </motion.button>
       {isOpen && (
-        <div
+        <motion.div
+          initial={{ opacity: 0, scale: 0.3 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.2 }}
           className={`absolute z-10 ${width} -left-1/2 mt-2 -translate-x-1/2 transform rounded-md border border-gray-300 bg-white shadow-lg transition duration-300 ease-out`}
         >
           <div className="flex w-fit">
-            <div className="flex flex-col">
+            <motion.div
+              className="flex flex-col"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.2 }}
+            >
               <div className="col-span-1 bg-emerald-300 px-4 py-2 text-gray-700">
                 Estado
               </div>
@@ -128,8 +139,14 @@ const DropdownMenu = ({
                   </option>
                 ))}
               </select>
-            </div>
-            <div className="flex flex-col">
+            </motion.div>
+            {/* Bioma select */}
+            <motion.div
+              className="flex flex-col"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.2 }}
+            >
               <div className="col-span-1 bg-emerald-300 px-4 py-2 text-gray-700">
                 Bioma
               </div>
@@ -144,8 +161,14 @@ const DropdownMenu = ({
                   </option>
                 ))}
               </select>
-            </div>
-            <div className="flex flex-col">
+            </motion.div>
+            {/* Classificacao select */}
+            <motion.div
+              className="flex flex-col"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6, duration: 0.2 }}
+            >
               <div className="col-span-1 bg-emerald-300 px-4 py-2 text-gray-700">
                 Classificação
               </div>
@@ -160,9 +183,9 @@ const DropdownMenu = ({
                   </option>
                 ))}
               </select>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );
