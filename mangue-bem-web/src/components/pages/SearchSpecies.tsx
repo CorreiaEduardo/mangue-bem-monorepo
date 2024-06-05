@@ -67,18 +67,10 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         style={{ backgroundImage: "url('/bg.jpeg')" }}
       >
         <div className="relative">
-          <div className="my-5 grid grid-cols-4 gap-3">
-            <div className="col-span-2 col-start-2 ml-16">
+          <div className="my-5 flex grid-cols-4 justify-center gap-3">
+            <div className="col-span-5 col-start-2 ml-16">
               <div className="flex items-center justify-between gap-3">
-                <DefaultButton
-                  text="Buscar"
-                  width="w-40 "
-                  animation={false}
-                  onClick={() => {
-                    setSearchParams(urlParams.toString());
-                  }}
-                />
-                <div>
+                <div className="flex w-full flex-row items-center justify-center">
                   <SearchBar
                     searchLabel={appString.pt.taxonName}
                     searchTerm={searchTerm}
@@ -86,6 +78,16 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                       setSearchTerm(term);
                       setIsDropdownOpen(false);
                     }}
+                  />
+
+                  <DefaultButton
+                    text="Buscar"
+                    width="w-40 "
+                    animation={false}
+                    onClick={() => {
+                      setSearchParams(urlParams.toString());
+                    }}
+                    cssClass="h-full"
                   />
 
                   {
@@ -106,14 +108,14 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                         </div>
                       )
                   }
+                  <DropdownMenu
+                    width="40"
+                    selectedOptions={selectedOptions}
+                    setSelectedOptions={setSelectedOptions}
+                    isOpen={isDropdownOpen}
+                    setIsOpen={setIsDropdownOpen}
+                  />
                 </div>
-                <DropdownMenu
-                  width="40"
-                  selectedOptions={selectedOptions}
-                  setSelectedOptions={setSelectedOptions}
-                  isOpen={isDropdownOpen}
-                  setIsOpen={setIsDropdownOpen}
-                />
               </div>
             </div>
           </div>
