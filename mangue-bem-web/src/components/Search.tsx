@@ -27,7 +27,7 @@ const SearchBar = ({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           whileFocus={{ scale: 1.05 }}
-          className="min-w-96 rounded-lg border border-slate-200 px-4 py-2 text-gray-700 transition duration-300 ease-in-out focus:border-transparent focus:outline-none"
+          className="min-w-96 rounded-l-lg border border-slate-200 px-4 py-2 text-gray-700 transition duration-300 ease-in-out focus:border-transparent focus:outline-none"
         />
       </label>
     </div>
