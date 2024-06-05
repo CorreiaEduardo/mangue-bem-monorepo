@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import DefaultButton from "./DefaultButton";
 
 const DropdownMenu = ({
   width = "w-40",
@@ -101,15 +102,12 @@ const DropdownMenu = ({
   ).length;
 
   return (
-    <div className="relative">
-      <motion.button
-        className={`my-3 ${width} flex flex-row gap-1 rounded-md bg-emerald-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition duration-300 ease-in  hover:bg-pink-700 hover:shadow-lg  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+    <div className="relative h-full">
+      <DefaultButton
         onClick={toggleDropdown}
-        whileHover={{ scale: 1.05 }}
-      >
-        <span>Filtros</span>
-        {appliedFiltersCount > 0 ? <span>({appliedFiltersCount})</span> : ""}
-      </motion.button>
+        text={appliedFiltersCount > 0 ? `Filtros: ${appliedFiltersCount}`: "Filtros"}
+        cssClass="m-0 h-full rounded-r-lg w-[100px]"
+      />
       {isOpen && (
         <motion.div
           initial={{ opacity: 0, scale: 0.3 }}

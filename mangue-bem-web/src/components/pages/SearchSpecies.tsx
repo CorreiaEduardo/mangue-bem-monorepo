@@ -3,6 +3,7 @@ import SearchBar from "../Search";
 import appString from "../../utils/appStrings";
 import MushroomList from "../MushroomList";
 import DefaultButton from "../DefaultButton";
+import Select from 'react-select'
 import {
   useGetMushroomAutoComplete,
   useGetMushroomData,
@@ -10,6 +11,7 @@ import {
 import DropdownMenu from "../DropdownMenu";
 import { useSearchParams } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
+import '../../styles/SearchSpecies.css'
 
 const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const urlParams = new URLSearchParams();
@@ -67,49 +69,38 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         style={{ backgroundImage: "url('/bg.jpeg')" }}
       >
         <div className="relative">
-          <div className="my-5 flex grid-cols-4 justify-center gap-3">
+          <div className="my-5 flex justify-center items-center gap-3">
             <div className="col-span-5 col-start-2 ml-16">
               <div className="flex items-center justify-between gap-3">
-                <div className="flex w-full flex-row items-center justify-center">
-                  <SearchBar
-                    searchLabel={appString.pt.taxonName}
-                    searchTerm={searchTerm}
-                    onChange={(term) => {
-                      setSearchTerm(term);
-                      setIsDropdownOpen(false);
-                    }}
+                <div className="flex w-full h-[42px] flex-row items-center justify-center">
+                  <Select
+                  className="search-bar"
+                  placeholder="Busque aqui"  
+                  options={
+                    searchTerm.length > 2?
+                      mushroomAutoComplete.data?.content
+                        .slice(0, 3)
+                        .map((mushroom) => (
+                          {
+                            value: mushroom.id,
+                            label: mushroom.taxonName
+                          }
+                        ))
+                      : []
+                    }
+                    onInputChange={e => setSearchTerm(e)}
+                    onChange={e => console.log(e)}
                   />
 
                   <DefaultButton
                     text="Buscar"
-                    width="w-40 "
-                    animation={false}
                     onClick={() => {
                       setSearchParams(urlParams.toString());
                     }}
                     cssClass="h-full"
                   />
-
-                  {
-                    //autocomplete Dropdown
-                    searchTerm.length > 2 &&
-                      mushroomAutoComplete.data?.content?.length && (
-                        <div className="absolute z-10 mt-1 w-64 rounded-md border border-gray-300 bg-white shadow-lg">
-                          {mushroomAutoComplete.data?.content
-                            .slice(0, 3)
-                            .map((mushroom) => (
-                              <div
-                                key={mushroom.id}
-                                className="px-4 py-2 hover:bg-emerald-500"
-                              >
-                                {mushroom.taxonName}
-                              </div>
-                            ))}
-                        </div>
-                      )
-                  }
                   <DropdownMenu
-                    width="40"
+                    width="w-[100px]"
                     selectedOptions={selectedOptions}
                     setSelectedOptions={setSelectedOptions}
                     isOpen={isDropdownOpen}

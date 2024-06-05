@@ -41,19 +41,19 @@ const MushroomCard = ({
         exit={{ opacity: 0, scale: 0.5 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="flex h-96 w-72 flex-col items-center justify-center overflow-hidden rounded-lg bg-white shadow-lg transition-transform"
+        className="flex h-[27rem] w-72 flex-col items-center overflow-hidden rounded-lg bg-white shadow-lg transition-transform"
       >
-        <img src={taxaPhoto} alt="" className="h-full w-full object-cover" />
-        <div className="flex flex-col items-center justify-center p-4">
-          <h2 className="col mb-2 text-start text-xl font-bold italic">
+        <img src={taxaPhoto} alt="" className="min-h-[320px] w-full object-cover" />
+        <div className="flex h-full flex-col items-center justify-center p-1">
+          <h2 className="col text-start text-xl font-bold italic">
             {taxonGenus + " " + taxonName}
           </h2>
-          <p className="m-2 flex flex-col items-center justify-center gap-1 text-start text-gray-400">
-            <span className="mb-3 text-start text-xl text-gray-700">
+          <p className="block gap-1 text-start text-gray-400">
+            <span className="h-2 mb-3 text-start text-xl text-gray-700">
               {commonName}
             </span>
-            <span>{iucn}</span>
-            <span>{brazilianType && brazilianTypeSynonym}</span>
+            <span className="text-center mb-2">{iucn}</span>
+            <span className="text-center">{brazilianType && brazilianTypeSynonym}</span>
           </p>
         </div>
       </motion.div>
