@@ -5,14 +5,14 @@ import { appRoutes, getPathForComponent } from "../Routes";
 import Home from "./pages/SearchSpecies";
 import Login from "./pages/Login";
 import MushroomHeatMap from "./pages/MushroomHeatMap";
+import MushroomRegister from "./pages/MushroomRegister";
 
-function Navbar() {
+function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
   const location = useLocation();
   const loginPath = getPathForComponent(Login);
   const searchPath = getPathForComponent(Home);
   const homePath = getPathForComponent(MushroomHeatMap);
-
-  console.log(location);
+  const mushroomRegisterPath = getPathForComponent(MushroomRegister);
 
   return (
     <nav className="navbar sticky flex h-20 w-screen items-center">
@@ -48,6 +48,18 @@ function Navbar() {
                 >
                   {appString.pt.searchSpecies}
                 </a>
+                {isLoggedIn && (
+                  <a
+                    href={mushroomRegisterPath}
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${
+                      location.pathname === mushroomRegisterPath
+                        ? "bg-emerald-900 text-white"
+                        : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
+                    }`}
+                  >
+                    {appString.pt.registerMushroom}
+                  </a>
+                )}
               </div>
             </div>
           </div>

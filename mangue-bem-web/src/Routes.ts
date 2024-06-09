@@ -1,5 +1,6 @@
 import Login from "./components/pages/Login";
 import MushroomHeatMap from "./components/pages/MushroomHeatMap";
+import MushroomRegister from "./components/pages/MushroomRegister";
 import Observation from "./components/pages/Observation";
 import Home from "./components/pages/SearchSpecies";
 import UserRegister from "./components/pages/UserRegister";
@@ -25,6 +26,10 @@ export const appRoutes = [
   {
     path: "/register",
     component: UserRegister,
+  },
+  {
+    path: "/mushroomRegister",
+    component: MushroomRegister,
   },
 ];
 

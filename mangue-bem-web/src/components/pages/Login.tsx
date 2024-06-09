@@ -9,6 +9,7 @@ import TextInput from "../TextInput";
 
 const Login = ({
   setIsloggedIn,
+  isLoggedIn,
 }: {
   setIsloggedIn: Dispatch<SetStateAction<boolean>>;
   isLoggedIn: boolean;
@@ -21,6 +22,8 @@ const Login = ({
     e.preventDefault();
     handleSubmit({ ...user });
   };
+
+  if (isLoggedIn) navigate("/", { replace: true });
 
   useEffect(() => {
     if (stat === 200) {

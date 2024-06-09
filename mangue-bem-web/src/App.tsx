@@ -13,7 +13,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn} />
       <AnimatePresence mode="wait">
         <Routes location={location}>
           {appRoutes.map((route) => (

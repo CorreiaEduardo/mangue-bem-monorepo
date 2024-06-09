@@ -17,6 +17,7 @@ const appString = {
     invalidCredentials: "Email ou senha inválidos",
     invalidPasswordConfirm: "Senhas não conferem",
     register: "Cadastre-se",
+    registerMushroom: "Cadastrar cogumelo",
     projectName: "BEM",
   },
 };
