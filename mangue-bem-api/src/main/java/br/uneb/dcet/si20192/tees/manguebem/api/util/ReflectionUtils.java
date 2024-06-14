@@ -49,7 +49,7 @@ public class ReflectionUtils {
             String fieldName = parts[0];
             String nestedFieldName = parts[1];
 
-            Field field = obj.getClass().getDeclaredField(fieldName);
+            Field field = retrieveField(obj.getClass(), fieldName);
             field.setAccessible(true);
 
             Object nestedObject = field.get(obj);
@@ -86,7 +86,7 @@ public class ReflectionUtils {
     }
 
     private static void setSimpleFieldValue(Object obj, String fieldName, String value) throws Exception {
-        Field field = obj.getClass().getDeclaredField(fieldName);
+        Field field = retrieveField(obj.getClass(), fieldName);
         field.setAccessible(true);
         field.set(obj, convertValue(field.getType(), value));
     }

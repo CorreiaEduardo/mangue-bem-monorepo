@@ -2,7 +2,10 @@ package br.uneb.dcet.si20192.tees.manguebem.api.service.basic;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.basic.BaseDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.query.Filter;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.User;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.basic.BaseEntity;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.basic.CuratedEntity;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.ApprovalStatus;
 import br.uneb.dcet.si20192.tees.manguebem.api.exception.NotFoundException;
 import br.uneb.dcet.si20192.tees.manguebem.api.util.QueryParamParser;
 import br.uneb.dcet.si20192.tees.manguebem.api.util.SpecificationFactory;
@@ -71,6 +74,28 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDTO> {
         } else {
             throw new NotFoundException();
         }
+    }
+
+    public D approve(Long id) {
+        return updateApprovalStatus(id, ApprovalStatus.APPROVED);
+    }
+
+    public D reprove(Long id) {
+        return updateApprovalStatus(id, ApprovalStatus.REJECTED);
+    }
+
+    private D updateApprovalStatus(Long id, ApprovalStatus approvalStatus) {
+        final E entity = getRepository().findById(id)
+                .orElseThrow(NotFoundException::new);
+        final User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (entity instanceof CuratedEntity) {
+            ((CuratedEntity) entity).setApprovalStatus(approvalStatus);
+            ((CuratedEntity) entity).setRevisedBy(principal);
+            getRepository().save(entity);
+        }
+
+        return convert(entity);
     }
 
     public void delete(Long id) {

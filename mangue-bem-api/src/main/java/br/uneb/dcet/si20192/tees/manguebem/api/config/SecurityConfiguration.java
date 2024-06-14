@@ -44,6 +44,8 @@ public class SecurityConfiguration {
     public static final String[] CURATOR_ENDPOINTS = {
             "/v1/species/*/approve",
             "/v1/species/*/reprove",
+            "/v1/observations/*/approve",
+            "/v1/observations/*/reprove",
     };
 
     @Bean

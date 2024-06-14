@@ -56,26 +56,6 @@ public class SpecieService extends BaseService<Specie, SpecieDTO> {
         );
     }
 
-    public SpecieDTO approve(Long id) {
-        return updateApprovalStatus(id, ApprovalStatus.APPROVED);
-    }
-
-    public SpecieDTO reprove(Long id) {
-        return updateApprovalStatus(id, ApprovalStatus.REJECTED);
-    }
-
-    private SpecieDTO updateApprovalStatus(Long id, ApprovalStatus approvalStatus) {
-        final Specie specie = getRepository().findById(id)
-                .orElseThrow(NotFoundException::new);
-        final User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        specie.setApprovalStatus(approvalStatus);
-        specie.setRevisedBy(principal);
-        getRepository().save(specie);
-
-        return convert(specie);
-    }
-
     @Override
     protected Specification<Specie> parseSpecification(MultiValueMap<String, String> parameters) {
         Specification<Specie> specification = super.parseSpecification(parameters);
