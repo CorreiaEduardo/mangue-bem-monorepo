@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
-public final class UserRegistrationDTO implements RegistrationDTO {
+public final class CuratorRegistrationDTO implements RegistrationDTO {
 
     @Setter
     private String name;
@@ -22,7 +22,7 @@ public final class UserRegistrationDTO implements RegistrationDTO {
     @JsonIgnore
     private UserRole role;
 
-    public UserRegistrationDTO() {
-        this.role = UserRole.VISITOR;
+    public CuratorRegistrationDTO() {
+        this.role = UserRole.CURATOR;
     }
 }

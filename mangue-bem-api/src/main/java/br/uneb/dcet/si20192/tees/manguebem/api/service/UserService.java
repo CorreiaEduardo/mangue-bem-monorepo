@@ -3,7 +3,7 @@ package br.uneb.dcet.si20192.tees.manguebem.api.service;
 import br.uneb.dcet.si20192.tees.manguebem.api.config.SecurityConfiguration;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.AuthenticationTokenDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.UserLoginDTO;
-import br.uneb.dcet.si20192.tees.manguebem.api.dto.UserRegistrationDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.RegistrationDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.User;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.security.UserDetailsImpl;
 import br.uneb.dcet.si20192.tees.manguebem.api.repository.UserRepository;
@@ -31,7 +31,7 @@ public class UserService {
         this.securityConfiguration = securityConfiguration;
     }
 
-    public void register(UserRegistrationDTO userRegistrationDTO) {
+    public void register(RegistrationDTO userRegistrationDTO) {
         User user = new User();
         user.setName(userRegistrationDTO.getName());
         user.setEmail(userRegistrationDTO.getEmail());
