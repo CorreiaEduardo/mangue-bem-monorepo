@@ -26,6 +26,8 @@ const Observation = () => {
   const params = useParams();
   const [{ error, response }, get] = useObservationViewModel();
 
+  console.log(response);
+
   useEffect(() => {
     get(params.id as unknown as number);
   }, [params]);
@@ -79,6 +81,8 @@ const Observation = () => {
                   <span className="font-bold">Classificações</span>
                   <span>{/* TODO: icons */}</span>
                   <small>id_especie: {response?.id}</small>
+                  <small>Filo: {response?.taxonPhylum}</small>
+                  <small>Ordem: {response?.taxonOrder}</small>
                 </div>
               </div>
             </div>
