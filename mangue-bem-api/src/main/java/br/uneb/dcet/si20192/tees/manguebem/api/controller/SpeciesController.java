@@ -49,6 +49,20 @@ public class SpeciesController {
         return ResponseEntity.ok(updatedSpecie);
     }
 
+    @PostMapping("/{id}/approve")
+    public ResponseEntity<SpecieDTO> approve(@PathVariable Long id) {
+        final SpecieDTO updatedSpecie = specieService.approve(id);
+
+        return ResponseEntity.ok(updatedSpecie);
+    }
+
+    @PostMapping("/{id}/reprove")
+    public ResponseEntity<SpecieDTO> reprove(@PathVariable Long id) {
+        final SpecieDTO updatedSpecie = specieService.reprove(id);
+
+        return ResponseEntity.ok(updatedSpecie);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         specieService.delete(id);

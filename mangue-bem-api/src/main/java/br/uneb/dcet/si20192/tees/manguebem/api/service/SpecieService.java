@@ -4,6 +4,9 @@ import br.uneb.dcet.si20192.tees.manguebem.api.dto.SpecieDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Biome;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Observation;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Specie;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.User;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.ApprovalStatus;
+import br.uneb.dcet.si20192.tees.manguebem.api.exception.NotFoundException;
 import br.uneb.dcet.si20192.tees.manguebem.api.repository.SpecieRepository;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.basic.BaseService;
 import jakarta.persistence.criteria.Join;
@@ -11,6 +14,7 @@ import jakarta.persistence.criteria.JoinType;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
@@ -50,6 +54,26 @@ public class SpecieService extends BaseService<Specie, SpecieDTO> {
                 dto.getTaxonGenus(),
                 dto.getTaxonName()
         );
+    }
+
+    public SpecieDTO approve(Long id) {
+        return updateApprovalStatus(id, ApprovalStatus.APPROVED);
+    }
+
+    public SpecieDTO reprove(Long id) {
+        return updateApprovalStatus(id, ApprovalStatus.REJECTED);
+    }
+
+    private SpecieDTO updateApprovalStatus(Long id, ApprovalStatus approvalStatus) {
+        final Specie specie = getRepository().findById(id)
+                .orElseThrow(NotFoundException::new);
+        final User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        specie.setApprovalStatus(approvalStatus);
+        specie.setRevisedBy(principal);
+        getRepository().save(specie);
+
+        return convert(specie);
     }
 
     @Override
