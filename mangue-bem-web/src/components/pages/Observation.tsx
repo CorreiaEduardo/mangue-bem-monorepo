@@ -26,8 +26,6 @@ const Observation = () => {
   const params = useParams();
   const [{ error, response }, get] = useObservationViewModel();
 
-  console.log(response);
-
   useEffect(() => {
     get(params.id as unknown as number);
   }, [params]);
