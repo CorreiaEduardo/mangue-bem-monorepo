@@ -41,7 +41,7 @@ const MushroomCard = ({
         exit={{ opacity: 0, scale: 0.5 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="flex h-[27rem] w-72 flex-col items-center overflow-hidden rounded-lg bg-white shadow-lg transition-transform"
+        className="flex h-[27rem] w-72 flex-col items-center overflow-hidden rounded bg-white shadow-lg transition-transform"
       >
         <img src={taxaPhoto} alt="" className="min-h-[320px] w-full object-cover" />
         <div className="flex h-full flex-col items-center justify-center p-1">

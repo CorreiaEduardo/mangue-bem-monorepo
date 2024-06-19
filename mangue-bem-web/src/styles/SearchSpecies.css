@@ -1,31 +1,28 @@
 .search-bar {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-
+    margin-right: 10px;
+    width: 500px;
     >div {
-        width: 560px;
-        border-radius: 5px 0 0 5px ;
-        font-size: 16px;
         cursor: pointer;
         height: 42px;
 
         >div {
-            border-radius: 15px 0 0 15px;
-            min-height: 44px;
-            padding-left: 10px;
             text-align: start;
         }
 
         #react-select-3-listbox {
-            border-radius: 0px;
             margin-top: 4px;
             padding: 2px;
-            width: 620px;
         }
     }
 
     .css-lnmdiq5-menu {
         border-radius: 0 !important;
     }
+}
+
+.search-button {
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    background-color: #74AC00;
 }

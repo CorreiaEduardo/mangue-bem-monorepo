@@ -106,7 +106,7 @@ const DropdownMenu = ({
       <DefaultButton
         onClick={toggleDropdown}
         text={appliedFiltersCount > 0 ? `Filtros: ${appliedFiltersCount}`: "Filtros"}
-        cssClass="m-0 h-full rounded-r-lg w-[100px]"
+        cssClass="m-0 h-full rounded-full w-[100px]"
       />
       {isOpen && (
         <motion.div
@@ -114,7 +114,7 @@ const DropdownMenu = ({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
           transition={{ duration: 0.2 }}
-          className={`absolute z-10 ${width} -left-1/2 mt-2 -translate-x-1/2 transform rounded-md border border-gray-300 bg-white shadow-lg transition duration-300 ease-out`}
+          className={`absolute z-10 w-fit -left-1/2 mt-2 -translate-x-1/2 transform rounded-md border border-gray-300 bg-white shadow-lg transition duration-300 ease-out`}
         >
           <div className="flex w-fit">
             <motion.div
@@ -129,7 +129,7 @@ const DropdownMenu = ({
               <select
                 defaultValue=""
                 onChange={(e) => handleSelectChange(e, "uf")}
-                className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                className="block w-fit rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
               >
                 {ufOptions.map((uf) => (
                   <option key={uf.code} value={uf.code}>
@@ -151,7 +151,7 @@ const DropdownMenu = ({
               <select
                 defaultValue=""
                 onChange={(e) => handleSelectChange(e, "bioma")}
-                className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                className="block w-fit rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
               >
                 {biomaOptions.map((bioma) => (
                   <option key={bioma.code} value={bioma.code}>
@@ -173,7 +173,7 @@ const DropdownMenu = ({
               <select
                 defaultValue=""
                 onChange={(e) => handleSelectChange(e, "classificacao")}
-                className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                className="block w-fit rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
               >
                 {classificacaoOptions.map((classificacao) => (
                   <option key={classificacao.code} value={classificacao.code}>

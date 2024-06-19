@@ -3,6 +3,7 @@ import SearchBar from "../Search";
 import appString from "../../utils/appStrings";
 import MushroomList from "../MushroomList";
 import DefaultButton from "../DefaultButton";
+import { FaSearch } from "react-icons/fa";
 import Select from "react-select";
 import {
   useGetMushroomAutoComplete,
@@ -66,16 +67,15 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
     <div>
       <div
         className="relative left-0 top-0 h-screen w-full overflow-y-scroll bg-cover bg-center"
-        style={{ backgroundImage: "url('/bg.jpeg')" }}
       >
         <div className="relative">
-          <div className="my-5 flex items-center justify-center gap-3">
+          <div className="py-5 flex items-center justify-center gap-3 bg-[#565656]">
             <div className="col-span-5 col-start-2 ml-16">
               <div className="flex items-center justify-between gap-3">
-                <div className="flex h-[42px] w-full flex-row items-center justify-center">
+                <div className="flex h-[42px] w-fit flex-row items-center justify-center">
                   <Select
-                    className="search-bar"
                     placeholder="Busque aqui"
+                    className="search-bar"
                     options={
                       searchTerm.length > 2
                         ? mushroomAutoComplete.data?.content
@@ -86,16 +86,17 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                             }))
                         : []
                     }
+                    noOptionsMessage={() => "Busque um cogumelo!"}
                     onInputChange={(e: string) => setSearchTerm(e)}
                   />
 
-                  <DefaultButton
-                    text="Buscar"
-                    onClick={() => {
-                      setSearchParams(urlParams.toString());
-                    }}
-                    cssClass="h-full"
-                  />
+                  <button
+                  onClick={() => {
+                    setSearchParams(urlParams.toString());
+                  }}
+                  className="font-semibold text-lg leading-6 text-white shadow-sm transition duration-300 ease-in hover:bg-pink-700 hover:shadow-lg rounded-full px-3 py-1.5 bg-emerald-500 h-[42px] w-[42px] mr-[10px]">
+                    <FaSearch />
+                  </button>
                   <DropdownMenu
                     width="w-[100px]"
                     selectedOptions={selectedOptions}

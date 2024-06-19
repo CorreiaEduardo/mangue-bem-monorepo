@@ -31,16 +31,15 @@ const Observation = () => {
   }, [params]);
 
   return (
-    <div className="relative h-screen">
+    <div className="relative h-screen bg-[#F8F8F8]">
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/bg.jpeg')" }}
       ></div>
-      <div className="absolute inset-0 flex items-center justify-center p-5">
+      <div className="absolute inset-0 flex items-center justify-center p-5 c">
         <div className="flex h-full w-full flex-col gap-2 rounded bg-white bg-opacity-10 p-5">
           <div className="flex gap-6">
-            <div className="h-fit w-1/3 rounded bg-gray-400 p-1">
-              <div className="rounded bg-gray-200 p-3">
+            <div className="h-fit w-1/3 rounded border-gray-400 p-1">
+              <div className="rounded border-gray-200 border-solid border-[1px] bg-white p-3">
                 <div>
                   <img
                     className="rounded"
@@ -57,7 +56,7 @@ const Observation = () => {
             </div>
             <div className="flex w-1/3 flex-col gap-5">
               <div className="flex justify-center">
-                <span className="text-lg text-white">
+                <span className="text-lg text-emerald-500">
                   <span className="font-bold">
                     {response?.taxonGenus} {response?.taxonName}
                   </span>{" "}
@@ -68,13 +67,13 @@ const Observation = () => {
                   )
                 </span>
               </div>
-              <div className="rounded bg-gray-200 p-5">
+              <div className="rounded border-gray-200 border-solid border-[1px] bg-white p-5">
                 <div className="flex flex-col">
                   {/* <span className='font-bold'>Informações</span> */}
                   <span>{response?.description}</span>
                 </div>
               </div>
-              <div className="rounded bg-gray-200 p-5">
+              <div className="rounded border-gray-200 border-solid border-[1px] bg-white p-5">
                 <div className="flex flex-col">
                   <span className="font-bold">Classificações</span>
                   <span>{/* TODO: icons */}</span>
@@ -82,8 +81,8 @@ const Observation = () => {
                 </div>
               </div>
             </div>
-            <div className="h-fit w-1/3 rounded bg-gray-400 p-1">
-              <div className="h-fit rounded bg-gray-200 p-5">
+            <div className="h-fit w-1/3 rounded border-gray-400 p-1">
+              <div className="h-fit rounded border-gray-200 border-solid border-[1px] bg-white p-5">
                 <div className="flex h-full flex-col">
                   <div className="flex justify-center">Geolocalização</div>
                   <div>
@@ -91,7 +90,7 @@ const Observation = () => {
                       projection="geoMercator"
                       style={{
                         backgroundColor: "#e5e7eb",
-                        borderRadius: "10px",
+                        borderRadius: "2px",
                       }}
                       fill="white"
                       stroke="black"
