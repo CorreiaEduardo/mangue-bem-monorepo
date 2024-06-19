@@ -21,6 +21,10 @@ export const appRoutes = [
     path: "/species/:id",
     component: Observation,
   },
+  {
+    path: "/info",
+    component: Home,
+  },
 ];
 
 export function getPathForComponent(

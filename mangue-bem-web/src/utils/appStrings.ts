@@ -1,3 +1,5 @@
+import { info } from "console";
+
 const appString = {
   pt: {
     home: "Home",
@@ -16,6 +18,8 @@ const appString = {
     invalidCredentials: "Email ou senha inválidos",
     register: "Cadastre-se",
     projectName: "BEM",
+    info: "Sobre nós"
+
   },
 };
 

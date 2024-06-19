@@ -5,6 +5,8 @@ import { appRoutes, getPathForComponent } from "../Routes";
 import Home from "./pages/SearchSpecies";
 import Login from "./pages/Login";
 import MushroomHeatMap from "./pages/MushroomHeatMap";
+import Info from "./pages/Info";
+
 
 function Navbar() {
   const location = useLocation();
