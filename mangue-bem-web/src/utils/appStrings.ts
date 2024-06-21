@@ -19,6 +19,9 @@ const appString = {
     register: "Cadastre-se",
     registerMushroom: "Cadastrar cogumelo",
     projectName: "BEM",
+    mushroomCuration: "Curadoria",
+    approve: "Aprovar",
+    reprove: "Reprovar",
   },
 };
 
