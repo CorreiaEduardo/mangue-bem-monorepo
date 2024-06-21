@@ -8,7 +8,6 @@ export interface Mushroom {
   taxonGenus: string;
   taxonName: string;
   commonName: string;
-  taxaPhoto: string;
   bemClassification: string;
   description: string | null;
   authors: string;

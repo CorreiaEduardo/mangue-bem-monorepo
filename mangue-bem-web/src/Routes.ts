@@ -1,4 +1,5 @@
 import Login from "./components/pages/Login";
+import MushroomCuration from "./components/pages/MushroomCuration";
 import MushroomHeatMap from "./components/pages/MushroomHeatMap";
 import MushroomRegister from "./components/pages/MushroomRegister";
 import Observation from "./components/pages/Observation";
@@ -30,6 +31,10 @@ export const appRoutes = [
   {
     path: "/mushroomRegister",
     component: MushroomRegister,
+  },
+  {
+    path: "/curation",
+    component: MushroomCuration,
   },
 ];
 
