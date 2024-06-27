@@ -1,20 +1,30 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import api from "../services/AxiosProvider";
+import { useState } from "react";
 
 interface mushroomRegister {
-  inaturalistID: string;
+  iNaturalistId: string;
   paper: string;
 }
 
 const useMushroomRegisterViewModel = () => {
-  const registerEndpoint = "http://localhost:8080/v1/";
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const registerEndpoint = "http://localhost:8080/v1/species";
 
   const register = useMutation({
     mutationFn: ({ mushroom }: { mushroom: mushroomRegister }) => {
-      return axios.post(registerEndpoint, { ...mushroom });
+      setError(false);
+      return api.post(registerEndpoint, { ...mushroom }).then(() => {
+        setSuccess(true);
+      }).catch(() => {
+        setError(true);
+      });
     },
   });
-  return register;
+
+  return { register, error, success };
 };
 
 export default useMushroomRegisterViewModel;

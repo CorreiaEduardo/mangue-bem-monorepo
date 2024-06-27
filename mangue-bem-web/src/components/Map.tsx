@@ -31,7 +31,9 @@ function Map({selectedBem}: props) {
         }
       })
       console.log(simplemaps_countrymap_mapdata.state_specific)
-      simplemaps_countrymap.refresh();
+      if (simplemaps_countrymap.refresh !== undefined) {
+        simplemaps_countrymap.refresh();
+      }
     }
   },[speciesCounter]) 
 

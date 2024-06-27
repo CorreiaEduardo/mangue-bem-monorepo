@@ -1,9 +1,11 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.controller;
 
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.CreateSpecieDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.SpecieDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.basic.Page;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.SpecieService;
 import br.uneb.dcet.si20192.tees.manguebem.api.util.PageMapper;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,8 +23,8 @@ public class SpeciesController {
     }
 
     @PostMapping
-    public ResponseEntity<SpecieDTO> create(@RequestBody SpecieDTO specieDTO) {
-        final SpecieDTO createdSpecie = specieService.create(specieDTO);
+    public ResponseEntity<SpecieDTO> create(@RequestBody @Valid CreateSpecieDTO createSpecieDTO) {
+        final SpecieDTO createdSpecie = specieService.create(createSpecieDTO);
         return new ResponseEntity<>(createdSpecie, HttpStatus.CREATED);
     }
 

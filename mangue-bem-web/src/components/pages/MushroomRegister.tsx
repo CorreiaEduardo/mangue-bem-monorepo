@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../Card";
 import { useNavigate } from "react-router-dom";
 import appString from "../../utils/appStrings";
@@ -6,24 +6,34 @@ import DefaultButton from "../DefaultButton";
 import TextInput from "../TextInput";
 import useMushroomRegisterViewModel from "../../ViewModel/useMushroomRegisterViewModel";
 import { motion } from "framer-motion";
+import { useAuth } from "../../contexts/auth";
 
-const MushroomRegister = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+const MushroomRegister = () => {
+  const { isAuthenticated } = useAuth();
+
   const [mushroom, setMushroom] = useState({
-    inaturalistId: "",
+    iNaturalistId: "",
     paper: "",
   });
 
   const navigate = useNavigate();
-  //TODO backend
-  // const register = useMushroomRegisterViewModel();
+  const { register, error, success } = useMushroomRegisterViewModel();
 
-  if (!isLoggedIn) navigate("/profile", { replace: true });
+  if (!isAuthenticated()) navigate("/profile", { replace: true });
 
   const handleFormSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    //TODO backend
-    // register.mutate({ mushroom });
+    register.mutate({ mushroom });
   };
+
+  useEffect(() => {
+    if (success) {
+      setMushroom({
+        iNaturalistId: "",
+        paper: "",
+      });
+    }
+  }, [success])
 
   return (
     <div className="flex min-h-screen sm:p-0">
@@ -50,16 +60,16 @@ const MushroomRegister = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                 className="relative mt-2 w-full"
               >
                 <TextInput
-                  id="inaturalistId"
-                  name="inaturalistId"
+                  id="iNaturalistId"
+                  name="iNaturalistId"
                   type="text"
-                  autoComplete="inaturalistId"
+                  autoComplete="iNaturalistId"
                   required
-                  value={mushroom.inaturalistId}
+                  value={mushroom.iNaturalistId}
                   placeholder=" "
                   onChange={(event) => {
                     const newValue = event.replace(/\D/g, "");
-                    setMushroom({ ...mushroom, inaturalistId: newValue });
+                    setMushroom({ ...mushroom, iNaturalistId: newValue });
                   }}
                   label="iNaturalist ID"
                 />
@@ -84,6 +94,26 @@ const MushroomRegister = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
                   label="DOI"
                 />
               </motion.div>
+              {error && (
+                <motion.p
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="my-2 text-pink-500"
+                >
+                  {appString.pt.invalidMushroom}
+                </motion.p>
+              )}
+              {success && (
+                <motion.p
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="my-2 text-emerald-500"
+                >
+                  {appString.pt.mushroomCreated}
+                </motion.p>
+              )}
               <hr className="my-6 w-60 border-gray-500" />
               <motion.div
                 initial={{ opacity: 0, y: 50 }}

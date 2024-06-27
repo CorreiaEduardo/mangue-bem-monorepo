@@ -1,12 +1,14 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.entity;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.basic.CuratedEntity;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.MushroomGroup;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -64,6 +66,30 @@ public class Specie extends CuratedEntity {
 
     @Column(name = "specieslink_id")
     private String speciesLinkId;
+
+    @Column(name = "mushroom_group")
+    private MushroomGroup mushroomGroup;
+
+    @Column(name = "occurrence_season_start")
+    private LocalDateTime occurrenceSeasonStart;
+
+    @Column(name = "occurrence_season_end")
+    private LocalDateTime occurrenceSeasonEnd;
+
+    @Column(name = "flavor")
+    private String flavor;
+
+    @Column(name = "keywords")
+    private String keywords;
+
+    @JoinTable(name = "specie_similarities", joinColumns = {
+            @JoinColumn(name = "specie_1", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
+            @JoinColumn(name = "specie_2", referencedColumnName = "id", nullable = false)})
+    @ManyToMany
+    private List<Specie> similaritiesList;
+
+    @Column(name = "doi")
+    private String doi;
 
     @OneToMany(mappedBy = "specie", fetch = FetchType.EAGER)
     private List<Observation> observations;

@@ -4,7 +4,8 @@ import java.util.Arrays;
 
 public enum QueryOperator {
     EQUALS("EQ"),
-    LIKE("LK");
+    LIKE("LK"),
+    NULL("NL");
 
     private final String alias;
 

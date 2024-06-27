@@ -8,19 +8,24 @@ import Select from "react-select";
 import {
   useGetMushroomAutoComplete,
   useGetMushroomData,
+  useMushroomDeleteViewModel
 } from "../../ViewModel/useMushroomViewModel";
 import DropdownMenu from "../DropdownMenu";
 import { useSearchParams } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
 import "../../styles/SearchSpecies.css";
+import { useAuth } from "../../contexts/auth";
+import { confirmAlert } from 'react-confirm-alert';
 
-const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+const Home = () => {
   const urlParams = new URLSearchParams();
-
+  const { isAuthenticated } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [mushroomList, fetchNextPage, isFetchingNextPage] =
+  const [mushroomList, fetchNextPage, isFetchingNextPage, refetch] =
     useGetMushroomData();
+
+  const deleteMushroomFn = useMushroomDeleteViewModel();
 
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -62,6 +67,37 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const mushroomAutoComplete = useGetMushroomAutoComplete(
     "?" + urlParams.toString(),
   );
+
+  function deleteMushroom(mushroomId: number): void {
+    const options = {
+      title: 'Tem certeza que deseja excluir?',
+      message: 'A exclusão de uma espécie de cogumelo pode afetar registros de observação relacionados.',
+      buttons: [
+        {
+          label: 'Sim, excluir.',
+          onClick: () => deleteMushroomFn.mutateAsync(mushroomId)
+            .then(() => {
+              refetch({});
+            })
+        },
+        {
+          label: 'Não, cancelar.',
+          onClick: () => {}
+        }
+      ],
+      closeOnEscape: true,
+      closeOnClickOutside: true,
+      keyCodeForClose: [8, 32],
+      willUnmount: () => {},
+      afterClose: () => {},
+      onClickOutside: () => {},
+      onKeypress: () => {},
+      onKeypressEscape: () => {},
+      overlayClassName: "overlay-custom-class-name"
+    };
+    
+    confirmAlert(options);
+  }
 
   return (
     <div>
@@ -112,6 +148,7 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         <MushroomList
           mushroomPages={mushroomList}
           getMushroom={fetchNextPage}
+          deleteMushroom={deleteMushroom}
           isFetchingNextPage={isFetchingNextPage}
         />
         {isFetchingNextPage && <LoadingSpinner />}

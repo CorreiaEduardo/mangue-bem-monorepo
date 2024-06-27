@@ -6,12 +6,14 @@ import LoadingSpinner from "./LoadingSpinner";
 interface MushroomListProps {
   mushroomPages: any;
   getMushroom: () => void;
+  deleteMushroom: (mushroomId: number) => any;
   isFetchingNextPage: boolean;
 }
 
 const MushroomList = ({
   mushroomPages,
   getMushroom,
+  deleteMushroom,
   isFetchingNextPage,
 }: MushroomListProps) => {
   const { ref, inView, entry } = useInView({
@@ -28,7 +30,7 @@ const MushroomList = ({
         {mushroomPages?.map((page: any) =>
           page?.content?.map((mushroom: any) => (
             <li key={mushroom.id}>
-              <MushroomCard {...mushroom} />
+              <MushroomCard {...mushroom} onDelete={() => deleteMushroom(mushroom.id)} />
             </li>
           )),
         )}

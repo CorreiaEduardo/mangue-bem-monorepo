@@ -6,12 +6,7 @@ import DefaultButton from "../DefaultButton";
 import TextInput from "../TextInput";
 import useUserRegisterViewModel from "../../ViewModel/useUserRegisterViewModel";
 
-const UserRegister = ({
-  setIsloggedIn,
-}: {
-  setIsloggedIn: Dispatch<SetStateAction<boolean>>;
-  isLoggedIn: boolean;
-}) => {
+const UserRegister = () => {
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -26,7 +21,6 @@ const UserRegister = ({
     register.mutate({ user });
   };
   if (register.isSuccess) {
-    setIsloggedIn(true);
     navigate("/profile", { replace: true });
   }
 

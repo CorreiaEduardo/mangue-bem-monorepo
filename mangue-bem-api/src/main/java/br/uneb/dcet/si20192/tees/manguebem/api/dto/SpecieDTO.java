@@ -26,4 +26,5 @@ public final class SpecieDTO extends BaseDTO {
     private String brazilianTypeSynonym;
     private String iNaturalistId;
     private String speciesLinkId;
+    private String doi;
 }

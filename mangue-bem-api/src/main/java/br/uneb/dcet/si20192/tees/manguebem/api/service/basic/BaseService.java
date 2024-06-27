@@ -100,10 +100,10 @@ public abstract class BaseService<E extends BaseEntity, D extends BaseDTO> {
 
     public void delete(Long id) {
         E entity = getRepository().findById(id).orElseThrow(NotFoundException::new);
-        final String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        final User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         entity.setDeletedAt(LocalDateTime.now());
-        entity.setDeletedBy(username);
+        entity.setDeletedBy(principal.getEmail());
 
         getRepository().save(entity);
     }

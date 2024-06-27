@@ -1,36 +1,25 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Card from "../Card";
-import useLoginViewModel from "../../ViewModel/useLoginViewModel";
 import { useNavigate } from "react-router-dom";
 import appString from "../../utils/appStrings";
 import DefaultButton from "../DefaultButton";
 import TextInput from "../TextInput";
+import { useAuth } from "../../contexts/auth";
 
-const Login = ({
-  setIsloggedIn,
-  isLoggedIn,
-}: {
-  setIsloggedIn: Dispatch<SetStateAction<boolean>>;
-  isLoggedIn: boolean;
-}) => {
+const Login = () => {
   const [user, setUser] = useState({ name: "", email: "", password: "" });
-  const [{ error, response, stat }, handleSubmit] = useLoginViewModel();
+  const { isAuthenticated, signIn, error } = useAuth();
   const navigate = useNavigate();
+
+  if (isAuthenticated()) {
+    navigate("/");
+  }
 
   const handleFormSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    handleSubmit({ ...user });
+    signIn({ ...user });
   };
-
-  if (isLoggedIn) navigate("/", { replace: true });
-
-  useEffect(() => {
-    if (stat === 200) {
-      setIsloggedIn(true);
-      navigate("/", { replace: true });
-    }
-  }, [stat]);
 
   return (
     //TODO mobile version

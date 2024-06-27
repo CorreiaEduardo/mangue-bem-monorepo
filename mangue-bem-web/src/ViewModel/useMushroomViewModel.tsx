@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Mushroom } from "../Model/MushroomData";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+
+import api from "../services/AxiosProvider";
 
 interface Page {
   content: Mushroom[];
@@ -22,7 +24,7 @@ const getMushrooms = async (
 
   try {
     const speciesReponse = await axios.get(baseUrl, {
-      params: { page: pageParam, ...queryParams },
+      params: { page: pageParam, deletedAt: 'NL', ...queryParams },
     });
     let mushroomData = speciesReponse.data;
     let mushroomIds = "";
@@ -102,10 +104,11 @@ const useGetMushroomData = (): [
   (Page | undefined)[] | undefined,
   () => void,
   boolean,
+  (options?: any) => Promise<any>
 ] => {
   const allParams = getAllParamsFromUrl(window.location.search);
 
-  const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+  const { data, status, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery({
     queryKey: ["mushrooms", allParams],
     queryFn: ({ pageParam = 0 }) => getMushrooms(pageParam, allParams),
     initialPageParam: 0,
@@ -118,6 +121,16 @@ const useGetMushroomData = (): [
 
   const mushroomList = data?.pages;
 
-  return [mushroomList, fetchNextPage, isFetchingNextPage];
+  return [mushroomList, fetchNextPage, isFetchingNextPage, refetch];
 };
-export { useGetMushroomAutoComplete, useGetMushroomData };
+
+const useMushroomDeleteViewModel = () => {
+  return useMutation({
+    mutationFn: (mushroomId: number) => {
+      const deleteEndpoint = "http://localhost:8080/v1/species/" + mushroomId;
+      return api.delete(deleteEndpoint);
+    },
+  });
+};
+
+export { useGetMushroomAutoComplete, useGetMushroomData, useMushroomDeleteViewModel };

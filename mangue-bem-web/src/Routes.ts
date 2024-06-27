@@ -10,31 +10,39 @@ export const appRoutes = [
   {
     path: "/",
     component: MushroomHeatMap,
+    authenticated: false,
   },
   {
     path: "/profile",
     component: Login,
     loginPage: true,
+    authenticated: false,
   },
   {
     path: "/search",
     component: Home,
+    authenticated: false,
   },
   {
     path: "/species/:id",
     component: Observation,
+    authenticated: false,
   },
   {
     path: "/register",
     component: UserRegister,
+    authenticated: false,
   },
   {
     path: "/mushroomRegister",
     component: MushroomRegister,
+    authenticated: true,
   },
   {
     path: "/curation",
     component: MushroomCuration,
+    authenticated: true,
+    curatorRole: true,
   },
 ];
 
