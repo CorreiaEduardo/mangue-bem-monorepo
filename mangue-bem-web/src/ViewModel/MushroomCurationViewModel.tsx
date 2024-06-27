@@ -19,7 +19,7 @@ export const useMushroomCurationViewModel = () => {
     mutationFn: (id: number) => approveMushroom(id),
     onSuccess: () => {
       queryClient.invalidateQueries([
-        "pendingMushrooms",
+        "mushrooms",
       ] as InvalidateQueryFilters);
     },
   });
@@ -28,7 +28,7 @@ export const useMushroomCurationViewModel = () => {
     mutationFn: (id: number) => reproveMushroom(id),
     onSuccess: () => {
       queryClient.invalidateQueries([
-        "pendingMushrooms",
+        "mushrooms",
       ] as InvalidateQueryFilters);
     },
   });

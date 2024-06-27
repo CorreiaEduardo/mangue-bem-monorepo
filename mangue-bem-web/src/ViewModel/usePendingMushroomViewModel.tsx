@@ -24,7 +24,7 @@ const getMushrooms = async (
 
   try {
     const speciesReponse = await axios.get(baseUrl, {
-      params: { page: pageParam, deletedAt: 'NL', approvalStatus: 'EQ:APPROVED', ...queryParams },
+      params: { page: pageParam, deletedAt: 'NL', approvalStatus: 'EQ:PENDING',  ...queryParams },
     });
     let mushroomData = speciesReponse.data;
     let mushroomIds = "";
@@ -90,16 +90,6 @@ const getAllParamsFromUrl = (url: string): Record<string, string> => {
   return params;
 };
 
-const useGetMushroomAutoComplete = (queryString: string) => {
-  const queryParams = getAllParamsFromUrl(queryString);
-
-  const autocompleteMushrooms = useQuery<Page | undefined>({
-    queryKey: ["autocompleteMushrooms", queryParams],
-    queryFn: () => getMushrooms(0, queryParams),
-  });
-  return autocompleteMushrooms;
-};
-
 const useGetMushroomData = (): [
   (Page | undefined)[] | undefined,
   () => void,
@@ -109,7 +99,7 @@ const useGetMushroomData = (): [
   const allParams = getAllParamsFromUrl(window.location.search);
 
   const { data, status, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery({
-    queryKey: ["mushrooms", allParams],
+    queryKey: ["mushrooms2", allParams],
     queryFn: ({ pageParam = 0 }) => getMushrooms(pageParam, allParams),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
@@ -124,13 +114,4 @@ const useGetMushroomData = (): [
   return [mushroomList, fetchNextPage, isFetchingNextPage, refetch];
 };
 
-const useMushroomDeleteViewModel = () => {
-  return useMutation({
-    mutationFn: (mushroomId: number) => {
-      const deleteEndpoint = "http://localhost:8080/v1/species/" + mushroomId;
-      return api.delete(deleteEndpoint);
-    },
-  });
-};
-
-export { useGetMushroomAutoComplete, useGetMushroomData, useMushroomDeleteViewModel };
+export { useGetMushroomData };

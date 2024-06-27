@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Mushroom } from "../Model/MushroomData";
+import api from "../services/AxiosProvider";
 
 const BASE_URL = "http://localhost:8080/v1";
 
@@ -11,9 +12,9 @@ export const fetchPendingMushrooms = async (): Promise<Mushroom[]> => {
 };
 
 export const approveMushroom = async (id: number): Promise<void> => {
-  await axios.post(`${BASE_URL}/species/${id}/approve`);
+  await api.post(`${BASE_URL}/species/${id}/approve`);
 };
 
 export const reproveMushroom = async (id: number): Promise<void> => {
-  await axios.post(`${BASE_URL}/species/${id}/reprove`);
+  await api.post(`${BASE_URL}/species/${id}/reprove`);
 };
