@@ -1,7 +1,11 @@
 package br.uneb.dcet.si20192.tees.manguebem.api.dto;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.basic.BaseDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.MushroomGroup;
+import jakarta.persistence.Column;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,4 +31,12 @@ public final class SpecieDTO extends BaseDTO {
     private String iNaturalistId;
     private String speciesLinkId;
     private String doi;
+    private MushroomGroup mushroomGroup;
+    private LocalDateTime occurrenceSeasonStart;
+    private LocalDateTime occurrenceSeasonEnd;
+    private String flavor;
+    private String keywords;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String reviserEmail;
 }

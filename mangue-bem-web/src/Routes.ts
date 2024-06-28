@@ -6,6 +6,7 @@ import MushroomRegister from "./components/pages/MushroomRegister";
 import Observation from "./components/pages/Observation";
 import Home from "./components/pages/SearchSpecies";
 import UserRegister from "./components/pages/UserRegister";
+import EditSpecie from "./components/pages/EditSpecie";
 
 export const appRoutes = [
   {
@@ -48,6 +49,12 @@ export const appRoutes = [
   {
     path: "/curateObservation",
     component: ObservationCuration,
+    authenticated: true,
+    curatorRole: true,
+  },
+  {
+    path: "/species/:id/edit",
+    component: EditSpecie,
     authenticated: true,
     curatorRole: true,
   },

@@ -68,6 +68,7 @@ public class Specie extends CuratedEntity {
     private String speciesLinkId;
 
     @Column(name = "mushroom_group")
+    @Enumerated(EnumType.STRING)
     private MushroomGroup mushroomGroup;
 
     @Column(name = "occurrence_season_start")

@@ -64,7 +64,7 @@ const MushroomCard = ({
       </Link>
       {isCurator() ? (
         <div className="flex w-full justify-between px-8">
-          <button className="hover:bg-emerald-500 p-4">Editar</button>
+          <Link to={`/species/${id}/edit`}><button className="hover:bg-emerald-500 p-4">Editar</button></Link>
           <button className="hover:bg-emerald-500 p-4" onClick={onDelete}>Excluir</button>
         </div>
       ) : null}

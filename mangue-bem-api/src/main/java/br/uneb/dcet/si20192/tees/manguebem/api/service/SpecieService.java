@@ -142,7 +142,13 @@ public class SpecieService extends BaseService<Specie, SpecieDTO> {
 
     @Override
     protected SpecieDTO convert(Specie specie) {
-        return modelMapper.map(specie, SpecieDTO.class);
+        SpecieDTO dto = modelMapper.map(specie, SpecieDTO.class);
+
+        if (specie.getRevisedBy() != null) {
+            dto.setReviserEmail(specie.getRevisedBy().getEmail());
+        }
+
+        return dto;
     }
 
     @Override
