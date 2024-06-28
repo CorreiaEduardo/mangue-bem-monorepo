@@ -109,7 +109,7 @@ const MushroomCuration: React.FC = () => {
                   {mushroom.taxonGenus} {mushroom.taxonName}
                 </h2>
                 <p className="text-gray-600">
-                  {mushroom.commonName || "No common name available"}
+                  {mushroom.commonName || "Nome popular não disponível"}
                 </p>
                 <p className="text-sm text-gray-600">{mushroom.authors}</p>
                 <p className="text-sm text-gray-600">
@@ -152,7 +152,7 @@ const MushroomCuration: React.FC = () => {
           )),
         ) ?? (
           <div className="text-center text-xl text-gray-500">
-            No mushrooms pending approval.
+            Sem pendências.
           </div>
         )}
         {isFetchingNextPage ? <LoadingSpinner /> : <div ref={ref}></div>}

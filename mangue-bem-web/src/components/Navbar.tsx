@@ -8,6 +8,7 @@ import MushroomHeatMap from "./pages/MushroomHeatMap";
 import MushroomRegister from "./pages/MushroomRegister";
 import { useAuth } from "../contexts/auth";
 import MushroomCuration from "./pages/MushroomCuration";
+import ObservationCuration from "./pages/ObservationCuration";
 
 function Navbar() {
   const location = useLocation();
@@ -18,6 +19,7 @@ function Navbar() {
   const homePath = getPathForComponent(MushroomHeatMap);
   const mushroomRegisterPath = getPathForComponent(MushroomRegister);
   const mushroomCurationPath = getPathForComponent(MushroomCuration);
+  const observationCurationPath = getPathForComponent(ObservationCuration);
 
   return (
     <nav className="navbar sticky flex h-20 w-screen items-center">
@@ -75,6 +77,17 @@ function Navbar() {
                     }`}
                   >
                     {appString.pt.curateMushrooms}
+                  </a>
+                )}
+                {isCurator() && (
+                  <a
+                    href={observationCurationPath}
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${location.pathname === observationCurationPath
+                        ? "bg-emerald-900 text-white"
+                        : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
+                      }`}
+                  >
+                    {appString.pt.curateObservations}
                   </a>
                 )}
               </div>

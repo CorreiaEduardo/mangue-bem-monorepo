@@ -1,5 +1,6 @@
 import Login from "./components/pages/Login";
 import MushroomCuration from "./components/pages/MushroomCuration";
+import ObservationCuration from "./components/pages/ObservationCuration";
 import MushroomHeatMap from "./components/pages/MushroomHeatMap";
 import MushroomRegister from "./components/pages/MushroomRegister";
 import Observation from "./components/pages/Observation";
@@ -41,6 +42,12 @@ export const appRoutes = [
   {
     path: "/curation",
     component: MushroomCuration,
+    authenticated: true,
+    curatorRole: true,
+  },
+  {
+    path: "/curateObservation",
+    component: ObservationCuration,
     authenticated: true,
     curatorRole: true,
   },
