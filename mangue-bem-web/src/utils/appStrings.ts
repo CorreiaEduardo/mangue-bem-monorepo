@@ -21,6 +21,7 @@ const appString = {
     register: "Cadastre-se",
     registerMushroom: "Cadastrar cogumelo",
     curateMushrooms: "Revisar cogumelos",
+    manageUsers: "Gerenciar curadores",
     curateObservations: "Revisar observações",
     projectName: "BEM",
     mushroomCuration: "Curadoria de espécies",

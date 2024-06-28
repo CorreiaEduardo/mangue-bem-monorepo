@@ -2,7 +2,6 @@ package br.uneb.dcet.si20192.tees.manguebem.api.dto;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.basic.BaseDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.MushroomGroup;
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDateTime;

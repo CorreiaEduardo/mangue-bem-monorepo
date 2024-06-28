@@ -7,6 +7,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { AuthProvider } from './contexts/auth';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const queryClient = new QueryClient();
@@ -38,6 +40,7 @@ function App() {
           </Routes>
         </AnimatePresence>
       </QueryClientProvider>
+      <ToastContainer />
     </AuthProvider>
   );
 }

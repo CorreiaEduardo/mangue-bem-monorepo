@@ -7,6 +7,7 @@ import Observation from "./components/pages/Observation";
 import Home from "./components/pages/SearchSpecies";
 import UserRegister from "./components/pages/UserRegister";
 import EditSpecie from "./components/pages/EditSpecie";
+import UserManagement from "./components/pages/UserManagement";
 
 export const appRoutes = [
   {
@@ -57,6 +58,12 @@ export const appRoutes = [
     component: EditSpecie,
     authenticated: true,
     curatorRole: true,
+  },
+  {
+    path: "/users",
+    component: UserManagement,
+    authenticated: true,
+    adminRole: true,
   },
 ];
 

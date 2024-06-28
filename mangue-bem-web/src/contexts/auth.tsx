@@ -16,6 +16,7 @@ interface AuthContextData {
   isLoading: boolean;
   isAuthenticated(): boolean;
   isCurator(): boolean;
+  isAdmin(): boolean;
   error: boolean;
   signIn(credentials: any): Promise<void>;
   signOut(): void;
@@ -40,8 +41,6 @@ const AuthProvider: React.FC<any> = ({ children }) => {
   }, [cookies]);
 
   const isAuthenticated = () => {
-    console.log(cookies.token);
-    
     try {
       return !!cookies.token && !!jwtDecode(cookies.token);
     } catch (error) {
@@ -55,6 +54,18 @@ const AuthProvider: React.FC<any> = ({ children }) => {
       if (!!decoded) {
         const roles = decoded.roles;
         return roles.includes("CURATOR");
+      }
+    }
+
+    return false;
+  }
+
+  const isAdmin = () => {
+    if (isAuthenticated()) {
+      const decoded = jwtDecode(cookies.token) as any;
+      if (!!decoded) {
+        const roles = decoded.roles;
+        return roles.includes("ADMIN");
       }
     }
 
@@ -93,6 +104,7 @@ const AuthProvider: React.FC<any> = ({ children }) => {
         isLoading,
         isAuthenticated,
         isCurator,
+        isAdmin,
         error,
         signIn,
         signOut

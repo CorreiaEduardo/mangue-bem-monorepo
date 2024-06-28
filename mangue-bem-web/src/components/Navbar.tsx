@@ -9,10 +9,11 @@ import MushroomRegister from "./pages/MushroomRegister";
 import { useAuth } from "../contexts/auth";
 import MushroomCuration from "./pages/MushroomCuration";
 import ObservationCuration from "./pages/ObservationCuration";
+import UserManagement from "./pages/UserManagement";
 
 function Navbar() {
   const location = useLocation();
-  const { isAuthenticated, isCurator, signOut } = useAuth();
+  const { isAuthenticated, isCurator, isAdmin, signOut } = useAuth();
 
   const loginPath = getPathForComponent(Login);
   const searchPath = getPathForComponent(Home);
@@ -20,6 +21,7 @@ function Navbar() {
   const mushroomRegisterPath = getPathForComponent(MushroomRegister);
   const mushroomCurationPath = getPathForComponent(MushroomCuration);
   const observationCurationPath = getPathForComponent(ObservationCuration);
+  const userManagementPath = getPathForComponent(UserManagement);
 
   return (
     <nav className="navbar sticky flex h-20 w-screen items-center">
@@ -88,6 +90,17 @@ function Navbar() {
                       }`}
                   >
                     {appString.pt.curateObservations}
+                  </a>
+                )}
+                {isAdmin() && (
+                  <a
+                    href={userManagementPath}
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${location.pathname === userManagementPath
+                      ? "bg-emerald-900 text-white"
+                      : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
+                      }`}
+                  >
+                    {appString.pt.manageUsers}
                   </a>
                 )}
               </div>
