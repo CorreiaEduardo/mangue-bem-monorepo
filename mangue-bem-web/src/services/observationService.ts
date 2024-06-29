@@ -9,15 +9,17 @@ export const fetchPendingObservations = async (page: number): Promise<any> => {
   const response = await api.get(`${BASE_URL}/observations`, {
     params: { approvalStatus: "EQ:PENDING", type: "EQ:LITERATURE", page },
   });
-  
+
   return response.data;
 };
 
-export const fetchPendingINaturalistObservations = async (page: number): Promise<any> => {
+export const fetchPendingINaturalistObservations = async (
+  page: number,
+): Promise<any> => {
   const response = await api.get(`${BASE_URL}/observations`, {
-    params: { approvalStatus: "EQ:PENDING", type: "EQ:INATURALIST", page  },
+    params: { approvalStatus: "EQ:PENDING", type: "EQ:INATURALIST", page },
   });
-  
+
   let mushroomData = response.data;
   let ids = "";
 
@@ -28,9 +30,7 @@ export const fetchPendingINaturalistObservations = async (page: number): Promise
       .join(","),
   );
 
-  const inaturalistResponse = await axios.get(
-    INATURALIST_URL + ids,
-  );
+  const inaturalistResponse = await axios.get(INATURALIST_URL + ids);
 
   inaturalistResponse.data.results.sort((a: any, b: any) => a.id - b.id);
   mushroomData.content.sort(
@@ -43,11 +43,100 @@ export const fetchPendingINaturalistObservations = async (page: number): Promise
 
   for (let i = 0; i < inaturalistResponse.data.results.length; i++) {
     console.log(mushroomData.content[i].specie.taxaPhoto);
-    console.log(inaturalistResponse.data.results[i].observation_photos[0]?.photo.url);
-    
+    console.log(
+      inaturalistResponse.data.results[i].observation_photos[0]?.photo.url,
+    );
+
     mushroomData.content[i].specie.taxaPhoto =
       inaturalistResponse.data.results[i].observation_photos[0]?.photo.url;
   }
+
+  return mushroomData;
+};
+
+export const fetchApprovedINaturalistObservation = async (
+  page: number,
+  id: number,
+): Promise<any> => {
+  const response = await api.get(`${BASE_URL}/observations`, {
+    params: {
+      approvalStatus: "EQ:APPROVED",
+      type: "EQ:INATURALIST",
+      page,
+      "specie.id": `EQ:${id}`,
+    },
+  });
+
+  let mushroomData = response.data;
+  let ids = "";
+
+  ids = encodeURIComponent(
+    mushroomData.content
+      .map((e: any) => e.inaturalistId)
+      .filter((id: string) => id !== "")
+      .join(","),
+  );
+
+  const inaturalistResponse = await axios.get(INATURALIST_URL + ids);
+
+  inaturalistResponse.data.results.sort((a: any, b: any) => a.id - b.id);
+  mushroomData.content.sort(
+    (a: any, b: any) => a.inaturalistId - b.inaturalistId,
+  );
+
+  mushroomData.content = mushroomData.content.filter(
+    (mushroom: any) => mushroom.inaturalistId != "",
+  );
+
+  for (let i = 0; i < inaturalistResponse.data.results.length; i++) {
+    console.log(mushroomData.content[i].specie.taxaPhoto);
+    console.log(
+      inaturalistResponse.data.results[i].observation_photos[0]?.photo.url,
+    );
+
+    mushroomData.content[i].specie.taxaPhoto =
+      inaturalistResponse.data.results[i].observation_photos[0]?.photo.url;
+  }
+
+  return mushroomData;
+};
+
+export const fetchApprovedLiteratureObservation = async (
+  page: number,
+  id: number,
+): Promise<any> => {
+  const response = await api.get(`${BASE_URL}/observations`, {
+    params: {
+      approvalStatus: "EQ:APPROVED",
+      type: "EQ:LITERATURE",
+      page,
+      "specie.id": `EQ:${id}`,
+    },
+  });
+
+  let mushroomData = response.data;
+
+  console.log(mushroomData);
+
+  return mushroomData;
+};
+
+export const fetchApprovedSpeciesLinkObservation = async (
+  page: number,
+  id: number,
+): Promise<any> => {
+  const response = await api.get(`${BASE_URL}/observations`, {
+    params: {
+      approvalStatus: "EQ:APPROVED",
+      type: "EQ:SPECIES_LINK",
+      page,
+      "specie.id": `EQ:${id}`,
+    },
+  });
+
+  let mushroomData = response.data;
+
+  console.log(mushroomData);
 
   return mushroomData;
 };

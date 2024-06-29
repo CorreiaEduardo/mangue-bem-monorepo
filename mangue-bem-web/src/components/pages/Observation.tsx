@@ -2,16 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useObservationViewModel from "../../ViewModel/useObservationViewModel";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-
-import {
-  Accordion,
-  AccordionItem,
-  AccordionItemHeading,
-  AccordionItemButton,
-  AccordionItemPanel,
-} from "react-accessible-accordion";
-import "react-accessible-accordion/dist/fancy-example.css";
-
+import { useInView } from "react-intersection-observer";
 import {
   ComposableMap,
   ZoomableGroup,
@@ -21,25 +12,68 @@ import {
 } from "react-simple-maps";
 import mapdata from "../../utils/topojson";
 import { geoCentroid } from "d3-geo";
+import {
+  useGetINaturalistObservation,
+  useGetLiteratureObservation,
+  useGetSpeciesLinkObservation,
+} from "../../ViewModel/useApprovedObservationViewModel";
+import { motion } from "framer-motion";
+import LoadingSpinner from "../LoadingSpinner";
+import appString from "../../utils/appStrings";
 
 const Observation = () => {
   const params = useParams();
   const [{ error, response }, get] = useObservationViewModel();
+  const [
+    literatureObservationList,
+    fetchNextLiteraturePage,
+    isFetchingNextLiteraturePage,
+    refetchLiterature,
+  ] = useGetLiteratureObservation();
+
+  const [
+    iNaturalistObservationList,
+    fetchNextINaturalistPage,
+    isFetchingNextINaturalistPage,
+    refetchINaturalist,
+  ] = useGetINaturalistObservation();
+
+  const [
+    speciesLinkObservationList,
+    fetchNextSpeciesLinkPage,
+    isFetchingNextSpeciesLinkPage,
+    refetchSpeciesLink,
+  ] = useGetSpeciesLinkObservation();
+
+  const { ref, inView, entry } = useInView({
+    threshold: 0.9,
+  });
 
   useEffect(() => {
     get(params.id as unknown as number);
   }, [params]);
 
+  useEffect(() => {
+    if (inView) {
+      fetchNextLiteraturePage();
+      fetchNextINaturalistPage();
+      fetchNextSpeciesLinkPage();
+    }
+  }, [
+    fetchNextINaturalistPage,
+    fetchNextLiteraturePage,
+    fetchNextSpeciesLinkPage,
+    inView,
+  ]);
+
   return (
     <div className="relative h-screen bg-[#F8F8F8]">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-      ></div>
-      <div className="absolute inset-0 flex items-center justify-center p-5 c">
+      <div className="absolute inset-0 bg-cover bg-center"></div>
+      <div className="c absolute inset-0 flex items-center justify-center p-5">
         <div className="flex h-full w-full flex-col gap-2 rounded bg-white bg-opacity-10 p-5">
           <div className="flex gap-6">
             <div className="h-fit w-1/3 rounded border-gray-400 p-1">
-              <div className="rounded border-gray-200 border-solid border-[1px] bg-white p-3">
+              <div className="rounded border-[1px] border-solid border-gray-200 bg-white p-3">
                 <div>
                   <img
                     className="rounded"
@@ -67,13 +101,13 @@ const Observation = () => {
                   )
                 </span>
               </div>
-              <div className="rounded border-gray-200 border-solid border-[1px] bg-white p-5">
+              <div className="rounded border-[1px] border-solid border-gray-200 bg-white p-5">
                 <div className="flex flex-col">
                   {/* <span className='font-bold'>Informações</span> */}
                   <span>{response?.description}</span>
                 </div>
               </div>
-              <div className="rounded border-gray-200 border-solid border-[1px] bg-white p-5">
+              <div className="rounded border-[1px] border-solid border-gray-200 bg-white p-5">
                 <div className="flex flex-col">
                   <span className="font-bold">Classificações</span>
                   <span>{/* TODO: icons */}</span>
@@ -84,7 +118,7 @@ const Observation = () => {
               </div>
             </div>
             <div className="h-fit w-1/3 rounded border-gray-400 p-1">
-              <div className="h-fit rounded border-gray-200 border-solid border-[1px] bg-white p-5">
+              <div className="h-fit rounded border-[1px] border-solid border-gray-200 bg-white p-5">
                 <div className="flex h-full flex-col">
                   <div className="flex justify-center">Geolocalização</div>
                   <div>
@@ -170,9 +204,141 @@ const Observation = () => {
                   iNaturalist
                 </Tab>
               </TabList>
-              <TabPanel>{"test1"}</TabPanel>
-              <TabPanel>{"test21"}</TabPanel>
-              <TabPanel>{"test13"}</TabPanel>
+              <TabPanel>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {literatureObservationList?.map((page: any) =>
+                    page?.content?.map((observation: any) => (
+                      <motion.div
+                        key={observation.id}
+                        className="mt-2 w-80 overflow-hidden rounded-lg border-2 bg-gray-50 shadow-md"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <div className="p-4">
+                          <h2 className="text-lg font-bold">
+                            {observation.specie.taxonGenus}{" "}
+                            {observation.specie.taxonName}
+                          </h2>
+                          <p className="text-gray-600">
+                            {observation.specie.commonName ||
+                              "Nome popular não disponível"}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {observation.specie.authors}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Estado: {observation.brazilianFederativeUnit}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Lat: {observation.lat ? observation.lat : "-"}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Lng: {observation.lng ? observation.lng : "-"}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )),
+                  ) ?? (
+                    <div className="mt-2 w-screen text-center text-xl font-bold text-gray-500">
+                      Nenhuma observação encontrada para essa espécie!
+                    </div>
+                  )}
+                  {isFetchingNextLiteraturePage ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <div ref={ref}></div>
+                  )}
+                </div>
+              </TabPanel>
+              <TabPanel>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {speciesLinkObservationList?.map((page: any) =>
+                    page?.content?.map((observation: any) => (
+                      <motion.div
+                        key={observation.id}
+                        className="mt-2 w-80 overflow-hidden rounded-lg border-2 bg-gray-50 shadow-md"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <div className="p-4">
+                          <h2 className="text-lg font-bold">
+                            {observation.specie.taxonGenus}{" "}
+                            {observation.specie.taxonName}
+                          </h2>
+                          <p className="text-gray-600">
+                            {observation.specie.commonName ||
+                              "Nome popular não disponível"}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {observation.specie.authors}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Estado: {observation.brazilianFederativeUnit}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Lat: {observation.lat ? observation.lat : "-"}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Lng: {observation.lng ? observation.lng : "-"}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )),
+                  ) ?? (
+                    <div className="mt-2 w-screen text-center text-xl font-bold text-gray-500">
+                      Nenhuma observação encontrada para essa espécie!
+                    </div>
+                  )}
+                  {isFetchingNextSpeciesLinkPage ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <div ref={ref}></div>
+                  )}
+                </div>
+              </TabPanel>
+              <TabPanel>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {iNaturalistObservationList?.map((page: any) =>
+                    page?.content?.map((observation: any) => (
+                      <motion.div
+                        key={observation.id}
+                        className="mt-2 w-80 overflow-hidden rounded-lg border-2 bg-gray-50 shadow-md"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <div className="p-4">
+                          <h2 className="text-lg font-bold">
+                            {observation.specie.taxonGenus}{" "}
+                            {observation.specie.taxonName}
+                          </h2>
+                          <p className="text-gray-600">
+                            {observation.specie.commonName ||
+                              "Nome popular não disponível"}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {observation.specie.authors}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Estado: {observation.brazilianFederativeUnit}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Lat: {observation.lat ? observation.lat : "-"}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Lng: {observation.lng ? observation.lng : "-"}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )),
+                  ) ?? (
+                    <div className="mt-2 w-screen text-center text-xl font-bold text-gray-500">
+                      Nenhuma observação encontrada para essa espécie!
+                    </div>
+                  )}
+                  {isFetchingNextINaturalistPage ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <div ref={ref}></div>
+                  )}
+                </div>
+              </TabPanel>
             </Tabs>
           </div>
         </div>

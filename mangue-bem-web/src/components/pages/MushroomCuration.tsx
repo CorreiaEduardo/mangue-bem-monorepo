@@ -7,7 +7,7 @@ import { useGetMushroomData } from "../../ViewModel/usePendingMushroomViewModel"
 import LoadingSpinner from "../LoadingSpinner";
 import { useInView } from "react-intersection-observer";
 import appString from "../../utils/appStrings";
-import { confirmAlert } from 'react-confirm-alert';
+import { confirmAlert } from "react-confirm-alert";
 
 const MushroomCuration: React.FC = () => {
   const urlParams = new URLSearchParams();
@@ -26,20 +26,20 @@ const MushroomCuration: React.FC = () => {
 
   function approveMushroomFn(mushroomId: number): void {
     const options = {
-      title: 'Tem certeza que deseja aprovar?',
-      message: 'A aprovação de uma espécie não poderá ser desfeita.',
+      title: "Tem certeza que deseja aprovar?",
+      message: "A aprovação de uma espécie não poderá ser desfeita.",
       buttons: [
         {
-          label: 'Sim, aprovar.',
+          label: "Sim, aprovar.",
           onClick: () => {
             approveMushroom(mushroomId);
             refetch();
-          }
+          },
         },
         {
-          label: 'Não, cancelar.',
-          onClick: () => {}
-        }
+          label: "Não, cancelar.",
+          onClick: () => {},
+        },
       ],
       closeOnEscape: true,
       closeOnClickOutside: true,
@@ -49,28 +49,28 @@ const MushroomCuration: React.FC = () => {
       onClickOutside: () => {},
       onKeypress: () => {},
       onKeypressEscape: () => {},
-      overlayClassName: "overlay-custom-class-name"
+      overlayClassName: "overlay-custom-class-name",
     };
-    
+
     confirmAlert(options);
   }
 
   function reproveMushroomFn(mushroomId: number): void {
     const options = {
-      title: 'Tem certeza que deseja reprovar?',
-      message: 'A reprovação de uma espécie não poderá ser desfeita.',
+      title: "Tem certeza que deseja reprovar?",
+      message: "A reprovação de uma espécie não poderá ser desfeita.",
       buttons: [
         {
-          label: 'Sim, reprovar.',
+          label: "Sim, reprovar.",
           onClick: () => {
             reproveMushroom(mushroomId);
             refetch();
-          }
+          },
         },
         {
-          label: 'Não, cancelar.',
-          onClick: () => {}
-        }
+          label: "Não, cancelar.",
+          onClick: () => {},
+        },
       ],
       closeOnEscape: true,
       closeOnClickOutside: true,
@@ -80,9 +80,9 @@ const MushroomCuration: React.FC = () => {
       onClickOutside: () => {},
       onKeypress: () => {},
       onKeypressEscape: () => {},
-      overlayClassName: "overlay-custom-class-name"
+      overlayClassName: "overlay-custom-class-name",
     };
-    
+
     confirmAlert(options);
   }
 
@@ -127,6 +127,9 @@ const MushroomCuration: React.FC = () => {
                 <p className="text-sm text-gray-600">
                   Family: {mushroom.taxonFamily}
                 </p>
+                {mushroom.doi && (
+                  <p className="text-sm text-gray-600">DOI: {mushroom.doi}</p>
+                )}
                 <div className="mt-4 flex justify-between">
                   <motion.button
                     className="rounded bg-emerald-500 px-4 py-2 text-white"
