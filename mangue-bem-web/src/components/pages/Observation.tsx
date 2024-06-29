@@ -107,13 +107,50 @@ const Observation = () => {
                   <span>{response?.description}</span>
                 </div>
               </div>
-              <div className="rounded border-[1px] border-solid border-gray-200 bg-white p-5">
-                <div className="flex flex-col">
-                  <span className="font-bold">Classificações</span>
-                  <span>{/* TODO: icons */}</span>
-                  <small>id_especie: {response?.id}</small>
-                  <small>Filo: {response?.taxonPhylum}</small>
-                  <small>Ordem: {response?.taxonOrder}</small>
+              <div className="rounded border-[1px] border-solid border-gray-200 bg-emerald-50 p-4 shadow-lg">
+                <div className="flex flex-row justify-between rounded-lg ">
+                  <div className="flex flex-col space-y-2 text-emerald-900">
+                    <span className="text-lg font-bold">Classificações</span>
+                    <small className="text-emerald-700">
+                      Filo: {response?.taxonPhylum ?? "-"}
+                    </small>
+                    <small className="text-emerald-700">
+                      Ordem: {response?.taxonOrder ?? "-"}
+                    </small>
+                    <div className="flex flex-wrap">
+                      <small className="text-emerald-700">
+                        Tipo brasileiro: {response?.brazilianType ?? "-"}
+                      </small>
+                      <small className="ml-4 text-emerald-700">
+                        Sinônimo tipo brasileiro:{" "}
+                        {response?.brazilianTypeSynonym ?? "-"}
+                      </small>
+                    </div>
+                    <small className="text-emerald-700">
+                      Bioma: {response?.biome ?? "-"}
+                    </small>
+                    <small className="text-emerald-700">
+                      Sabor: {response?.flavor ?? "-"}
+                    </small>
+                    <small className="text-emerald-700">
+                      IUCN: {response?.iucn ?? "-"}
+                    </small>
+                    <div className="flex flex-wrap">
+                      <small className="text-emerald-700">
+                        Começo de temporada:{" "}
+                        {response?.occurrenceSeasonStart ?? "-"}
+                      </small>
+                      <small className="ml-4 text-emerald-700">
+                        Fim de temporada: {response?.occurrenceSeasonEnd ?? "-"}
+                      </small>
+                    </div>
+                    <small className="text-emerald-700">
+                      Palavra chave: {response?.keywords ?? "-"}
+                    </small>
+                  </div>
+                  <span className="bem__text self-center text-xl font-bold text-emerald-700">
+                    {response?.bemClassification ?? "-"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -298,40 +335,48 @@ const Observation = () => {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {iNaturalistObservationList?.map((page: any) =>
                     page?.content?.map((observation: any) => (
-                      <motion.div
+                      <a
                         key={observation.id}
-                        className="mt-2 w-80 overflow-hidden rounded-lg border-2 bg-gray-50 shadow-md"
-                        whileHover={{ scale: 1.05 }}
+                        href={`https://www.inaturalist.org/observations/${observation.inaturalistId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mb-4 block"
                       >
-                        <div className="p-4">
-                          <h2 className="text-lg font-bold">
-                            {observation.specie.taxonGenus}{" "}
-                            {observation.specie.taxonName}
-                          </h2>
-                          <p className="text-gray-600">
-                            {observation.specie.commonName ||
-                              "Nome popular não disponível"}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {observation.specie.authors}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Estado: {observation.brazilianFederativeUnit}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Lat: {observation.lat ? observation.lat : "-"}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Lng: {observation.lng ? observation.lng : "-"}
-                          </p>
-                        </div>
-                      </motion.div>
+                        <motion.div
+                          className="mt-2 w-80 overflow-hidden rounded-lg border-2 bg-gray-50 shadow-md"
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          <div className="p-4">
+                            <h2 className="text-lg font-bold">
+                              {observation.specie.taxonGenus}{" "}
+                              {observation.specie.taxonName}
+                            </h2>
+                            <p className="text-gray-600">
+                              {observation.specie.commonName ||
+                                "Nome popular não disponível"}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {observation.specie.authors}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Estado: {observation.brazilianFederativeUnit}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Lat: {observation.lat ? observation.lat : "-"}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Lng: {observation.lng ? observation.lng : "-"}
+                            </p>
+                          </div>
+                        </motion.div>
+                      </a>
                     )),
                   ) ?? (
                     <div className="mt-2 w-screen text-center text-xl font-bold text-gray-500">
                       Nenhuma observação encontrada para essa espécie!
                     </div>
                   )}
+
                   {isFetchingNextINaturalistPage ? (
                     <LoadingSpinner />
                   ) : (
