@@ -13,7 +13,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ imageUrl, name, linkedinUrl }
       <br />
       <sub><b>{name}</b></sub>
       <br />
-      <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" alt="Linkedin">
+      <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">
         <img
           src="https://img.shields.io/badge/-Linkedin-1C1C1C?style=for-the-badge&logo=Linkedin&logoColor=00FFFF"
           style={{ width: '90px' }}
