@@ -18,7 +18,7 @@ const appString = {
     invalidCredentials: "Email ou senha inválidos",
     register: "Cadastre-se",
     projectName: "BEM",
-    info: "Sobre nós"
+    Info: "Sobre nós"
 
   },
 };

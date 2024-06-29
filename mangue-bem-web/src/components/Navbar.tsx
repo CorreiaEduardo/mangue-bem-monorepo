@@ -8,11 +8,13 @@ import MushroomHeatMap from "./pages/MushroomHeatMap";
 import Info from "./pages/Info";
 
 
+
 function Navbar() {
   const location = useLocation();
   const loginPath = getPathForComponent(Login);
   const searchPath = getPathForComponent(Home);
   const homePath = getPathForComponent(MushroomHeatMap);
+  const info = getPathForComponent(Info);
 
   console.log(location)
 
@@ -49,6 +51,16 @@ function Navbar() {
                   }`}
                 >
                   {appString.pt.searchSpecies}
+                </a>
+                <a
+                  href={info}
+                  className={`rounded-md px-3 py-2 text-sm font-medium ${
+                    location.pathname === info
+                      ? "bg-emerald-900 text-white"
+                      : "text-emerald-700 hover:bg-pink-500 hover:text-white"
+                  }`}
+                >
+                  {appString.pt.Info}
                 </a>
               </div>
             </div>

@@ -2,6 +2,7 @@ import Login from "./components/pages/Login";
 import MushroomHeatMap from "./components/pages/MushroomHeatMap";
 import Observation from "./components/pages/Observation";
 import Home from "./components/pages/SearchSpecies";
+import Info from "./components/pages/Info";
 
 export const appRoutes = [
   {
@@ -23,7 +24,7 @@ export const appRoutes = [
   },
   {
     path: "/info",
-    component: Home,
+    component: Info,
   },
 ];
 
