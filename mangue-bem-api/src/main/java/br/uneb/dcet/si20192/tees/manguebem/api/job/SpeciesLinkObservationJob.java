@@ -60,7 +60,7 @@ public class SpeciesLinkObservationJob {
 
                 while (morePages) {
                     rateLimiter.acquire();
-                    SearchSpecieResponse response = speciesLinkService.searchTaxonObservations(entity.getSpeciesLinkId(), offset, limit);
+                    SearchSpecieResponse response = speciesLinkService.searchTaxonObservations(entity.getTaxonGenus(), entity.getTaxonName(), offset, limit);
                     if (response != null && response.getFeatures() != null) {
 
                         for (Feature observation : response.getFeatures()) {
@@ -75,7 +75,7 @@ public class SpeciesLinkObservationJob {
                                     .brazilianFederativeUnit(FederativeUnit.fromName(observation.getProperties().getStateprovince()))
                                     .lat(lat)
                                     .lng(lng)
-                                    .speciesLinkId(observation.getProperties().getCatalognumber());
+                                    .speciesLinkId(observation.getProperties().getBarcode());
 
                             observationService.createAsync(dtoBuilder.build());
                         }

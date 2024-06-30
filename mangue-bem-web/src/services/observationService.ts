@@ -2,6 +2,7 @@ import axios from "axios";
 import { Observation } from "../Model/ObservationData";
 import api from "./AxiosProvider";
 import { fetchSpeciesLinkInstitution } from "./observationInstitution";
+import { fetchSpeciesLinkCollection } from "./observationCollection";
 
 const INATURALIST_URL = "https://api.inaturalist.org/v1/observations/";
 const BASE_URL = "http://localhost:8080/v1";
@@ -144,12 +145,26 @@ export const fetchApprovedSpeciesLinkObservation = async (
     name,
   );
 
-  for (let i = 0; i < mushroomData.data.content.length; i++) {
-    const institutionCode = observationDetails.features[i].institutioncode;
-    const institution = fetchSpeciesLinkInstitution(page, institutionCode);
+  console.log(observationDetails);
+  console.log(mushroomData);
+  console.log(mushroomData.content.length);
+  
+
+  for (let i = 0; i < mushroomData.content.length; i++) {
+    console.log(mushroomData.content[i]);
+    console.log(observationDetails.features[i]);
+    
+    const institutionCode = observationDetails.features[i].properties.institutioncode;
+    const collectionId = observationDetails.features[i].properties.collectionid;
+    const institution = await fetchSpeciesLinkInstitution(page, institutionCode);
+    const collection = await fetchSpeciesLinkCollection(page, collectionId);
     mushroomData.content[i].details = observationDetails.features[i];
     mushroomData.content[i].institution = institution;
+    mushroomData.content[i].collection = collection;
   }
+
+  
+  console.log(mushroomData);
 
   return mushroomData;
 };
@@ -161,12 +176,13 @@ export const fetchSpeciesLinkObservationDetails = async (
   name: string,
 ): Promise<any> => {
   const response = await api.get(
-    `${SPECIES_LINK_URL}/search?scientificName=${genus}+${name}`,
+    `https://cors-anywhere.herokuapp.com/${SPECIES_LINK_URL}/search`,
     {
       params: {
         apikey: SPECIES_LINK_APIKEY,
         page,
-        collectionID: id,
+        country: 'Brazil',
+        barcode: id,
       },
     },
   );

@@ -68,7 +68,7 @@ const Observation = () => {
   ]);
 
   return (
-    <div className="relative h-screen bg-[#F8F8F8]">
+    <div className="relative h-screen overflow-x-hidden pb-8">
       <div className="absolute inset-0 bg-cover bg-center"></div>
       <div className="c absolute inset-0 flex items-center justify-center p-5">
         <div className="flex h-full w-full flex-col gap-2 rounded bg-white bg-opacity-10 p-5">
@@ -229,7 +229,7 @@ const Observation = () => {
               </div>
             </div>
           </div>
-          <div className="mt-3 flex w-full flex-col">
+          <div className="mt-3 flex w-full flex-col pb-24">
             <Tabs>
               <TabList className="flex w-full flex-row">
                 <Tab className="flex-grow border border-white bg-emerald-700 px-4 py-2 text-center font-bold text-white transition-colors duration-300 hover:bg-emerald-500 focus:bg-emerald-400 focus:text-black">
@@ -291,7 +291,8 @@ const Observation = () => {
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {speciesLinkObservationList?.map((page: any) =>
                     page?.content?.map((observation: any) => {
-                      const herbCode = observation.institution.collectioncode;
+                      const institutionCode = observation.details.properties.institutioncode;
+                      const herbCode = observation.details.properties.collectioncode;
                       return (
                         <motion.div
                           key={observation.id}
@@ -308,19 +309,19 @@ const Observation = () => {
                                 "Nome popular não disponível"}
                             </p>
                             <p className="text-sm text-gray-600">
-                              Institutição: {observation.institution.name}
+                              Institutição: {observation.institution?.[institutionCode].name}
                             </p>
                             <p className="text-sm text-gray-600">
                               Herbáreo:{" "}
-                              {observation.institution?.[herbCode].name}
+                              {observation.collection?.[herbCode].name}
                             </p>
                             <p className="text-sm text-gray-600">
-                              Data de coleta:
-                              {observation.details.daycollected}
+                              Data de coleta: 
+                              {" " + observation.details.properties.daycollected}
                               {"/"}
-                              {observation.details.monthcollected}
+                              {observation.details.properties.monthcollected}
                               {"/"}
-                              {observation.details.yearcollected}
+                              {observation.details.properties.yearcollected}
                             </p>
                             <p className="text-sm text-gray-600">
                               Lat: {observation.lat ? observation.lat : "-"}
@@ -347,43 +348,46 @@ const Observation = () => {
               <TabPanel>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {iNaturalistObservationList?.map((page: any) =>
-                    page?.content?.map((observation: any) => (
-                      <a
-                        key={observation.id}
-                        href={`https://www.inaturalist.org/observations/${observation.inaturalistId}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mb-4 block"
-                      >
-                        <motion.div
-                          className="mt-2 w-80 overflow-hidden rounded-lg border-2 bg-gray-50 shadow-md"
-                          whileHover={{ scale: 1.05 }}
+                    page?.content?.map((observation: any) => {
+                      return (
+                        <a
+                          key={observation.id}
+                          href={`https://www.inaturalist.org/observations/${observation.inaturalistId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mb-4 block"
                         >
-                          <div className="p-4">
-                            <h2 className="text-lg font-bold">
-                              {observation.specie.taxonGenus}{" "}
-                              {observation.specie.taxonName}
-                            </h2>
-                            <p className="text-gray-600">
-                              {observation.specie.commonName ||
-                                "Nome popular não disponível"}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              {observation.specie.authors}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              Estado: {observation.brazilianFederativeUnit}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              Lat: {observation.lat ? observation.lat : "-"}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              Lng: {observation.lng ? observation.lng : "-"}
-                            </p>
-                          </div>
-                        </motion.div>
-                      </a>
-                    )),
+                          <motion.div
+                            className="mt-2 w-80 overflow-hidden rounded-lg border-2 bg-gray-50 shadow-md"
+                            whileHover={{ scale: 1.05 }}
+                          >
+                            <img src={observation.specie.taxaPhoto} alt="" className="h-[240px] w-full object-cover" />
+                            <div className="p-4">
+                              <h2 className="text-lg font-bold">
+                                {observation.specie.taxonGenus}{" "}
+                                {observation.specie.taxonName}
+                              </h2>
+                              <p className="text-gray-600">
+                                {observation.specie.commonName ||
+                                  "Nome popular não disponível"}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                {observation.specie.authors}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                Estado: {observation.brazilianFederativeUnit}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                Lat: {observation.lat ? observation.lat : "-"}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                Lng: {observation.lng ? observation.lng : "-"}
+                              </p>
+                            </div>
+                          </motion.div>
+                        </a>
+                      )
+                    }),
                   ) ?? (
                     <div className="mt-2 w-screen text-center text-xl font-bold text-gray-500">
                       Nenhuma observação encontrada para essa espécie!
