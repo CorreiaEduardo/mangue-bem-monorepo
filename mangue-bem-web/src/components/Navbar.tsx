@@ -61,16 +61,6 @@ function Navbar() {
                 >
                   {appString.pt.searchSpecies}
                 </a>
-                <a
-                  href={info}
-                  className={`rounded-md px-3 py-2 text-sm font-medium ${
-                    location.pathname === info
-                      ? "bg-emerald-900 text-white"
-                      : "text-emerald-700 hover:bg-pink-500 hover:text-white"
-                  }`}
-                >
-                  {appString.pt.Info}
-                </a>
                 {isAuthenticated() && (
                   <a
                     href={mushroomRegisterPath}
@@ -117,6 +107,15 @@ function Navbar() {
                     {appString.pt.manageUsers}
                   </a>
                 )}
+                <a
+                  href={info}
+                  className={`rounded-md px-3 py-2 text-sm font-medium ${location.pathname === info
+                      ? "bg-emerald-900 text-white"
+                      : "text-emerald-700 hover:bg-pink-500 hover:text-white"
+                    }`}
+                >
+                  {appString.pt.Info}
+                </a>
               </div>
             </div>
           </div>

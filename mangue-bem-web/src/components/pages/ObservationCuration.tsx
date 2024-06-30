@@ -102,7 +102,7 @@ const ObservationCuration: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 pb-24 h-screen overflow-y-scroll bg-cover bg-center">
       <h1 className="mb-4 text-2xl font-bold">
         {appString.pt.observationCuration}
       </h1>
@@ -173,7 +173,7 @@ const ObservationCuration: React.FC = () => {
           </div>
         </TabPanel>
         <TabPanel>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 pb-24">
             {iNaturalistObservationList?.map((page: any) =>
               page?.content?.map((observation: any) => (
                 <motion.div
