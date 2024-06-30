@@ -5,6 +5,7 @@ import MushroomHeatMap from "./components/pages/MushroomHeatMap";
 import MushroomRegister from "./components/pages/MushroomRegister";
 import Observation from "./components/pages/Observation";
 import Home from "./components/pages/SearchSpecies";
+import Info from "./components/pages/Info";
 import UserRegister from "./components/pages/UserRegister";
 import EditSpecie from "./components/pages/EditSpecie";
 import UserManagement from "./components/pages/UserManagement";
@@ -64,6 +65,10 @@ export const appRoutes = [
     component: UserManagement,
     authenticated: true,
     adminRole: true,
+  },
+  {
+    path: "/info",
+    component: Info,
   },
 ];
 

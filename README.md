@@ -131,7 +131,7 @@ Trata-se de um sistema web com vários perfis de usuários, cada um concedendo a
 ## Instalação
 ### TBD
 
-## Contribuindo
+## Quer contrinuir?
 1. Se não for um colaborador direto, faça um fork do repositório.
 2. Crie uma nova branch: git checkout -b feature/nome-da-sua-feature
 3. Faça commit das suas alterações: git commit -am 'Adicionar alguma feature'
