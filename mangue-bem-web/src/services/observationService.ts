@@ -1,9 +1,12 @@
 import axios from "axios";
 import { Observation } from "../Model/ObservationData";
 import api from "./AxiosProvider";
+import { fetchSpeciesLinkInstitution } from "./observationInstitution";
 
 const INATURALIST_URL = "https://api.inaturalist.org/v1/observations/";
 const BASE_URL = "http://localhost:8080/v1";
+const SPECIES_LINK_URL = "https://specieslink.net/ws/1.0";
+const SPECIES_LINK_APIKEY = "8r6u470KHNachb17GyP4";
 
 export const fetchPendingObservations = async (page: number): Promise<any> => {
   const response = await api.get(`${BASE_URL}/observations`, {
@@ -42,11 +45,6 @@ export const fetchPendingINaturalistObservations = async (
   );
 
   for (let i = 0; i < inaturalistResponse.data.results.length; i++) {
-    console.log(mushroomData.content[i].specie.taxaPhoto);
-    console.log(
-      inaturalistResponse.data.results[i].observation_photos[0]?.photo.url,
-    );
-
     mushroomData.content[i].specie.taxaPhoto =
       inaturalistResponse.data.results[i].observation_photos[0]?.photo.url;
   }
@@ -89,11 +87,6 @@ export const fetchApprovedINaturalistObservation = async (
   );
 
   for (let i = 0; i < inaturalistResponse.data.results.length; i++) {
-    console.log(mushroomData.content[i].specie.taxaPhoto);
-    console.log(
-      inaturalistResponse.data.results[i].observation_photos[0]?.photo.url,
-    );
-
     mushroomData.content[i].specie.taxaPhoto =
       inaturalistResponse.data.results[i].observation_photos[0]?.photo.url;
   }
@@ -116,8 +109,6 @@ export const fetchApprovedLiteratureObservation = async (
 
   let mushroomData = response.data;
 
-  console.log(mushroomData);
-
   return mushroomData;
 };
 
@@ -135,8 +126,52 @@ export const fetchApprovedSpeciesLinkObservation = async (
   });
 
   let mushroomData = response.data;
+  let ids = "";
+  const genus = mushroomData.content[0].taxonGenus;
+  const name = mushroomData.content[0].taxonName;
 
-  console.log(mushroomData);
+  ids = encodeURIComponent(
+    mushroomData.content
+      .map((e: any) => e.speciesLinkId)
+      .filter((id: string) => id !== "")
+      .join(","),
+  );
+
+  const observationDetails = await fetchSpeciesLinkObservationDetails(
+    page,
+    ids,
+    genus,
+    name,
+  );
+
+  for (let i = 0; i < mushroomData.data.content.length; i++) {
+    const institutionCode = observationDetails.features[i].institutioncode;
+    const institution = fetchSpeciesLinkInstitution(page, institutionCode);
+    mushroomData.content[i].details = observationDetails.features[i];
+    mushroomData.content[i].institution = institution;
+  }
+
+  return mushroomData;
+};
+
+export const fetchSpeciesLinkObservationDetails = async (
+  page: number,
+  id: string,
+  genus: string,
+  name: string,
+): Promise<any> => {
+  const response = await api.get(
+    `${SPECIES_LINK_URL}/search?scientificName=${genus}+${name}`,
+    {
+      params: {
+        apikey: SPECIES_LINK_APIKEY,
+        page,
+        collectionID: id,
+      },
+    },
+  );
+
+  let mushroomData = response.data;
 
   return mushroomData;
 };

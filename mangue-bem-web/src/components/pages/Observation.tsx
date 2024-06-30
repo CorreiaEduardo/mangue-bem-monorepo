@@ -20,6 +20,7 @@ import {
 import { motion } from "framer-motion";
 import LoadingSpinner from "../LoadingSpinner";
 import appString from "../../utils/appStrings";
+import { fetchSpeciesLinkObservationDetails } from "../../services/observationService";
 
 const Observation = () => {
   const params = useParams();
@@ -289,36 +290,48 @@ const Observation = () => {
               <TabPanel>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {speciesLinkObservationList?.map((page: any) =>
-                    page?.content?.map((observation: any) => (
-                      <motion.div
-                        key={observation.id}
-                        className="mt-2 w-80 overflow-hidden rounded-lg border-2 bg-gray-50 shadow-md"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <div className="p-4">
-                          <h2 className="text-lg font-bold">
-                            {observation.specie.taxonGenus}{" "}
-                            {observation.specie.taxonName}
-                          </h2>
-                          <p className="text-gray-600">
-                            {observation.specie.commonName ||
-                              "Nome popular não disponível"}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {observation.specie.authors}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Estado: {observation.brazilianFederativeUnit}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Lat: {observation.lat ? observation.lat : "-"}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Lng: {observation.lng ? observation.lng : "-"}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )),
+                    page?.content?.map((observation: any) => {
+                      const herbCode = observation.institution.collectioncode;
+                      return (
+                        <motion.div
+                          key={observation.id}
+                          className="mt-2 w-80 overflow-hidden rounded-lg border-2 bg-gray-50 shadow-md"
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          <div className="p-4">
+                            <h2 className="text-lg font-bold">
+                              {observation.specie.taxonGenus}{" "}
+                              {observation.specie.taxonName}
+                            </h2>
+                            <p className="text-gray-600">
+                              {observation.specie.commonName ||
+                                "Nome popular não disponível"}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Institutição: {observation.institution.name}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Herbáreo:{" "}
+                              {observation.institution?.[herbCode].name}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Data de coleta:
+                              {observation.details.daycollected}
+                              {"/"}
+                              {observation.details.monthcollected}
+                              {"/"}
+                              {observation.details.yearcollected}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Lat: {observation.lat ? observation.lat : "-"}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Lng: {observation.lng ? observation.lng : "-"}
+                            </p>
+                          </div>
+                        </motion.div>
+                      );
+                    }),
                   ) ?? (
                     <div className="mt-2 w-screen text-center text-xl font-bold text-gray-500">
                       Nenhuma observação encontrada para essa espécie!
