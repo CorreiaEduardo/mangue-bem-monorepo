@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
-public final class UserRegistrationDTO {
+public final class UserRegistrationDTO implements RegistrationDTO {
 
     @Setter
     private String name;

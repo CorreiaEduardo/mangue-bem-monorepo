@@ -48,12 +48,13 @@ public class SpeciesLinkObservationJobTest {
         // Arrange
         SpecieDTO specieDTO = new SpecieDTO();
         specieDTO.setId(123l);
-        specieDTO.setSpeciesLinkId("speciesLinkId");
+        specieDTO.setTaxonGenus("taxonGenus");
+        specieDTO.setTaxonName("taxonName");
 
         Page<SpecieDTO> page = new PageImpl<>(List.of(specieDTO), PageRequest.of(0, 1), 1);
 
         when(specieService.getAll(any(Pageable.class))).thenReturn(page).thenReturn(Page.empty());
-        when(speciesLinkService.searchTaxonObservations(eq("speciesLinkId"), anyInt(), anyInt()))
+        when(speciesLinkService.searchTaxonObservations(eq("speciesLinkId"), eq("taxonName"), anyInt(), anyInt()))
                 .thenReturn(new SearchSpecieResponse());
 
         // Mocking Feature and Geometry
@@ -71,7 +72,7 @@ public class SpeciesLinkObservationJobTest {
         response.setFeatures(List.of(feature));
         response.setNumberReturned(1);
 
-        when(speciesLinkService.searchTaxonObservations(eq("speciesLinkId"), anyInt(), anyInt())).thenReturn(response);
+        when(speciesLinkService.searchTaxonObservations(eq("speciesLinkId"), eq("taxonName"), anyInt(), anyInt())).thenReturn(response);
 
         // Act
         speciesLinkObservationJob.execute();
@@ -96,7 +97,7 @@ public class SpeciesLinkObservationJobTest {
 
         // Assert
         verify(specieService, times(1)).getAll(any(Pageable.class));
-        verify(speciesLinkService, never()).searchTaxonObservations(anyString(), anyInt(), anyInt());
+        verify(speciesLinkService, never()).searchTaxonObservations(anyString(), anyString(), anyInt(), anyInt());
         verify(observationService, never()).createAsync(any(ObservationDTO.class));
     }
 }

@@ -1,37 +1,37 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import Card from "../Card";
-import useLoginViewModel from "../../ViewModel/useLoginViewModel";
 import { useNavigate } from "react-router-dom";
 import appString from "../../utils/appStrings";
 import DefaultButton from "../DefaultButton";
 import TextInput from "../TextInput";
+import { useAuth } from "../../contexts/auth";
 
-const Login = ({
-  setIsloggedIn,
-}: {
-  setIsloggedIn: Dispatch<SetStateAction<boolean>>;
-  isLoggedIn: boolean;
-}) => {
-  const [user, setUser] = useState({ email: "", password: "" });
-  const [{ error, response, stat }, handleSubmit] = useLoginViewModel();
+const Login = () => {
+  const [user, setUser] = useState({ name: "", email: "", password: "" });
+  const { isAuthenticated, signIn, error } = useAuth();
   const navigate = useNavigate();
 
-  const handleFormSubmit = async (e: { preventDefault: () => void }) => {
+  if (isAuthenticated()) {
+    navigate("/");
+  }
+
+  const handleFormSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    await handleSubmit({ ...user });
-    if (stat === 200) {
-      setIsloggedIn(true);
-      navigate("/", { replace: true });
-    }
+    signIn({ ...user });
   };
 
   return (
     //TODO mobile version
     <div className="flex min-h-screen sm:p-0">
-      <div className="flex w-full items-center justify-center  bg-emerald-700 p-5 md:w-1/2">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex w-full items-center justify-center  bg-emerald-700 p-5 md:w-1/2"
+      >
         <Card>
           <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            {appString.pt.login}
+            {appString.pt.loginWelcome}
           </h2>
           <div className="mt-5  sm:mx-4 sm:w-full sm:max-w-sm">
             <form
@@ -40,7 +40,12 @@ const Login = ({
               method="POST"
               onSubmit={handleFormSubmit}
             >
-              <div className="relative mt-2 w-full">
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="relative mt-2 w-full"
+              >
                 <TextInput
                   id="email"
                   name="email"
@@ -52,8 +57,13 @@ const Login = ({
                   onChange={(newValue) => setUser({ ...user, email: newValue })}
                   label="Email"
                 />
-              </div>
-              <div className="w-full">
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="w-full"
+              >
                 <div className="relative mt-2">
                   <TextInput
                     id="password"
@@ -80,20 +90,34 @@ const Login = ({
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
               {error && (
-                <p className="my-2 text-pink-500">
+                <motion.p
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="my-2 text-pink-500"
+                >
                   {appString.pt.invalidCredentials}
-                </p>
+                </motion.p>
               )}
-              <DefaultButton type="submit" text={appString.pt.login} />
-
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <DefaultButton type="submit" text={appString.pt.signIn} />
+              </motion.div>
               <hr className="my-3 w-full border-gray-500" />
-              <DefaultButton text={appString.pt.register} width="w-1/2" />
+              <DefaultButton
+                text={appString.pt.register}
+                width="w-1/2"
+                onClick={() => navigate("/register", { replace: true })}
+              />
             </form>
           </div>
         </Card>
-      </div>
+      </motion.div>
 
       <div
         className="hidden bg-cover bg-center shadow-[_-10px_3px_8px_rgba(3,31,24,0.45)] md:block md:w-1/2"

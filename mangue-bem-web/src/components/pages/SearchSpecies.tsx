@@ -3,20 +3,29 @@ import SearchBar from "../Search";
 import appString from "../../utils/appStrings";
 import MushroomList from "../MushroomList";
 import DefaultButton from "../DefaultButton";
-import {useGetMushroomAutoComplete, useGetMushroomData} from "../../ViewModel/useMushroomViewModel";
+import { FaSearch } from "react-icons/fa";
+import Select from "react-select";
+import {
+  useGetMushroomAutoComplete,
+  useGetMushroomData,
+  useMushroomDeleteViewModel
+} from "../../ViewModel/useMushroomViewModel";
 import DropdownMenu from "../DropdownMenu";
-import { useNavigate } from "react-router-dom";
-import { useInView } from "react-intersection-observer";
+import { useSearchParams } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner";
+import "../../styles/SearchSpecies.css";
+import { useAuth } from "../../contexts/auth";
+import { confirmAlert } from 'react-confirm-alert';
 
-const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+const Home = () => {
   const urlParams = new URLSearchParams();
+  const { isAuthenticated } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [mushroomList, fetchNextPage, isFetchingNextPage] =
+  const [mushroomList, fetchNextPage, isFetchingNextPage, refetch] =
     useGetMushroomData();
 
-  const [mushroomAutoComplete, fetchmushroomAutoComplete] = useGetMushroomAutoComplete();
-
-  const [autocompleteResults, setAutocompleteResults] = useState<{ id: number, taxonName: string }[]>([]);;
+  const deleteMushroomFn = useMushroomDeleteViewModel();
 
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -28,104 +37,110 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  //TODO: typescript type
+  if (selectedOptions.uf) {
+    urlParams.set(
+      "observations.brazilianFederativeUnit",
+      "EQ:" + selectedOptions.uf,
+    );
+  } else {
+    urlParams.delete("observations.brazilianFederativeUnit");
+  }
 
-  useEffect(() => {
-    if (searchTerm.length > 2) {
-      fetchmushroomAutoComplete().then(() => {
-        setAutocompleteResults(mushroomAutoComplete[0].content.slice(0, 3));
-      });
-    } else {
-      setAutocompleteResults([]);
-    }
-  }, [searchTerm, fetchmushroomAutoComplete]);
+  if (selectedOptions.bioma) {
+    urlParams.set("observations.biome.name", "EQ:" + selectedOptions.bioma);
+  } else {
+    urlParams.delete("observations.biome.name");
+  }
 
-  const navigate = useNavigate();
+  if (selectedOptions.classificacao) {
+    urlParams.set("bemClassification", "EQ:" + selectedOptions.classificacao);
+  } else {
+    urlParams.delete("bemClassification");
+  }
 
-  useEffect(() => {
-    const updateUrlWhithFilters = () => {
-      if (selectedOptions.uf) {
-        urlParams.set("observations.brazilianFederativeUnit",'EQ:' + selectedOptions.uf);
-      } else {
-        urlParams.delete("observations.brazilianFederativeUnit");
-      }
+  if (searchTerm.length > 0) {
+    urlParams.set("taxonName", "LK:" + searchTerm);
+  } else {
+    urlParams.delete("taxonName");
+  }
 
-      if (selectedOptions.bioma) {
-        urlParams.set("observations.biome.name", 'EQ:' + selectedOptions.bioma);
-      } else {
-        urlParams.delete("observations.biome.name");
-      }
+  const mushroomAutoComplete = useGetMushroomAutoComplete(
+    "?" + urlParams.toString(),
+  );
 
-      if (selectedOptions.classificacao) {
-        urlParams.set("bemClassification", 'EQ:' + selectedOptions.classificacao);
-      } else {
-        urlParams.delete("bemClassification");
-      }
-
-      if (searchTerm.length > 0) {
-        urlParams.set("taxonName", 'LK:' + searchTerm);
-      } else {
-        urlParams.delete("taxonName");
-      }
-
-      navigate({ search: urlParams.toString() });
+  function deleteMushroom(mushroomId: number): void {
+    const options = {
+      title: 'Tem certeza que deseja excluir?',
+      message: 'A exclusão de uma espécie de cogumelo pode afetar registros de observação relacionados.',
+      buttons: [
+        {
+          label: 'Sim, excluir.',
+          onClick: () => deleteMushroomFn.mutateAsync(mushroomId)
+            .then(() => {
+              refetch({});
+            })
+        },
+        {
+          label: 'Não, cancelar.',
+          onClick: () => {}
+        }
+      ],
+      closeOnEscape: true,
+      closeOnClickOutside: true,
+      keyCodeForClose: [8, 32],
+      willUnmount: () => {},
+      afterClose: () => {},
+      onClickOutside: () => {},
+      onKeypress: () => {},
+      onKeypressEscape: () => {},
+      overlayClassName: "overlay-custom-class-name"
     };
-
-    updateUrlWhithFilters(); // Executa a função inicialmente
-
-    // Esta função será chamada sempre que selectedOptions, searchTerm mudar
-    const unsubscribe = () => {
-      updateUrlWhithFilters();
-    };
-
-    return () => unsubscribe(); // Limpeza do useEffect
-  }, [selectedOptions, searchTerm]);
+    
+    confirmAlert(options);
+  }
 
   return (
     <div>
       <div
-        className="relative left-0 top-0 h-screen w-full bg-cover bg-center overflow-y-scroll"
-        style={{ backgroundImage: "url('/bg.jpeg')" }}
+        className="relative left-0 top-0 h-screen w-full overflow-y-scroll bg-cover bg-center"
       >
         <div className="relative">
-          <div className="my-5 grid grid-cols-4 gap-3">
-            <div className="col-span-2 col-start-2 ml-16">
+          <div className="py-5 flex items-center justify-center gap-3 bg-[#565656]">
+            <div className="col-span-5 col-start-2 ml-16">
               <div className="flex items-center justify-between gap-3">
-                <DefaultButton
-                  text="Buscar"
-                  width="w-40 "
-                  animation={false}
-                  onClick={fetchNextPage}
-                />
-                <div>
-                  <SearchBar
-                    searchLabel={appString.pt.scientifcName}
-                    searchTerm={searchTerm}
-                    onChange={(term) => {
-                      setSearchTerm(term);
-                      setIsDropdownOpen(false);
-                    }}
+                <div className="flex h-[42px] w-fit flex-row items-center justify-center">
+                  <Select
+                    placeholder="Busque aqui"
+                    className="search-bar"
+                    options={
+                      searchTerm.length > 2
+                        ? mushroomAutoComplete.data?.content
+                            .slice(0, 3)
+                            .map((mushroom) => ({
+                              value: mushroom.id,
+                              label: mushroom.taxonName,
+                            }))
+                        : []
+                    }
+                    noOptionsMessage={() => "Busque um cogumelo!"}
+                    onInputChange={(e: string) => setSearchTerm(e)}
                   />
-                  {autocompleteResults.length > 0 && (
-                    <div className="absolute z-10 mt-1 rounded-md border border-gray-300 bg-white shadow-lg">
-                      {autocompleteResults.map(mushroom => (
-                        <div
-                          key={mushroom.id}
-                          className="px-4 py-2 hover:bg-gray-200"
-                        >
-                          {mushroom.taxonName}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+
+                  <button
+                  onClick={() => {
+                    setSearchParams(urlParams.toString());
+                  }}
+                  className="font-semibold text-lg leading-6 text-white shadow-sm transition duration-300 ease-in hover:bg-pink-700 hover:shadow-lg rounded-full px-3 py-1.5 bg-emerald-500 h-[42px] w-[42px] mr-[10px]">
+                    <FaSearch />
+                  </button>
+                  <DropdownMenu
+                    width="w-[100px]"
+                    selectedOptions={selectedOptions}
+                    setSelectedOptions={setSelectedOptions}
+                    isOpen={isDropdownOpen}
+                    setIsOpen={setIsDropdownOpen}
+                  />
                 </div>
-                <DropdownMenu
-                  width="40"
-                  selectedOptions={selectedOptions}
-                  setSelectedOptions={setSelectedOptions}
-                  isOpen={isDropdownOpen}
-                  setIsOpen={setIsDropdownOpen}
-                />
               </div>
             </div>
           </div>
@@ -133,8 +148,10 @@ const Home = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
         <MushroomList
           mushroomPages={mushroomList}
           getMushroom={fetchNextPage}
+          deleteMushroom={deleteMushroom}
           isFetchingNextPage={isFetchingNextPage}
         />
+        {isFetchingNextPage && <LoadingSpinner />}
       </div>
     </div>
   );

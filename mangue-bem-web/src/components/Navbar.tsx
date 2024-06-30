@@ -5,14 +5,23 @@ import { appRoutes, getPathForComponent } from "../Routes";
 import Home from "./pages/SearchSpecies";
 import Login from "./pages/Login";
 import MushroomHeatMap from "./pages/MushroomHeatMap";
+import MushroomRegister from "./pages/MushroomRegister";
+import { useAuth } from "../contexts/auth";
+import MushroomCuration from "./pages/MushroomCuration";
+import ObservationCuration from "./pages/ObservationCuration";
+import UserManagement from "./pages/UserManagement";
 
 function Navbar() {
   const location = useLocation();
+  const { isAuthenticated, isCurator, isAdmin, signOut } = useAuth();
+
   const loginPath = getPathForComponent(Login);
   const searchPath = getPathForComponent(Home);
   const homePath = getPathForComponent(MushroomHeatMap);
-
-  console.log(location)
+  const mushroomRegisterPath = getPathForComponent(MushroomRegister);
+  const mushroomCurationPath = getPathForComponent(MushroomCuration);
+  const observationCurationPath = getPathForComponent(ObservationCuration);
+  const userManagementPath = getPathForComponent(UserManagement);
 
   return (
     <nav className="navbar sticky flex h-20 w-screen items-center">
@@ -22,7 +31,7 @@ function Navbar() {
             <div className="flex flex-shrink-0 items-center">
               <img
                 className="h-16 w-auto"
-                src="assets/logo.png"
+                src="/assets/logo.png"
                 alt="mangue logo"
               />
             </div>
@@ -33,7 +42,7 @@ function Navbar() {
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
                     location.pathname === homePath
                       ? "bg-emerald-900 text-white"
-                      : "text-emerald-700 hover:bg-pink-500 hover:text-white"
+                      : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
                   }`}
                 >
                   {appString.pt.home}
@@ -43,40 +52,97 @@ function Navbar() {
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
                     location.pathname === searchPath
                       ? "bg-emerald-900 text-white"
-                      : "text-emerald-700 hover:bg-pink-500 hover:text-white"
+                      : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
                   }`}
                 >
                   {appString.pt.searchSpecies}
                 </a>
+                {isAuthenticated() && (
+                  <a
+                    href={mushroomRegisterPath}
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${
+                      location.pathname === mushroomRegisterPath
+                        ? "bg-emerald-900 text-white"
+                        : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
+                    }`}
+                  >
+                    {appString.pt.registerMushroom}
+                  </a>
+                )}
+                {isCurator() && (
+                  <a
+                    href={mushroomCurationPath}
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${
+                      location.pathname === mushroomCurationPath
+                        ? "bg-emerald-900 text-white"
+                        : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
+                    }`}
+                  >
+                    {appString.pt.curateMushrooms}
+                  </a>
+                )}
+                {isCurator() && (
+                  <a
+                    href={observationCurationPath}
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${location.pathname === observationCurationPath
+                        ? "bg-emerald-900 text-white"
+                        : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
+                      }`}
+                  >
+                    {appString.pt.curateObservations}
+                  </a>
+                )}
+                {isAdmin() && (
+                  <a
+                    href={userManagementPath}
+                    className={`rounded-md px-3 py-2 text-sm font-medium ${location.pathname === userManagementPath
+                      ? "bg-emerald-900 text-white"
+                      : "bg-emerald-500 text-slate-700 hover:bg-pink-500 hover:text-white"
+                      }`}
+                  >
+                    {appString.pt.manageUsers}
+                  </a>
+                )}
               </div>
             </div>
           </div>
           <div className="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <div>
-              <a
-                href={loginPath}
-                className="relative  ml-4 flex rounded-full bg-emerald-500 text-sm text-pink-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                id="user-menu-button"
-                aria-expanded="false"
-                aria-haspopup="true"
-              >
-                <span className="-inset-1.5"></span>
-                <span className="sr-only">Open user menu</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-8 w-8"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                  />
-                </svg>
-              </a>
+              {isAuthenticated()
+                ? (
+                  <>
+                    <button onClick={() => {signOut()}}>Sair</button>
+                  </>
+                )
+                : (
+                  <>
+                    <a
+                      href={loginPath}
+                      className="relative  ml-4 flex rounded-full bg-emerald-500 text-sm text-pink-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                      id="user-menu-button"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                    >
+                      <span className="-inset-1.5"></span>
+                      <span className="sr-only">Open user menu</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="h-8 w-8"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                        />
+                      </svg>
+                    </a>
+                  </>
+                )
+              }
             </div>
 
             {/* <div className="relative ml-3">

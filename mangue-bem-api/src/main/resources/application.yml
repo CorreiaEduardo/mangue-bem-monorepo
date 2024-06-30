@@ -20,3 +20,19 @@ integration:
     apikey: ${INTEGRATION_SPECIESLINK_APIKEY}
   iucnredlist:
     token: ${INTEGRATION_IUCNREDLIST_TOKEN}
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+      type:
+        descriptor:
+          sql: trace
+
+log4j:
+  logger:
+    org:
+    hibernate:
+      SQL: debug
+    type: trace

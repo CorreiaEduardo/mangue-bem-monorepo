@@ -41,6 +41,13 @@ public class SecurityConfiguration {
             "/v1/curators",
     };
 
+    public static final String[] CURATOR_ENDPOINTS = {
+            "/v1/species/*/approve",
+            "/v1/species/*/reprove",
+            "/v1/observations/*/approve",
+            "/v1/observations/*/reprove",
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
@@ -52,6 +59,7 @@ public class SecurityConfiguration {
                         });
                     });
                     httpRegistry.requestMatchers(ADMIN_ENDPOINTS).hasRole(UserRole.ADMIN.name());
+                    httpRegistry.requestMatchers(CURATOR_ENDPOINTS).hasAnyRole(UserRole.CURATOR.name(), UserRole.ADMIN.name());
                     httpRegistry.anyRequest().authenticated();
                 })
                 .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

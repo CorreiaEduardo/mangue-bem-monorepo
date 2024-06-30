@@ -8,7 +8,8 @@ interface Props {
   value: string;
   required?: boolean;
   placeholder?: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
+  onChangeEvent?: (e: ChangeEvent<HTMLInputElement>) => void;
   label: string;
   className?: string;
 }
@@ -24,9 +25,16 @@ const TextInput: React.FC<Props> = ({
   onChange,
   label,
   className,
+  onChangeEvent,
 }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
+    if (!!onChangeEvent) {
+      onChangeEvent(e);
+    }
+
+    if (!!onChange) {
+      onChange(e.target.value);
+    }
   };
 
   return (

@@ -24,4 +24,8 @@ public interface SpecieRepository extends JpaRepositoryImplementation<Specie, Lo
                           @Param("taxonFamily") String taxonFamily,
                           @Param("taxonGenus") String taxonGenus,
                           @Param("taxonName") String taxonName);
+
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM Specie s " +
+            "WHERE s.iNaturalistId = :iNaturalistId")
+    boolean existsByINaturalistId(@Param("iNaturalistId") String iNaturalistId);
 }

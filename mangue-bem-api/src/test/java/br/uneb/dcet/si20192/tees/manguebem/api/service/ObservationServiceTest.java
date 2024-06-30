@@ -6,6 +6,8 @@ import br.uneb.dcet.si20192.tees.manguebem.api.dto.UFReportItemDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Biome;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Observation;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.Specie;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.User;
+import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.ApprovalStatus;
 import br.uneb.dcet.si20192.tees.manguebem.api.exception.NotFoundException;
 import br.uneb.dcet.si20192.tees.manguebem.api.repository.BiomeRepository;
 import br.uneb.dcet.si20192.tees.manguebem.api.repository.ObservationRepository;
@@ -16,13 +18,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ObservationServiceTest {
@@ -79,6 +82,54 @@ public class ObservationServiceTest {
 
         // Assert
         assertEquals(items, result.getItems());
+    }
+
+    @Test
+    public void testApprove() {
+        User user = new User();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, null);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        Long id = 1L;
+        Observation observation = new Observation();
+        observation.setId(id);
+        ObservationDTO observationDTO = new ObservationDTO();
+
+        when(observationRepository.findById(id)).thenReturn(Optional.of(observation));
+        when(modelMapper.map(observationDTO, Observation.class)).thenReturn(observation);
+        when(modelMapper.map(observation, ObservationDTO.class)).thenReturn(observationDTO);
+
+        ObservationDTO result = observationService.approve(id);
+
+        assertNotNull(result);
+        assertEquals(observationDTO, result);
+        verify(observationRepository).save(observation);
+        assertEquals(ApprovalStatus.APPROVED, observation.getApprovalStatus());
+        assertEquals(user, observation.getRevisedBy());
+    }
+
+    @Test
+    public void testReprove() {
+        User user = new User();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, null);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        Long id = 1L;
+        Observation observation = new Observation();
+        observation.setId(id);
+        ObservationDTO observationDTO = new ObservationDTO();
+
+        when(observationRepository.findById(id)).thenReturn(Optional.of(observation));
+        when(modelMapper.map(observationDTO, Observation.class)).thenReturn(observation);
+        when(modelMapper.map(observation, ObservationDTO.class)).thenReturn(observationDTO);
+
+        ObservationDTO result = observationService.reprove(id);
+
+        assertNotNull(result);
+        assertEquals(observationDTO, result);
+        verify(observationRepository).save(observation);
+        assertEquals(ApprovalStatus.REJECTED, observation.getApprovalStatus());
+        assertEquals(user, observation.getRevisedBy());
     }
 
     @Test
