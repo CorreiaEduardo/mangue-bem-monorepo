@@ -26,7 +26,7 @@ const appString = {
     manageUsers: "Gerenciar curadores",
     curateObservations: "Revisar observações",
     projectName: "BEM",
-    Info: "Sobre nós"
+    Info: "Sobre nós",
     mushroomCuration: "Curadoria de espécies",
     observationCuration: "Curadoria de observações",
     approve: "Aprovar",
