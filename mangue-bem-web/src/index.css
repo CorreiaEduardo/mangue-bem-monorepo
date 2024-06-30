@@ -51,3 +51,7 @@ code {
 .accordion__button[aria-selected='true']::after {
   transform: rotate(45deg);
 }
+
+#root, html {
+  overflow: hidden !important;
+}

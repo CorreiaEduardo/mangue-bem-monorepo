@@ -5,12 +5,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Service
 public class JWTTokenService {
@@ -26,14 +29,18 @@ public class JWTTokenService {
 
     public String generateToken(UserDetailsImpl user) {
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<String> userAuthorities = user.getAuthorities()
+                    .stream().map(it -> it.getAuthority().replace("ROLE_", "")).toList();
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer(issuer)
                     .withIssuedAt(generateCreationDate())
                     .withExpiresAt(generateExpirationDate())
                     .withSubject(user.getUsername())
+                    .withClaim("roles", objectMapper.writeValueAsString(userAuthorities))
                     .sign(algorithm);
-        } catch (JWTCreationException exception){
+        } catch (JWTCreationException | JsonProcessingException exception){
             throw new JWTCreationException("Erro ao gerar token.", exception);
         }
     }

@@ -1,0 +1,28 @@
+.search-bar {
+    margin-right: 10px;
+    width: 500px;
+    >div {
+        cursor: pointer;
+        height: 42px;
+
+        >div {
+            text-align: start;
+        }
+
+        #react-select-3-listbox {
+            margin-top: 4px;
+            padding: 2px;
+        }
+    }
+
+    .css-lnmdiq5-menu {
+        border-radius: 0 !important;
+    }
+}
+
+.search-button {
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    background-color: #74AC00;
+}

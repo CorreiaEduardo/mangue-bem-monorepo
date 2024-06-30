@@ -32,4 +32,5 @@ public class SpecieProperties {
     private String recordedby;
     private int collectionid;
     private String recordnumber;
+    private String barcode;
 }

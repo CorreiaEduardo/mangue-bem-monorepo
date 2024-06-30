@@ -37,6 +37,8 @@ public class SpecificationFactory {
                 return (root, query, criteriaBuilder) ->
                         criteriaBuilder.like(root.get(filter.getField()),
                                 "%" + filter.getValue() + "%");
+            case NULL:
+                return (root, query, criteriaBuilder) -> criteriaBuilder.isNull(root.get(filter.getField()));
             default:
                 throw new RuntimeException("Operation not supported yet");
         }

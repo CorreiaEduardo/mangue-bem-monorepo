@@ -44,7 +44,7 @@ const fillMapArray = (speciesCounter) => {
         speciesCount: 0,
         state: statesMap[state],
         bemId: 0,
-        stateColor: "#88a4bc",
+        stateColor: "#ccc",
       });
     }
   }
@@ -67,8 +67,8 @@ export const adjustColorIntensity = (
   value: number,
 ): string => {
   const limitedValue = Math.max(0, Math.min(value, 100));
-  const percentageOfValue = (limitedValue / 100) * 100;
-  if (limitedValue === 0) return "#88a4bc";
+  const percentageOfValue = (limitedValue /140) * 100;
+  if (limitedValue === 0) return "#ffffff";
 
   var R = parseInt(hexColor.substring(1, 3), 16);
   var G = parseInt(hexColor.substring(3, 5), 16);

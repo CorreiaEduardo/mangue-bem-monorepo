@@ -2,19 +2,22 @@ package br.uneb.dcet.si20192.tees.manguebem.api.service;
 
 import br.uneb.dcet.si20192.tees.manguebem.api.config.SecurityConfiguration;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.AuthenticationTokenDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.RegistrationDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.UserDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.UserLoginDTO;
-import br.uneb.dcet.si20192.tees.manguebem.api.dto.UserRegistrationDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.User;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.security.UserDetailsImpl;
 import br.uneb.dcet.si20192.tees.manguebem.api.repository.UserRepository;
+import br.uneb.dcet.si20192.tees.manguebem.api.service.basic.BaseService;
 import br.uneb.dcet.si20192.tees.manguebem.api.service.security.JWTTokenService;
+import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService extends BaseService<User, UserDTO>  {
 
     private final AuthenticationManager authenticationManager;
 
@@ -31,7 +34,7 @@ public class UserService {
         this.securityConfiguration = securityConfiguration;
     }
 
-    public void register(UserRegistrationDTO userRegistrationDTO) {
+    public void register(RegistrationDTO userRegistrationDTO) {
         User user = new User();
         user.setName(userRegistrationDTO.getName());
         user.setEmail(userRegistrationDTO.getEmail());
@@ -50,5 +53,32 @@ public class UserService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         return new AuthenticationTokenDTO(jwtTokenService.generateToken(userDetails));
+    }
+
+    @Override
+    public Class<User> getEntityClass() {
+        return User.class;
+    }
+
+    @Override
+    protected JpaRepositoryImplementation<User, Long> getRepository() {
+        return this.userRepository;
+    }
+
+    @Override
+    protected UserDTO convert(User entity) {
+        UserDTO dto = new UserDTO();
+
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setEmail(entity.getEmail());
+        dto.setRole(entity.getRole());
+
+        return dto;
+    }
+
+    @Override
+    protected User convert(UserDTO dto) {
+        return null;
     }
 }

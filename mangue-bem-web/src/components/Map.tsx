@@ -31,18 +31,15 @@ function Map({selectedBem}: props) {
         }
       })
       console.log(simplemaps_countrymap_mapdata.state_specific)
-      simplemaps_countrymap.refresh();
+      if (simplemaps_countrymap.refresh !== undefined) {
+        simplemaps_countrymap.refresh();
+      }
     }
   },[speciesCounter]) 
 
   return (
     <div className="mt-2 rounded-md">
       <div className="map flex flex-col items-center">
-        <h3>
-          Selecione um <b className="text-green-700">BEM</b> para verificar a
-          quantidade de amostras que existem em cada{" "}
-          <b className="text-green-700">estado</b>
-        </h3>
         <div id="map" style={{marginRight: "-100px"}}></div>
       </div>
     </div>

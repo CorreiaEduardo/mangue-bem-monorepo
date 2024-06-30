@@ -37,6 +37,20 @@ public class INaturalistService {
         }
     }
 
+    public TaxonSearchResponse searchTaxonById(String id) {
+        final String baseUrl = "https://api.inaturalist.org/v1/taxa/" + id;
+
+        final ResponseEntity<TaxonSearchResponse> responseEntity =
+                restTemplate.exchange(baseUrl, HttpMethod.GET, null, TaxonSearchResponse.class);
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            return responseEntity.getBody();
+        } else {
+            // TODO: handle error response
+            return null;
+        }
+    }
+
     public TaxonObservationsResponse searchTaxonObservations(String taxonId, int pageNumber, int pageSize) {
         final String baseUrl = "https://api.inaturalist.org/v1/observations";
         final String url = UriComponentsBuilder

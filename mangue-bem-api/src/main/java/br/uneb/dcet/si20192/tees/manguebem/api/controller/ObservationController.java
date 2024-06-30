@@ -46,4 +46,18 @@ public class ObservationController {
         final ObservationDTO dto = observationService.getById(id);
         return ResponseEntity.ok(dto);
     }
+
+    @PostMapping("/{id}/approve")
+    public ResponseEntity<ObservationDTO> approve(@PathVariable Long id) {
+        final ObservationDTO updatedObservation = observationService.approve(id);
+
+        return ResponseEntity.ok(updatedObservation);
+    }
+
+    @PostMapping("/{id}/reprove")
+    public ResponseEntity<ObservationDTO> reprove(@PathVariable Long id) {
+        final ObservationDTO updatedObservation = observationService.reprove(id);
+
+        return ResponseEntity.ok(updatedObservation);
+    }
 }

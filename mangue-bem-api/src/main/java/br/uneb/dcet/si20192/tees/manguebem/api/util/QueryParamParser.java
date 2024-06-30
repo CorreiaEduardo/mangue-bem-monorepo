@@ -19,12 +19,18 @@ public class QueryParamParser {
             if (ReflectionUtils.getFields(target).stream().anyMatch(it -> it.getName().equals(field))) {
                 values.forEach(param -> {
                     final Filter filter = new Filter();
-                    final QueryOperator operator = QueryOperator.of(param.split(":")[0]);
-                    final String value = param.split(":")[1];
-
                     filter.setField(field);
-                    filter.setOperator(operator);
-                    filter.setValue(value);
+
+                    if (param.contains(":")) {
+                        final QueryOperator operator = QueryOperator.of(param.split(":")[0]);
+                        final String value = param.split(":")[1];
+
+                        filter.setOperator(operator);
+                        filter.setValue(value);
+                    } else {
+                        final QueryOperator operator = QueryOperator.of(param);
+                        filter.setOperator(operator);
+                    }
 
                     filters.add(filter);
                 });

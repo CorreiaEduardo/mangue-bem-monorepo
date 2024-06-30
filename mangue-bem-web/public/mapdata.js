@@ -1,7 +1,7 @@
 var simplemaps_countrymap_mapdata = {
   main_settings: {
     //General settings
-    width: "600", //or 'responsive'
+    width: "750", //or 'responsive'
     background_color: "#FFFFFF",
     background_transparent: "yes",
     border_color: "#ffffff",
@@ -155,13 +155,6 @@ var simplemaps_countrymap_mapdata = {
     },
     BRA681: {
       name: "Amapá",
-    },
-  },
-  locations: {
-    0: {
-      lat: "-15.783333",
-      lng: "-47.916667",
-      name: "Brasília",
     },
   }
 };

@@ -3,6 +3,7 @@ package br.uneb.dcet.si20192.tees.manguebem.api.service;
 import br.uneb.dcet.si20192.tees.manguebem.api.config.SecurityConfiguration;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.AuthenticationTokenDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.UserLoginDTO;
+import br.uneb.dcet.si20192.tees.manguebem.api.dto.RegistrationDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.dto.UserRegistrationDTO;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.User;
 import br.uneb.dcet.si20192.tees.manguebem.api.entity.enums.UserRole;
@@ -50,7 +51,7 @@ class UserServiceTest {
     @Test
     public void testRegister() {
         // Arrange
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John Doe", "john@example.com", "password123", UserRole.VISITOR);
+        RegistrationDTO userRegistrationDTO = new UserRegistrationDTO("John Doe", "john@example.com", "password123", UserRole.VISITOR);
         User user = new User();
         user.setName(userRegistrationDTO.getName());
         user.setEmail(userRegistrationDTO.getEmail());

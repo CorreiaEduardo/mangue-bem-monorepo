@@ -22,14 +22,15 @@ public class SpeciesLinkService {
         this.apiKey = apikey;
     }
 
-    public SearchSpecieResponse searchTaxonObservations(String catalogNumber, int offset, int limit) {
+    public SearchSpecieResponse searchTaxonObservations(String taxonGenus, String taxonName, int offset, int limit) {
         final String baseUrl = "https://specieslink.net/ws/1.0/search";
         final String url = UriComponentsBuilder
                 .fromHttpUrl(baseUrl)
                 .queryParam("country", "Brazil")
                 .queryParam("offset", offset)
                 .queryParam("limit", limit)
-                .queryParam("catalogNumber", catalogNumber)
+                .queryParam("genus", taxonGenus)
+                .queryParam("specificepithet", taxonName)
                 .queryParam("apikey", apiKey)
                 .toUriString();
 
