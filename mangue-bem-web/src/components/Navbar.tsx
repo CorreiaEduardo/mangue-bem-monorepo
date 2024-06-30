@@ -31,7 +31,7 @@ function Navbar() {
             <div className="flex flex-shrink-0 items-center">
               <img
                 className="h-16 w-auto"
-                src="assets/logo.png"
+                src="/assets/logo.png"
                 alt="mangue logo"
               />
             </div>
