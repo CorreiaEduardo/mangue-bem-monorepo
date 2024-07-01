@@ -22,16 +22,16 @@ const Info: React.FC = () => {
   };
   return (
     <div
-      className="relative left-0 top-0 h-screen w-full overflow-y-scroll bg-cover bg-center"
+      className="relative left-0 top-0 h-screen w-full overflow-y-scroll bg-cover bg-center bg-[#EAF3D8]"
     >
       <div className="info-container">
         <section className="info-section">
           <h2>Sobre o Projeto</h2>
-          <p>
+          <p className='text-justify'>
             Bem-vindo ao Sistema de Gerenciamento de Cogumelos Comestíveis Brasileiros! Este projeto tem como objetivo criar uma aplicação web para gerenciar e controlar o projeto "Brazilian Edible Mushrooms".
             Trata-se de um sistema web com vários perfis de usuários, cada um concedendo acesso a diferentes funcionalidades.
           </p>
-          <p>
+          <p className='text-justify'>
             As funcionalidades principais incluem a busca por espécies específicas de cogumelos comestíveis, além de uma visão geral dos Cogumelos Comestíveis no Brasil.
             Os visitantes também podem solicitar o registro de novas espécies, sujeitas à curadoria de especialistas.
           </p>
@@ -40,9 +40,9 @@ const Info: React.FC = () => {
 
         <section className="info-section">
           <h2>Equipe</h2>
-          <table>
+          <table className='w-full'>
             <tbody>
-              <tr>
+              <tr className='flex justify-center'>
                 <ProfileCard
                   imageUrl="https://media.licdn.com/dms/image/D4D03AQEzapF3BpAyJA/profile-displayphoto-shrink_400_400/0/1695242605934?e=1722470400&v=beta&t=FF8SS3uuREQx-AtRKzotuMJRso4pMGO1kgIN4lJMw2k"
                   name="Daniel Galdino"
@@ -94,7 +94,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://integra.ifsp.edu.br/portfolio/laboratorios/ifungilab-campus-sao-paulo"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Mariana P. Drewinski.
                   </p>
                   <p>
@@ -111,7 +111,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Marina Pires Corrêa-Santos.
                   </p>
                   <p>
@@ -127,7 +127,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Vitor X. Lima
                   </p>
                   <p>
@@ -143,7 +143,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Felipe T. Lima
                   </p>
                   <p>
@@ -158,7 +158,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Melissa Palacio
                   </p>
                   <p>
@@ -172,7 +172,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Maria Eduarda A. Borges
                   </p>
                   <p>
@@ -188,7 +188,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Larissa Trierveiler-Pereira
                   </p>
                   <p>
@@ -202,7 +202,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Altielys C. Magnago
                   </p>
                   <p>
@@ -217,7 +217,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Ariadne N. M. Furtado
                   </p>
                   <p>
@@ -233,7 +233,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Alexandre R. Lenz
                   </p>
                   <p>
@@ -249,7 +249,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Alexandre G. S. Silva-Filho
                   </p>
                   <p>
@@ -264,7 +264,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Cristiano Coelho do Nascimento
                   </p>
                   <p>
@@ -279,7 +279,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Renato L.M. Alvarenga
                   </p>
                   <p>
@@ -295,7 +295,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Tatiana B. Gibertoni
                   </p>
                   <p>
@@ -310,7 +310,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Jadson J.S. Oliveira
                   </p>
                   <p>
@@ -325,7 +325,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Juliano M. Baltazar
                   </p>
                   <p>
@@ -341,7 +341,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Maria Alice Neves
                   </p>
                   <p>
@@ -356,7 +356,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Ruby Vargas-Isla
                   </p>
                   <p>
@@ -372,7 +372,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Noemia K. Ishikawa
                   </p>
                   <p>
@@ -388,7 +388,7 @@ const Info: React.FC = () => {
                   websiteUrl="https://portal.uneb.br/"
                 />
                 <div style={{ marginLeft: '20px' }}>
-                  <p>
+                  <p className="text-2xl font-bold">
                     Nelson Menolli Jr
                   </p>
                   <p>
@@ -407,8 +407,7 @@ const Info: React.FC = () => {
           <h1>Over 400 food resources from Brazil: evidence-based records of wild edible mushrooms </h1>
           <br />
           <table>
-            <tbody>
-
+            <tbody className='organizers-list'>
               <tr>
                 <OrganizerCard
                   imageUrl="assets/ifungi.jpg"
