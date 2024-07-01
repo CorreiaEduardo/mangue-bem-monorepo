@@ -8,16 +8,16 @@ interface ProfileCardProps {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ imageUrl, name, linkedinUrl }) => {
   return (
-    <td align="center">
-      <img style={{ width: '70%', borderRadius: '50%' }} src={imageUrl} alt={name} />
+    <td className='flex items-center flex-col'>
+      <img className='w-[90px] rounded-full m-2' src={imageUrl} alt={name} />
       <br />
-      <sub><b>{name}</b></sub>
+      <sub className='mb-5'><b>{name}</b></sub>
       <br />
       <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">
         <img
           src="https://img.shields.io/badge/-Linkedin-1C1C1C?style=for-the-badge&logo=Linkedin&logoColor=00FFFF"
-          style={{ width: '90px' }}
-          alt="Linkedin Profile Picture"
+          className='w-[90px] mb-2'
+          alt="Linkedin Profile"
         />
       </a>
     </td>

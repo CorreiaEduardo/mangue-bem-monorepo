@@ -11,9 +11,9 @@ const OrganizerCard: React.FC<OrganizerCardProps> = ({ imageUrl, websiteUrl }) =
   };
 
   return (
-    <td align="center">
+    <td align="center" className='w-fit h-fit pl-5'>
       <img
-        style={{ width: '40%', borderRadius: '50%', cursor: 'pointer' }}
+      className='w-[150px] h-[150px] rounded-full cursor-pointer bg-white'
         src={imageUrl}
         onClick={handleImageClick} 
       />
