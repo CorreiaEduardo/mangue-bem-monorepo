@@ -45,7 +45,7 @@ interface CuratorRegister {
 const useRegisterCurator = () => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
-  const registerEndpoint = "http://localhost:8080/v1/curators";
+  const registerEndpoint = "http://www.g2bc.uneb.br:9081/v1/curators";
   const queryClient = useQueryClient();
 
   const register = useMutation({
@@ -74,7 +74,7 @@ const useDeleteCurator = () => {
 
   const deleteCurator = useMutation({
     mutationFn: (id: number) => {
-      const deleteEndpoint = "http://localhost:8080/v1/curators/" + id;
+      const deleteEndpoint = "http://www.g2bc.uneb.br:9081/v1/curators/" + id;
       return api.delete(deleteEndpoint).then(() => {
         setSuccess(true);
       }).catch(() => {

@@ -2,7 +2,7 @@ import axios from "axios";
 import { Mushroom } from "../Model/MushroomData";
 import api from "../services/AxiosProvider";
 
-const BASE_URL = "http://localhost:8080/v1";
+const BASE_URL = "http://www.g2bc.uneb.br:9081/v1";
 
 export const fetchPendingMushrooms = async (): Promise<Mushroom[]> => {
   const response = await axios.get(`${BASE_URL}/species`, {

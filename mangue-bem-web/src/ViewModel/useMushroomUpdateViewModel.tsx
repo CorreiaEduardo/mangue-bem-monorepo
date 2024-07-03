@@ -9,7 +9,7 @@ const useMushroomUpdateViewModel = () => {
 
   const update = useMutation({
     mutationFn: ({ id, mushroom }: { id: number, mushroom: any }) => {
-      const updateEndpoint = "http://localhost:8080/v1/species/" + id;
+      const updateEndpoint = "http://www.g2bc.uneb.br:9081/v1/species/" + id;
       setError(false);
       setSuccess(false);
       return api.put(updateEndpoint, { ...mushroom }).then(() => {

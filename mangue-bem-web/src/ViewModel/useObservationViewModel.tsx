@@ -7,10 +7,10 @@ const useObservationViewModel = (): [
 ] => {
   const [error, setError] = useState(false);
   const [response, setResponse] = useState<any>();
-  const baseUrl = "http://localhost:8080/v1/species";
+  const baseUrl = "http://www.g2bc.uneb.br:9081/v1/species";
   const iNaturalistTaxaUrl = "https://api.inaturalist.org/v1/observations?taxon_id=";
   const ufReportUrl =
-    "http://localhost:8080/v1/observations/uf-report?specieId=";
+    "http://www.g2bc.uneb.br:9081/v1/observations/uf-report?specieId=";
 
   async function get(id: number) {
     try {

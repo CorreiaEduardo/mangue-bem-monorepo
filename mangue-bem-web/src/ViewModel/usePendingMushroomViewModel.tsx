@@ -20,7 +20,7 @@ const getMushrooms = async (
   queryParams?: Record<string, string>,
 ): Promise<Page | undefined> => {
   const iNaturalistTaxaUrl = "https://api.inaturalist.org/v1/taxa/";
-  const baseUrl = "http://localhost:8080/v1/species";
+  const baseUrl = "http://www.g2bc.uneb.br:9081/v1/species";
 
   try {
     const speciesReponse = await axios.get(baseUrl, {

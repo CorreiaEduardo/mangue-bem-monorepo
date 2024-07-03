@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://www.g2bc.uneb.br:9081',
 });
 
 api.interceptors.response.use(

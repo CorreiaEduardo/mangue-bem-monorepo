@@ -95,7 +95,7 @@ export const adjustColorIntensity = (
 
 export const getSpeciesCounter = (setSpeciesCounter, bemId) => {
   fetch(
-    `http://localhost:8080/v1/observations/uf-report?bemClassification=${bemId >= 10? "P"+(bemId - 9) : "BEM"+(bemId + 1)}`,
+    `http://www.g2bc.uneb.br:9081/v1/observations/uf-report?bemClassification=${bemId >= 10? "P"+(bemId - 9) : "BEM"+(bemId + 1)}`,
   ).then((data) => {
     data.json().then((jsonData: { items: ufReport[] }) => {
       const speciesCounter: SpeciesCounter[] = [];

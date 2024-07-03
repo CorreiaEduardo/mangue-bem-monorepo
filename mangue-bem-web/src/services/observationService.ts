@@ -5,7 +5,7 @@ import { fetchSpeciesLinkInstitution } from "./observationInstitution";
 import { fetchSpeciesLinkCollection } from "./observationCollection";
 
 const INATURALIST_URL = "https://api.inaturalist.org/v1/observations/";
-const BASE_URL = "http://localhost:8080/v1";
+const BASE_URL = "http://www.g2bc.uneb.br:9081/v1";
 const SPECIES_LINK_URL = "https://specieslink.net/ws/1.0";
 const SPECIES_LINK_APIKEY = "8r6u470KHNachb17GyP4";
 
